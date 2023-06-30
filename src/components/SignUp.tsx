@@ -1,4 +1,4 @@
-const SingUp = () => {
+const SignUp = () => {
   return (
     <>
       <div className="flex flex-col lg:flex-row w-full relative">
@@ -50,4 +50,4 @@ const SingUp = () => {
   );
 };
 
-export default SingUp;
+export default SignUp;
