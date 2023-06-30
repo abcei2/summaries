@@ -5,7 +5,7 @@ import BottonMenu from "../components/BottonMenu";
 
 export default function App({ Component, pageProps }: AppProps) {
   return (
-    <div>
+    <div className="h-screen w-screen overflow-hidden">
       <TabMenu/>
       <Component {...pageProps} />
       <BottonMenu/>
