@@ -16,7 +16,7 @@ const Card = () => {
           <div className="w-full border border-2 h-3 rounded-lg">
             <div className="h-2 bg-blue-500 w-1/4 rounded-l-lg"></div>
           </div>
-        <div className="p-1  border border-2 border-black">
+        <div className="p-1">
           <span className="flex text-xl text-gray-600 mb-2 ">CAREER/SUCCES<div className="flex justify-center items-center border border-2 rounded-full w-16 h-16 md:w-8 md:h-8 bg-white ml-24">
             {SaveIcon}
           </div></span>
