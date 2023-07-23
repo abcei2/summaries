@@ -1,34 +1,131 @@
+import { HeadsetIcon } from "@/icons/Index";
+import { useState } from "react";
+import { Book } from "../../types";
+import { useEffect } from "react";
+import { HiSearch, HiCog } from "react-icons/hi";
 
+const Card = ({ book, className }: { book: Book; className?: string }) => {
+  const [bookStatus, setBookStatus] = useState<{
+    status: "downloading" | "downloaded" | "queue";
+    progress: number;
+  }>();
+  const [itsPollingInterval, setItsPollingInterval] = useState<NodeJS.Timer>();
+  const [loading, setLoading] = useState(false);
+  const [startPolling, setStartPolling] = useState(false);
+  
+  useEffect(() => {
+    if (startPolling) {
+      setItsPollingInterval(
+        setInterval(() => {
+          syncStatus();
+        }, 1000)
+      );
+    } else {
+      if (itsPollingInterval) {
+        console.log("CLEARING")
+        clearInterval(itsPollingInterval);
+      }
+    }
+    return () => {
+      if (itsPollingInterval) {
+        console.log("CLEARING")
+        clearInterval(itsPollingInterval);
+      }
+    };
+  }, [startPolling]);
+  const syncStatus = async () => {
+    await fetch(`http://192.168.80.13:8000/download/`, {
+      method: "POST",
+      body: JSON.stringify(book),
+      headers: {
+        "Content-Type": "application/json",
+      },
+    })
+      .then((res) => res.json())
+      .then((data) => {
+        setBookStatus(data);
+        console.log(data);
+        if (data.status === "downloaded") {
+          setStartPolling(false);
+          setLoading(false);
+        }
+      });
+  };
 
-import { HeadsetIcon, SaveIcon } from "@/icons/Index";
+  const onDownload = () => {
+    if (loading) return;
+    setLoading(true);
+    fetch(`http://192.168.80.13:8000/download/`, {
+      method: "POST",
+      body: JSON.stringify(book),
+      headers: {
+        "Content-Type": "application/json",
+      },
+    })
+      .then((res) => res.json())
+      .then((data) => {
+        setBookStatus(data);
+        console.log(data);
+        if (data.status !== "downloaded") {
+          console.log("polling");
+          setStartPolling(true)
+        } else {
+          setLoading(false);
+        }
+      });
+  };
 
-const Card = () => {
   return (
-      <div className="w-[60%] md:w-[35%] lg:w-[25%] rounded-lg shadow-lg border border-2 m-10 ">
-        <div className="bg-amber-50">
-         <div className="flex justify-center items-center border border-2 rounded-full w-12 h-12 bg-white m-2">
-            {HeadsetIcon}
-          </div>
-          <div className="flex justify-center mb-2">
-          <img className="border border-2  rounded-lg mt-8 shadow-xl" src="/card-img.png" /> 
-          </div>
-          </div>
-          <div className="w-full border border-2 h-3 rounded-lg">
-            <div className="h-2 bg-blue-500 w-1/4 rounded-l-lg"></div>
-          </div>
-        <div className="p-1">
-          <span className="flex text-xl text-gray-600 mb-2 ">CAREER/SUCCES<div className="flex justify-center items-center border border-2 rounded-full w-16 h-16 md:w-8 md:h-8 bg-white ml-24">
-            {SaveIcon}
-          </div></span>
-          
+    <div
+      className={`${
+        className ?? ""
+      } w-[150px] sm:w-[200px] rounded-lg shadow-lg border border-2 flex flex-col justify-between`}
+    >
+      <div className=" relative">
+        <div className="absolute rounded-full w-fit  bg-white p-2 m-1 border shadow-md">
+          {HeadsetIcon}
         </div>
-        <div className="p-1">
-          <span className="font-bold text-xl text-gray-600 mb-2">Deep Work</span>
-        </div>
-        <div className="p-1">
-          <span className=" text-xl text-gray-600 mb-2">By Cal Newport</span>
+        <div className="flex justify-center mb-2">
+          <img
+            className="border border-2  rounded-lg mt-8 shadow-xl h-20 sm:h-32"
+            src="/card-img.png"
+          />
         </div>
       </div>
+
+      <div className="p-1 text-center">
+        <div className="p-1">
+          <span className="font-bold text-gray-600 mb-2">
+            {book.title_2.slice(0, 50)}
+          </span>
+        </div>
+        <div className="p-1">
+          <span className="  text-gray-600 mb-2">By {book.author}</span>
+        </div>
+      </div>
+      <button
+        onClick={onDownload}
+        className="w-full h-10 bg-primary rounded-b-lg flex justify-center items-center text-white"
+      >
+        {loading ? (
+          <HiCog className="animate-spin duration-300 h-6 w-6" />
+        ) : bookStatus?.status === "downloading" ? (
+          <div className="flex flex-col items-center">
+            <span className="text-xs text-white">{bookStatus.progress}%</span>
+            <div className="w-20 h-1 bg-white rounded-full">
+              <div
+                className="h-full bg-primary rounded-full"
+                style={{ width: `${bookStatus.progress}%` }}
+              ></div>
+            </div>
+          </div>
+        ) : bookStatus?.status === "downloaded" ? (
+          <span className="text-xs text-white">Downloaded</span>
+        ) : (
+          <span className="text-xs text-white">Download</span>
+        )}
+      </button>
+    </div>
   );
 };
 

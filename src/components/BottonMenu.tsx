@@ -23,7 +23,7 @@ const BottonMenu = () => {
   if (currentPath.startsWith("/login") || currentPath.startsWith("/singup"))
     return null;
   return (
-    <div className="fixed bottom-0 left-0   flex justify-around border border-2 border-black h-24 w-full hover:border-b-4 lg:hidden">
+    <div className="bg-white  flex justify-around h-20 w-full hover:border-b-4 lg:hidden">
 
         {USER_TABS.map((item, key) => (
           <BottonMenuItem key={key} {...item} />

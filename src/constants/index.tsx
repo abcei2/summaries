@@ -22,7 +22,7 @@ export const USER_TABS = [
         icon:LibraryIcon
     },
     {
-        pathname:"",
+        pathname:"/search",
         label:"Search",
         icon:SearchIcon
     },

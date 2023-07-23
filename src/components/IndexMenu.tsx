@@ -1,6 +1,7 @@
+import { MENU_SETTINGS } from "@/constants";
 import { ReactNode } from "react";
 
-const { MENU_SETTINGS } = require("@/constants");
+
 
 const IndexMenu = ({ label, icon }:{
 label:string,
