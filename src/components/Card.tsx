@@ -26,13 +26,17 @@ const Card = ({ book, className }: { book: Book; className?: string }) => {
         clearInterval(itsPollingInterval);
       }
     }
+  }, [startPolling]);
+
+  useEffect(() => {
     return () => {
       if (itsPollingInterval) {
         console.log("CLEARING")
         clearInterval(itsPollingInterval);
       }
     };
-  }, [startPolling]);
+  }, []);
+
   const syncStatus = async () => {
     await fetch(`http://192.168.80.13:8000/download/`, {
       method: "POST",
@@ -47,6 +51,8 @@ const Card = ({ book, className }: { book: Book; className?: string }) => {
         console.log(data);
         if (data.status === "downloaded") {
           setStartPolling(false);
+          setLoading(false);
+        } else if (data.status === "downloading") {
           setLoading(false);
         }
       });
@@ -87,8 +93,8 @@ const Card = ({ book, className }: { book: Book; className?: string }) => {
         </div>
         <div className="flex justify-center mb-2">
           <img
-            className="border border-2  rounded-lg mt-8 shadow-xl h-20 sm:h-32"
-            src="/card-img.png"
+            className="ounded-lg mt-8 h-20 sm:h-32"
+            src="/card-img.jpg"
           />
         </div>
       </div>
