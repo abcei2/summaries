@@ -5,7 +5,7 @@ import { Book } from "../../types";
 import { useEffect } from "react";
 
 export default function Home() {
-  const [books, setBooks] = useState<Book[]>([]);
+  const [books, setBooks] = useState<Book[]>();
   const [searching, setSearching] = useState(false);
   const [searchTerm, setSearchTerm] = useState("");
 
@@ -37,7 +37,7 @@ export default function Home() {
           <HiSearch className="hover:scale-125 duration-300 hover:animate-pulse" />
         </button>
       </div>
-      {books.length > 0 ? (
+      {books && books.length > 0 ? (
         <div className="w-full xl:w-[90%] grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 overflow-auto">
           {books.map((book) => (
             <Card
