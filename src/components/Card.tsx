@@ -38,7 +38,7 @@ const Card = ({ book, className }: { book: Book; className?: string }) => {
   }, []);
 
   const syncStatus = async () => {
-    await fetch(`http://192.168.80.13:8000/download/`, {
+    await fetch(`http://192.168.1.3:8000/download/`, {
       method: "POST",
       body: JSON.stringify(book),
       headers: {

@@ -13,7 +13,7 @@ export default function Home() {
     if (searchTerm.length > 5) {
       setSearching(true);
       setBooks([]);
-      fetch(`http://192.168.80.13:8000/search-topic?word=${searchTerm}&n=5`)
+      fetch(`http://192.168.1.3:8000/search-topic?word=${searchTerm}&n=5`)
         .then((res) => res.json())
         .then((data) => setBooks(data.data))
         .finally(() => setSearching(false));
