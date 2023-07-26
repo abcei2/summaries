@@ -103,7 +103,7 @@ const Card = ({ book, className }: { book: Book; className?: string }) => {
       <div className="p-1 text-center">
         <div className="p-1">
           <span className="font-bold text-gray-600 mb-2">
-            {book?.title_2?book?.title_2.lice(0, 50):""}
+            {book?.title_2?book?.title_2.slice(0, 50):""}
           </span>
         </div>
         <div className="p-1">
