@@ -5,6 +5,7 @@ import { useEffect } from "react";
 import { HiSearch, HiCog } from "react-icons/hi";
 
 const Card = ({ book, className }: { book: Book; className?: string }) => {
+  if(!book) return null
   const [bookStatus, setBookStatus] = useState<{
     status: "downloading" | "downloaded" | "queue";
     progress: number;
