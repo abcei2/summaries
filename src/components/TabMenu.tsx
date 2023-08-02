@@ -24,7 +24,7 @@ const MenuTabItem = ({
 
 const TabMenu = () => {
   const currentPath = usePathname();
-  if (currentPath.startsWith("/login") || currentPath.startsWith("/signup"))
+  if (!currentPath || currentPath.startsWith("/login") || currentPath.startsWith("/signup"))
     return null;
   return (
     <>

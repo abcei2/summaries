@@ -20,7 +20,7 @@ const BottonMenuItem = ({ pathname, label, icon }:{
 
 const BottonMenu = () => {
   const currentPath = usePathname();
-  if (currentPath.startsWith("/login") || currentPath.startsWith("/singup"))
+  if (!currentPath || currentPath.startsWith("/login") || currentPath.startsWith("/singup"))
     return null;
   return (
     <div className="bg-white  flex justify-around h-20 w-full hover:border-b-4 lg:hidden">
