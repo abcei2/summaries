@@ -31,7 +31,9 @@ export function removeAuthCookie(res: {
 }
 
 
-export function getAuthCookie(req): UserAuthType | undefined {
+export function getAuthCookie(req): {
+  token: string;
+} | undefined {
   try {
     if (req.cookies) return JSON.parse(req.cookies[TOKEN_NAME]);
     const cookies = parse(req.headers.cookie || "");

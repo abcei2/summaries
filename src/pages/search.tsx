@@ -2,7 +2,6 @@ import Card from "@/components/Card";
 import { HiSearch, HiCog } from "react-icons/hi";
 import { useState } from "react";
 import { Book } from "../../types";
-import { useEffect } from "react";
 
 export default function Home() {
   const [books, setBooks] = useState<Book[]>();
@@ -13,7 +12,7 @@ export default function Home() {
     if (searchTerm.length > 5) {
       setSearching(true);
       setBooks([]);
-      fetch(`http://192.168.1.3:8000/search-topic?word=${searchTerm}&n=5`)
+      fetch(`/api/search?word=${searchTerm}`)
         .then((res) => res.json())
         .then((data) => setBooks(data.data))
         .finally(() => setSearching(false));
