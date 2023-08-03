@@ -11,3 +11,16 @@ export type Book = {
   title_2: string;
   download_link: string;
 };
+
+
+
+export type UserAuthType = {
+  id: string;
+  email: string;
+  name: string;
+};
+
+export type SignupFormType = {
+  email: string;
+  password: string;
+};

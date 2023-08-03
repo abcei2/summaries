@@ -44,9 +44,5 @@ export const MENU_SETTINGS = [
     {
         label:"Suport",
         icon:SupportIcon
-    },
-    {
-        label:"Log out",
-        icon:LogOutIcon
-    },
+    }
 ]
