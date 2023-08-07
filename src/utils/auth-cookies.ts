@@ -1,8 +1,8 @@
-import { useEffect, useState } from "react";
 import Router from "next/router";
 import { serialize, parse } from "cookie";
 import { TOKEN_MAX_AGE, TOKEN_NAME } from "./constants";
 import { UserAuthType } from "../../types";
+import { NextApiRequest } from "next";
 
 export function setAuthCookie(
   res: { setHeader: (arg0: string, arg1: string) => void },
@@ -31,12 +31,14 @@ export function removeAuthCookie(res: {
 }
 
 
-export function getAuthCookie(req): {
+export function getAuthCookie(req:NextApiRequest): {
   token: string;
 } | undefined {
   try {
-    if (req.cookies) return JSON.parse(req.cookies[TOKEN_NAME]);
-    const cookies = parse(req.headers.cookie || "");
+    const cookieValue = req.cookies[TOKEN_NAME];
+    if(!cookieValue) return undefined;
+    if (req.cookies) return JSON.parse(cookieValue);
+    const cookies = parse(cookieValue);
     return JSON.parse(cookies[TOKEN_NAME]);
   } catch (err) {
     return undefined;

@@ -5,7 +5,7 @@ const page = () => {
   const { summaryId } = router.query;
   const [summary, setSummary] = useState<{
     id: string;
-    status: string;
+    state: string;
     created_at: string;
     model1: string;
     model2: string;
