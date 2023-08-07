@@ -12,7 +12,7 @@ const validatePath = (path: string, paths: string[], equals = false) => {
 
 export function middleware(req: NextRequest) {
   const noUserPaths = ["/login", "/signup"];
-  const userPaths = ["/", "/profile", "/search","/mylibrary","/books/detail"];
+  const userPaths = ["/", "/profile", "/search","/mylibrary","/books"];
   const fileFormats = [".pdf", ".docx", ".jpg", ".png", ".jpeg"];
 
   if (fileFormats.find((format) => req.nextUrl.pathname.endsWith(format)))

@@ -6,9 +6,7 @@ import {
   HiOutlineEllipsisVertical,
   HiOutlineShare,
 } from "react-icons/hi2";
-import {
-  HiCog,
-} from "react-icons/hi";
+import { HiCog } from "react-icons/hi";
 import { Book } from "../../types";
 import { CustomModal2 } from "./utils/custommodals";
 
@@ -30,7 +28,7 @@ const BookCard = ({ book }: { book: Book }) => {
       })
       .then((data) => {
         setCurrentBookData(data.data);
-        console
+        console;
       })
       .finally(() => setLoading(false));
 
@@ -67,7 +65,7 @@ const BookCard = ({ book }: { book: Book }) => {
           status: data.status,
           can_do_summary: data.can_do_summary,
         });
-        console.log(data)
+        console.log(data);
       })
       .finally(() => setLoading(false));
   };
@@ -128,7 +126,7 @@ const BookCard = ({ book }: { book: Book }) => {
                 onClick={() => setShowModal(false)}
                 className="bg-white hover:bg-gray-100 text-gray-800 font-semibold py-1 px-4 border border-gray-400 rounded-2xl w-fit "
               >
-                Cancel
+                Close
               </button>
             </div>
           )}
@@ -171,9 +169,16 @@ const BookCard = ({ book }: { book: Book }) => {
 
           <button
             onClick={() => onAskForSummary()}
-            className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-1 px-4 rounded-2xl w-fit self-center lg:self-start "
+            className="flex items-center bg-blue-500 hover:bg-blue-700 text-white font-bold py-1 px-4 rounded-2xl w-fit self-center lg:self-start "
           >
-            {currentBookData.status}
+            {!currentBookData.can_do_summary ? (
+              <div className="flex items-center justify-center">
+                Loading{" "}
+                <HiCog className="text-gray-500 animate-spin duration-[1000] h-10 w-10" />
+              </div>
+            ) : (
+              <span>Ask for summary</span>
+            )}
           </button>
         </div>
 
