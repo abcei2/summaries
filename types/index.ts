@@ -10,6 +10,8 @@ export type Book = {
   extension: string;
   title_2: string;
   download_link: string;
+  status?: string;
+  can_do_summary?: boolean;
 };
 
 

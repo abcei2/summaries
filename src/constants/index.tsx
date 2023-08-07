@@ -17,7 +17,7 @@ export const USER_TABS = [
         icon:ArticleIcon
     },
     {
-        pathname:"",
+        pathname:"/mylibrary",
         label:"My library",
         icon:LibraryIcon
     },

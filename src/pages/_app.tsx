@@ -7,7 +7,7 @@ import UserContextProvider from "@/context/UserContext";
 export default function App({ Component, pageProps }: AppProps) {
   return (
     <UserContextProvider>
-      <div className="h-screen ">
+      <div className="h-screen overflow-auto">
         <TabMenu />
         <div className="h-[75%] sm:h-full max-w-full overflow-auto">
           <Component {...pageProps} />
