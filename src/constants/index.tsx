@@ -2,21 +2,6 @@ import { ArticleIcon, BillingIcon, BookIcon, DiscoverIcon, HighlightsIcon, Libra
 
 export const USER_TABS = [
     {
-        pathname:"",
-        label:"Discover",
-        icon:DiscoverIcon
-    },
-    {
-        pathname:"",
-        label:"Books",
-        icon:BookIcon
-    },
-    {
-        pathname:"",
-        label:"Articles",
-        icon:ArticleIcon
-    },
-    {
         pathname:"/mylibrary",
         label:"My library",
         icon:LibraryIcon
