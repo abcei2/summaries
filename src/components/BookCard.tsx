@@ -7,8 +7,9 @@ import {
   HiOutlineShare,
 } from "react-icons/hi2";
 import { HiCog } from "react-icons/hi";
-import { Book } from "../../types";
+import { Book, SurveyCreateParams } from "../../types";
 import { CustomModal2 } from "./utils/custommodals";
+import SurveyParamsSelector from "./summary/SurveyParamsSelector";
 
 const BookCard = ({ book }: { book: Book }) => {
   const [loading, setLoading] = useState(false);
@@ -37,8 +38,9 @@ const BookCard = ({ book }: { book: Book }) => {
     setShowModal(true);
   };
 
-  const createResume = () => {
+  const createResume = (creationParams: SurveyCreateParams) => {
     if (loading) return console.log("Loading...");
+    if (!creationParams) return console.log("No creation params");
     setLoading(true);
     fetch("/api/summaries", {
       method: "POST",
@@ -47,9 +49,7 @@ const BookCard = ({ book }: { book: Book }) => {
       },
       body: JSON.stringify({
         bookId: book.global_id,
-        m1: "gpt-3.5-turbo-16k",
-        m2: "gpt-3.5-turbo-16k",
-        method: "sections",
+        ...creationParams,
       }),
     })
       .then((res) => {
@@ -75,47 +75,10 @@ const BookCard = ({ book }: { book: Book }) => {
       {showModal && (
         <CustomModal2 handleClose={() => setShowModal(false)}>
           {currentBookData.can_do_summary ? (
-            <div className="flex flex-col gap-4 bg-white h-fit rounded-lg p-2 w-full">
-              <div className="text-2xl font-bold">Create a new summary</div>
-              <div className="flex flex-col gap-2">
-                <div className="text-lg font-semibold">Select Model 1</div>
-                <select className="border border-gray-300 rounded-lg p-2">
-                  <option value="gpt-3.5-turbo-16k">gpt-3.5-turbo-16k</option>
-                  <option value="gpt-3.5-turbo-16k">gpt-3.5-turbo-16k</option>
-                  <option value="gpt-3.5-turbo-16k">gpt-3.5-turbo-16k</option>
-                </select>
-              </div>
-              <div className="flex flex-col gap-2">
-                <div className="text-lg font-semibold">Select Model 2</div>
-                <select className="border border-gray-300 rounded-lg p-2">
-                  <option value="gpt-3.5-turbo-16k">gpt-3.5-turbo-16k</option>
-                  <option value="gpt-3.5-turbo-16k">gpt-3.5-turbo-16k</option>
-                  <option value="gpt-3.5-turbo-16k">gpt-3.5-turbo-16k</option>
-                </select>
-              </div>
-              <div className="flex flex-col gap-2">
-                <div className="text-lg font-semibold">Select Method</div>
-                <select className="border border-gray-300 rounded-lg p-2">
-                  <option value="sections">Sections</option>
-                  <option value="sections">Sections</option>
-                  <option value="sections">Sections</option>
-                </select>
-              </div>
-              <div className="flex gap-2">
-                <button
-                  onClick={createResume}
-                  className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-1 px-4 rounded-2xl w-fit "
-                >
-                  Create
-                </button>
-                <button
-                  onClick={() => setShowModal(false)}
-                  className="bg-white hover:bg-gray-100 text-gray-800 font-semibold py-1 px-4 border border-gray-400 rounded-2xl w-fit "
-                >
-                  Cancel
-                </button>
-              </div>
-            </div>
+            <SurveyParamsSelector
+              handleClose={() => setShowModal(false)}
+              handleCreateResume={createResume}
+            />
           ) : (
             <div className="flex flex-col gap-4 bg-white h-fit rounded-lg p-2 w-full">
               <div className="text-2xl font-bold">Working on it</div>

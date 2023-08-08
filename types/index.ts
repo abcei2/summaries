@@ -26,3 +26,9 @@ export type SignupFormType = {
   email: string;
   password: string;
 };
+
+export type SurveyCreateParams = {
+  m1: string;
+  m2: string;
+  method: string;
+};
