@@ -29,7 +29,6 @@ const BookCard = ({ book }: { book: Book }) => {
       })
       .then((data) => {
         setCurrentBookData(data.data);
-        console;
       })
       .finally(() => setLoading(false));
 

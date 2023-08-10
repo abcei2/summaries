@@ -7,10 +7,22 @@ import { HiSearch, HiCog } from "react-icons/hi";
 const Card = ({ book, className }: { book: Book; className?: string }) => {
   if (!book) return null;
   const [bookStatus, setBookStatus] = useState<{
-    status: "downloading" | "downloaded" | "queue";
+    status: "downloading" | "downloaded" | "queue" | "extracted" ;
     progress: number;
-  }>();
+    exists: boolean;
+    in_my_library?: boolean;
+  }>({
+    status: book.status || "queue",
+    progress: 0,
+    exists: false,
+    in_my_library: book.in_my_library,
+  });
   const [loading, setLoading] = useState(false);
+
+  useEffect(() => {
+    if (!bookStatus) return;
+    if (bookStatus.exists) return alert("Book already exists in your library");
+  }, [bookStatus]);
 
   const onAddToLibrary = () => {
     if (loading) return;
@@ -24,6 +36,8 @@ const Card = ({ book, className }: { book: Book; className?: string }) => {
     })
       .then((res) => res.json())
       .then((data) => {
+        setBookStatus(data);
+        
         console.log(data)
       })
       .finally(() => {
@@ -56,16 +70,22 @@ const Card = ({ book, className }: { book: Book; className?: string }) => {
           <span className="  text-gray-600 mb-2">By {book.author}</span>
         </div>
       </div>
-      <button
-        onClick={onAddToLibrary}
-        className="w-full h-10 bg-primary rounded-b-lg flex justify-center items-center text-white"
-      >
-        {loading ? (
-          <HiCog className="animate-spin duration-300 h-6 w-6" />
-        ) : (
-          <span className="text-xs text-white">Add to my library</span>
-        )}
-      </button>
+      {bookStatus.in_my_library ? (
+        <a className={`w-full h-10 bg-gray-100 rounded-b-lg flex justify-center items-center text-black`}
+          href="/mylibrary"
+        >In my library</a>
+      ) : (
+        <button
+          onClick={onAddToLibrary}
+          className={`w-full h-10 bg-primary rounded-b-lg flex justify-center items-center text-white`}
+        >
+          {loading ? (
+            <HiCog className="animate-spin duration-300 h-6 w-6" />
+          ) : (
+            <span className="text-xs text-white">Add to my library</span>
+          )}
+        </button>
+      )}
     </div>
   );
 };

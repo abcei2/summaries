@@ -10,8 +10,9 @@ export type Book = {
   extension: string;
   title_2: string;
   download_link: string;
-  status?: string;
+  status?: "downloading" | "downloaded" | "queue" | "extracted";
   can_do_summary?: boolean;
+  in_my_library?: boolean;
 };
 
 
