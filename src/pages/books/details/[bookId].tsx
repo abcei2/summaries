@@ -19,6 +19,7 @@ const page = () => {
     fetch("/api/books/summaries/" + bookId)
       .then((res) => res.json())
       .then((data) => {
+        console.log(data)
         setSummaryList(data.data);
       });
   }, [bookId]);

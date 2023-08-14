@@ -13,9 +13,8 @@ export type Book = {
   status?: "downloading" | "downloaded" | "queue" | "extracted";
   can_do_summary?: boolean;
   in_my_library?: boolean;
+  progress?: string;
 };
-
-
 
 export type UserAuthType = {
   id: string;
@@ -29,7 +28,12 @@ export type SignupFormType = {
 };
 
 export type SurveyCreateParams = {
+  bookId?:string;
   m1: string;
   m2: string;
   method: string;
+  temp: string;
+  length: string;
+  p1: string;
+  p2: string;
 };

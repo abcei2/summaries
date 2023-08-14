@@ -1,10 +1,20 @@
 import { NextApiRequest, NextApiResponse } from "next";
 import { withAuth } from "@/utils/validator";
+import { SurveyCreateParams } from "../../../../types";
 
 async function fn(req: NextApiRequest, res: NextApiResponse, token: string) {
   switch (req.method) {
     case "POST":
-      const { bookId, m1, m2, method } = req.body;
+      const {
+        bookId,
+        m1,
+        m2,
+        method,
+        p1,
+        p2,
+        length,
+        temp,
+      }: SurveyCreateParams = req.body;
 
       if (!bookId) {
         return res.status(400).send("bookId not provided");
@@ -22,7 +32,7 @@ async function fn(req: NextApiRequest, res: NextApiResponse, token: string) {
       try {
         const response = await fetch(
           process.env.DJANGO_HOST +
-            `/summarise-book/?book_id=${bookId}&m1=${m1}&m2=${m2}&method=${method}`,
+            `/summarise-book/?book_id=${bookId}&m1=${m1}&m2=${m2}&method=${method}&p1=${p1}&p2=${p2}&length=${length}&temp=${temp}`,
           {
             method: "GET",
             headers: {

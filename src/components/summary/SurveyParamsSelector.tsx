@@ -15,17 +15,38 @@ const METHODS = [
   },
 ];
 
+const PARAMS = [
+  {
+    name: "methods",
+    type: "select",
+    values: METHODS,
+  },
+  {
+    name: "models",
+    type: "select",
+    values: MODELS,
+  },
+  {
+    name: "temperature",
+    type: "number",
+  },
+];
+
 const SurveyParamsSelector = ({
   handleClose,
   handleCreateResume,
 }: {
   handleClose: () => void;
-  handleCreateResume: (creationParams:SurveyCreateParams) => void;
+  handleCreateResume: (creationParams: SurveyCreateParams) => void;
 }) => {
   const [formData, setFormData] = useState<SurveyCreateParams>({
     m1: "gpt-3.5-turbo-16k",
     m2: "gpt-3.5-turbo-16k",
     method: "sections",
+    length: "medium",
+    p1:"Summarize the text, explaining key concepts and ideas in a detailed, long, well-structured summary, (not bullet points or numbered).",
+    p2:"Give a title and summarize the text. The summary must contain insights and relevant ideas.",
+    temp:"0.5"
   });
 
   const handleChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
@@ -85,7 +106,7 @@ const SurveyParamsSelector = ({
       </div>
       <div className="flex gap-2">
         <button
-          onClick={()=>handleCreateResume(formData)}
+          onClick={() => handleCreateResume(formData)}
           className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-1 px-4 rounded-2xl w-fit "
         >
           Create
