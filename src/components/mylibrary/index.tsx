@@ -45,7 +45,7 @@ const MyBook = ({ book }: { book: Book }) => {
   return (
     <div
       onClick={() => {
-        router.push(`/books/details/${book.global_id}`);
+        book.status == "extracted" ? router.push(`/books/details/${book.global_id}`):alert("El libro no esta disponible");
       }}
       className={`w-[150px] sm:w-[200px] rounded-lg shadow-lg border border-2 flex flex-col 
       ${
