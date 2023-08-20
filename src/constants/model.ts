@@ -52,11 +52,11 @@ export const PARAMS: {
   },
   {
     name: "p1",
-    type: "text",
+    type: "textarea",
   },
   {
     name: "p2",
-    type: "text",
+    type: "textarea",
   },
   {
     name: "temp",

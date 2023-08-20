@@ -1,44 +1,67 @@
-export const CustomInput = ({
-  name,
-  type,
-  value,
-  defaultValue,
-  values,
-  handleChange,
-  title,
-}: {
-  name: string;
-  type: string;
-  defaultValue?: string;
-  value?: string;
-  values?: { value: string; label: string }[];
-  handleChange: (e: React.ChangeEvent<any>) => void;
-  title: string;
+import { FormHookType, SelectOptionsType } from "../../../types";
+
+export const CustomInput = (props: {
+  label?: string;
+  type?: string;
+  placeholder?: string;
+  selectOptions?: SelectOptionsType[];
+  noLabelOptions?: string[];
+  error?: any;
+  reactFormHookProps?: FormHookType;
+  classNameInput?: string;
 }) => {
+  const {
+    label,
+    type = "text",
+    placeholder,
+    selectOptions,
+    noLabelOptions = [],
+    error,
+    reactFormHookProps,
+    classNameInput = "",
+    ...otherProps
+  } = props;
   return (
-    <div className="flex flex-col gap-2">
-      <label htmlFor={name}>{title}</label>
+    <div className="flex flex-col gap-2 text-base">
+      {label && <span className="font-extrabold">{label}</span>}
       {type === "select" ? (
         <select
-          onChange={handleChange}
-          name={name}
+          {...(reactFormHookProps ?? otherProps)}
           className="border border-gray-300 rounded-md p-2"
         >
-          {values &&
-            values.map((value) => (
-              <option key={value.value} value={value.value}>
-                {value.label}
+          <option value="">{placeholder ?? "Selecciona una opción"}</option>
+          {noLabelOptions &&
+            noLabelOptions.map((opt, index) => (
+              <option key={index} value={opt}>
+                {opt}
+              </option>
+            ))}
+          {selectOptions &&
+            selectOptions.map((opt, index) => (
+              <option key={index} value={opt.value}>
+                {opt.label}
               </option>
             ))}
         </select>
+      ) : type === "textarea" ? (
+        <textarea
+          {...(reactFormHookProps ?? otherProps)}
+          className={`default h-[75px] ${
+            error ? "bg-red-100" : "bg-accents-1"
+          } border border-gray-300 rounded-md p-2`}
+        />
       ) : (
         <input
-          onChange={handleChange}
-          name={name}
-          defaultValue={defaultValue}
-          className="border border-gray-300 rounded-md p-2"
+          type={type ?? "text"}
+          step={type === "number" ? "any" : undefined}
+          {...(reactFormHookProps ?? otherProps)}
+          placeholder={placeholder}
+          className={` ${
+            error ? "bg-red-100" : "bg-accents-1"
+          } border border-gray-300 rounded-md p-2`}
         />
       )}
+      {error && <span className="text-red-500">{error.message}</span>}
     </div>
   );
 };

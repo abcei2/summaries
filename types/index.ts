@@ -1,3 +1,5 @@
+import { ChangeHandler } from "react-hook-form";
+
 export type Book = {
   global_id: number;
   author: string;
@@ -28,12 +30,24 @@ export type SignupFormType = {
 };
 
 export type SurveyCreateParams = {
-  bookId?:string;
+  bookId?: string;
   m1: string;
   m2: string;
   method: string;
-  temp: string;
+  temp: number;
   length: string;
   p1: string;
   p2: string;
+};
+
+export type FormHookType = {
+  onChange: ChangeHandler;
+  onBlur: ChangeHandler;
+  name: string;
+  ref: React.Ref<any>;
+};
+
+export type SelectOptionsType = {
+  value: string;
+  label: string;
 };
