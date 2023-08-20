@@ -1,36 +1,8 @@
 import { useState } from "react";
 import { SurveyCreateParams } from "../../../types";
+import { PARAMS } from "@/constants/model";
+import { CustomInput } from "../utils/custominputs";
 
-const MODELS = [
-  {
-    value: "gpt-3.5-turbo-16k",
-    label: "gpt-3.5-turbo-16k",
-  },
-];
-
-const METHODS = [
-  {
-    value: "sections",
-    label: "sections",
-  },
-];
-
-const PARAMS = [
-  {
-    name: "methods",
-    type: "select",
-    values: METHODS,
-  },
-  {
-    name: "models",
-    type: "select",
-    values: MODELS,
-  },
-  {
-    name: "temperature",
-    type: "number",
-  },
-];
 
 const SurveyParamsSelector = ({
   handleClose,
@@ -40,16 +12,16 @@ const SurveyParamsSelector = ({
   handleCreateResume: (creationParams: SurveyCreateParams) => void;
 }) => {
   const [formData, setFormData] = useState<SurveyCreateParams>({
-    m1: "gpt-3.5-turbo-16k",
+    m1: "sections",
     m2: "gpt-3.5-turbo-16k",
+    length: "short",
     method: "sections",
-    length: "medium",
-    p1:"Summarize the text, explaining key concepts and ideas in a detailed, long, well-structured summary, (not bullet points or numbered).",
-    p2:"Give a title and summarize the text. The summary must contain insights and relevant ideas.",
-    temp:"0.5"
+    p1: "Summarize the text, explaining key concepts and ideas in a detailed, long, well-structured summary, (not bullet points or numbered).",
+    p2: "Give a title and summarize the text. The summary must contain insights and relevant ideas.",
+    temp: "0.5",
   });
 
-  const handleChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
+  const handleChange = (e: React.ChangeEvent<any>) => {
     setFormData({
       ...formData,
       [e.target.name]: e.target.value,
@@ -59,51 +31,19 @@ const SurveyParamsSelector = ({
   return (
     <div className="flex flex-col gap-4 bg-white h-fit rounded-lg p-2 w-full">
       <div className="text-2xl font-bold">Create a new summary</div>
-      <div className="flex flex-col gap-2">
-        <div className="text-lg font-semibold">Select Model 1</div>
-        <select
-          name="m1"
-          onChange={handleChange}
-          value={formData.m1}
-          className="border border-gray-300 rounded-lg p-2"
-        >
-          {MODELS.map((model, index) => (
-            <option key={index} value={model.value}>
-              {model.label}
-            </option>
-          ))}
-        </select>
-      </div>
-      <div className="flex flex-col gap-2">
-        <div className="text-lg font-semibold">Select Model 2</div>
-        <select
-          name="m2"
-          onChange={handleChange}
-          value={formData.m2}
-          className="border border-gray-300 rounded-lg p-2"
-        >
-          {MODELS.map((model, index) => (
-            <option key={index} value={model.value}>
-              {model.label}
-            </option>
-          ))}
-        </select>
-      </div>
-      <div className="flex flex-col gap-2">
-        <div className="text-lg font-semibold">Select Method</div>
-        <select
-          name="method"
-          onChange={handleChange}
-          value={formData.method}
-          className="border border-gray-300 rounded-lg p-2"
-        >
-          {METHODS.map((model, index) => (
-            <option key={index} value={model.value}>
-              {model.label}
-            </option>
-          ))}
-        </select>
-      </div>
+      {PARAMS &&
+        PARAMS.map((param, index) => (
+          <CustomInput
+            key={index}
+            name={param.name}
+            type={param.type}
+            values={param.values}
+            handleChange={handleChange}
+            title={param.name}
+            defaultValue={formData[param.name as keyof SurveyCreateParams]}
+          />
+        ))}
+
       <div className="flex gap-2">
         <button
           onClick={() => handleCreateResume(formData)}
