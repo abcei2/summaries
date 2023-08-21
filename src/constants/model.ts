@@ -43,7 +43,7 @@ const LENGTHS = [
 
 export const PARAMS: SurveyCreateParamFormType[] = [
   {
-    name: "methods",
+    name: "method",
     type: "select",
     values: METHODS,
     defaultValue: "sections1",

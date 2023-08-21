@@ -55,10 +55,11 @@ const BookCard = ({ book }: { book: Book }) => {
         if (res.status == 200) {
           return res.json();
         } else {
-          throw new Error("Something went wrong");
+          console.log(res.status, res.statusText)
         }
       })
       .then((data) => {
+        if(!data) return console.log("No data")
         setCurrentBookData({
           ...currentBookData,
           status: data.status,
