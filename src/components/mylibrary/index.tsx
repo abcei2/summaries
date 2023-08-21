@@ -3,53 +3,64 @@ import { Book } from "../../../types";
 import { useState } from "react";
 import { HeadsetIcon } from "@/icons/Index";
 import { useRouter } from "next/router";
+import { HiCog } from "react-icons/hi";
 
 const MyLibrary = () => {
   const [myBooks, setMyBooks] = useState<Book[]>([]);
+  const [loading, setLoading] = useState(false);
   useEffect(() => {
+    if (loading) return;
+    setLoading(true);
     fetch("/api/users/my-library")
       .then((res) => res.json())
       .then((data) => {
         setMyBooks(data.data ?? []);
-      });
+      })
+      .finally(() => setLoading(false));
   }, []);
 
   useEffect(() => {
-    const ws = new WebSocket(process.env.NEXT_PUBLIC_DJANGO_WS+"/ws/");
-    ws.onopen = () => {
-      myBooks.forEach((book) => {
-        ws.send(
-          JSON.stringify({
-            action: "subscribe_instance",
-            request_id: new Date().getTime(),
-            pk: book.id,
-          })
-        );
-      });
-    };
-    ws.onmessage = (e: any) => {
-      const eData = JSON.parse(e.data);
-      if (eData.action == "update") {
-        console.log(eData.data);
-        setMyBooks(
-          myBooks.map((book) => {
-            if (book.id == eData.data.id) {
-              return {
-                ...book,
-                ...eData.data,
-              };
-            }
-            return book;
-          })
-        );
-      }
-    };
-    ws.onclose = () => {
-      console.log("disconnected");
-    };
-    return () => {
-      ws.close();
-    };
+    try {
+      const ws = new WebSocket(process.env.NEXT_PUBLIC_DJANGO_WS + "/ws/");
+      ws.onopen = () => {
+        myBooks.forEach((book) => {
+          if (book.status == "extracted") return;
+          ws.send(
+            JSON.stringify({
+              action: "subscribe_instance",
+              request_id: new Date().getTime(),
+              pk: book.id,
+            })
+          );
+        });
+      };
+      ws.onmessage = (e: any) => {
+        const eData = JSON.parse(e.data);
+        if (eData.action == "update") {
+          console.log(eData.data);
+          setMyBooks(
+            myBooks.map((book) => {
+              if (book.id == eData.data.id) {
+                return {
+                  ...book,
+                  ...eData.data,
+                };
+              }
+              return book;
+            })
+          );
+        }
+      };
+      ws.onclose = () => {
+        console.log("disconnected");
+      };
+
+      return () => {
+        ws.close();
+      };
+    } catch (e) {
+      console.log(e);
+    }
   }, [myBooks]);
 
   return (
@@ -65,12 +76,19 @@ const MyLibrary = () => {
           Reading Now
         </span>
       </div>
-      <div className="w-full lg:w-[80%] h-full ">
-        <div className="w-fit grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
-          {myBooks.map((book, key) => (
-            <MyBook book={book} key={key} />
-          ))}
-        </div>
+      <div className="w-full lg:w-[80%] h-full flex justify-center ">
+        {!loading ? (
+          <div className="w-fit grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
+            {myBooks.map((book, key) => (
+              <MyBook book={book} key={key} />
+            ))}
+          </div>
+        ) : (
+          <div className="flex flex-col items-center justify-center text-center text-gray-500 mt-10">
+            <span className="text-2xl font-bold">Loading library...</span>
+            <HiCog className="animate-spin duration-300 h-12 w-12" />
+          </div>
+        )}
       </div>
     </div>
   );

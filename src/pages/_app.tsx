@@ -3,6 +3,8 @@ import type { AppProps } from "next/app";
 import TabMenu from "../components/TabMenu";
 import BottonMenu from "../components/BottonMenu";
 import UserContextProvider from "@/context/UserContext";
+import 'react-toastify/dist/ReactToastify.css';
+import { ToastContainer } from 'react-toastify';
 
 export default function App({ Component, pageProps }: AppProps) {
   return (
@@ -14,6 +16,10 @@ export default function App({ Component, pageProps }: AppProps) {
         </div>
         <BottonMenu />
       </div>
+      <ToastContainer 
+      
+        autoClose={1000}
+      />
     </UserContextProvider>
   );
 }

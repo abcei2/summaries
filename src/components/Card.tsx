@@ -37,8 +37,6 @@ const Card = ({ book, className }: { book: Book; className?: string }) => {
       .then((res) => res.json())
       .then((data) => {
         setBookStatus(data);
-        
-        console.log(data)
       })
       .finally(() => {
         setLoading(false);

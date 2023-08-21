@@ -1,7 +1,8 @@
-import Card from "@/components/Card";
-import Login from "../components/Login";
+import MyLibrary from "@/components/mylibrary";
 
-export default function Home() {
-  return <div>
-  </div>;
-}
+const page = () => {
+
+  return (<MyLibrary /> );
+};
+
+export default page;

@@ -14,25 +14,32 @@ export default function Home() {
       setBooks([]);
       fetch(`/api/search?word=${searchTerm}`)
         .then((res) => res.json())
-        .then((data) => setBooks(data.data))
+        .then((data) => {
+          setBooks(data.data);
+        })
         .finally(() => setSearching(false));
     } else {
       alert("Please enter at least 5 characters");
     }
   };
-  
 
   return (
     <div className="w-full flex flex-col gap-6 items-center">
       <div className="w-full h-16 flex justify-center items-center ">
         <input
           onChange={(e) => setSearchTerm(e.target.value)}
+          onKeyDown={(e) => {
+            if (e.key == "Enter") {
+              onSearch();
+            }
+          }}
           className="w-3/4 sm:w-1/2 h-10 border-y-2 border-l-2 border-gray-300 rounded-l-md p-2 "
           placeholder="Search for a book"
         />
         <button
           onClick={onSearch}
-         className="w-10 h-10 bg-primary rounded-r-md flex justify-center items-center ">
+          className="w-10 h-10 bg-primary rounded-r-md flex justify-center items-center "
+        >
           <HiSearch className="hover:scale-125 duration-300 hover:animate-pulse" />
         </button>
       </div>
@@ -49,9 +56,7 @@ export default function Home() {
       ) : searching ? (
         <div className="w-full h-full  text-center text-2xl text-gray-500 flex flex-col items-center gap-2">
           <span>Searching...</span>
-          <HiCog
-            className="animate-spin duration-[3000] h-12 w-12"
-          />
+          <HiCog className="animate-spin duration-[3000] h-12 w-12" />
         </div>
       ) : (
         <div className="w-full h-full  text-center text-2xl text-gray-500">

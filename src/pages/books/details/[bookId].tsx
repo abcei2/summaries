@@ -2,6 +2,7 @@ import BookCard from "../../../components/BookCard";
 import { useRouter } from "next/router";
 import { useEffect, useState } from "react";
 import { Book } from "../../../../types";
+import LoadingSpin from "@/components/utils/LoadingSpin";
 
 const page = () => {
   const router = useRouter();
@@ -19,12 +20,15 @@ const page = () => {
     fetch("/api/books/summaries/" + bookId)
       .then((res) => res.json())
       .then((data) => {
-        console.log(data)
+        console.log(data);
         setSummaryList(data.data);
       });
   }, [bookId]);
 
-  if (!book) return <div>Loading...</div>;
+  if (!book)
+    return (
+      <LoadingSpin text="Loading book details"/>
+    );
 
   return (
     <div className="w-full flex justify-center items-center">
