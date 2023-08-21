@@ -51,3 +51,14 @@ export type SelectOptionsType = {
   value: string;
   label: string;
 };
+
+
+export type SurveyCreateParamFormType = {
+  name: string;
+  type: string;
+  defaultValue: string | number;
+  values?: {
+    value: string;
+    label: string;
+  }[];
+}

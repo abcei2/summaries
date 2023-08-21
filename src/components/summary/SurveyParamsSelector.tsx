@@ -1,4 +1,3 @@
-import { useState } from "react";
 import { SurveyCreateParams } from "../../../types";
 import { PARAMS } from "@/constants/model";
 import { CustomInput } from "../utils/custominputs";
@@ -12,15 +11,10 @@ const SurveyParamsSelector = ({
   handleCreateResume: (creationParams: SurveyCreateParams) => void;
 }) => {
   const paramsFormHook = useForm<SurveyCreateParams>({
-    defaultValues: {
-      m1: "sections",
-      m2: "gpt-3.5-turbo-16k",
-      length: "short",
-      method: "sections",
-      p1: "Summarize the text, explaining key concepts and ideas in a detailed, long, well-structured summary, (not bullet points or numbered).",
-      p2: "Give a title and summarize the text. The summary must contain insights and relevant ideas.",
-      temp: 0.5,
-    },
+    defaultValues: PARAMS?.reduce((acc:any, param) => {
+      acc[param.name as keyof SurveyCreateParams] = param.defaultValue;
+      return acc;
+    }, {}),
   });
 
   const {
@@ -31,7 +25,7 @@ const SurveyParamsSelector = ({
   } = paramsFormHook;
 
   const onSubmit = (data: SurveyCreateParams) => {
-    console.log(data);
+    handleCreateResume(data);
   };
 
   const commonReactHookFormProps = (
