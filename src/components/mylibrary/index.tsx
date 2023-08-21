@@ -10,9 +10,47 @@ const MyLibrary = () => {
     fetch("/api/users/my-library")
       .then((res) => res.json())
       .then((data) => {
-        setMyBooks(data.data??[]);
+        setMyBooks(data.data ?? []);
       });
   }, []);
+
+  useEffect(() => {
+    const ws = new WebSocket(process.env.NEXT_PUBLIC_DJANGO_WS+"/ws/");
+    ws.onopen = () => {
+      myBooks.forEach((book) => {
+        ws.send(
+          JSON.stringify({
+            action: "subscribe_instance",
+            request_id: new Date().getTime(),
+            pk: book.id,
+          })
+        );
+      });
+    };
+    ws.onmessage = (e: any) => {
+      const eData = JSON.parse(e.data);
+      if (eData.action == "update") {
+        console.log(eData.data);
+        setMyBooks(
+          myBooks.map((book) => {
+            if (book.id == eData.data.id) {
+              return {
+                ...book,
+                ...eData.data,
+              };
+            }
+            return book;
+          })
+        );
+      }
+    };
+    ws.onclose = () => {
+      console.log("disconnected");
+    };
+    return () => {
+      ws.close();
+    };
+  }, [myBooks]);
 
   return (
     <div className="w-full flex flex-col items-center">
@@ -45,7 +83,9 @@ const MyBook = ({ book }: { book: Book }) => {
   return (
     <div
       onClick={() => {
-        book.status == "extracted" ? router.push(`/books/details/${book.global_id}`):alert("El libro no esta disponible");
+        book.status == "extracted"
+          ? router.push(`/books/details/${book.global_id}`)
+          : alert("El libro no esta disponible");
       }}
       className={`w-[150px] sm:w-[200px] rounded-lg shadow-lg border border-2 flex flex-col 
       ${
@@ -78,11 +118,11 @@ const MyBook = ({ book }: { book: Book }) => {
             <span className="font-bold text-gray-600 mb-2">
               Texto disponible
             </span>
-          ): book.status == "queue" ? (
+          ) : book.status == "queue" ? (
             <span className="font-bold text-gray-600 mb-2">
               En cola para descarga
             </span>
-          )  : (
+          ) : (
             <span className="font-bold text-gray-600 mb-2">{book?.status}</span>
           )}
 

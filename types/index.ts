@@ -1,6 +1,7 @@
 import { ChangeHandler } from "react-hook-form";
 
 export type Book = {
+  id?: string;
   global_id: number;
   author: string;
   title: string;
