@@ -22,8 +22,8 @@ export const CustomInput = (props: {
     ...otherProps
   } = props;
   return (
-    <div className="flex flex-col gap-2 text-base">
-      {label && <span className="font-extrabold">{label}</span>}
+    <div className="flex flex-col gap-1">
+      {label && <span className="font-semibold capitalize text-sm">{label}</span>}
       {type === "select" ? (
         <select
           {...(reactFormHookProps ?? otherProps)}

@@ -49,7 +49,13 @@ export const PARAMS: SurveyCreateParamFormType[] = [
     defaultValue: "sections1",
   },
   {
-    name: "models",
+    name: "m1",
+    type: "select",
+    values: MODELS,
+    defaultValue: "gpt-3.5-turbo-16k",
+  },
+  {
+    name: "m2",
     type: "select",
     values: MODELS,
     defaultValue: "gpt-3.5-turbo-16k",

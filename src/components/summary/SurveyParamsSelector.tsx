@@ -73,6 +73,7 @@ const SurveyParamsSelector = ({
             type={param.type}
             error={errors[param.name as keyof SurveyCreateParams]}
             selectOptions={param.values}
+            label={param.name}
             reactFormHookProps={register(
               param.name as keyof SurveyCreateParams,
               {
