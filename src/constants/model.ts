@@ -36,8 +36,8 @@ const LENGTHS = [
     label: "medium",
   },
   {
-    value: "large",
-    label: "large",
+    value: "long",
+    label: "long",
   },
 ];
 
