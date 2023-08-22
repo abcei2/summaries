@@ -46,7 +46,7 @@ export const PARAMS: SurveyCreateParamFormType[] = [
     name: "method",
     type: "select",
     values: METHODS,
-    defaultValue: "sections1",
+    defaultValue: "sections2",
   },
   {
     name: "m1",
