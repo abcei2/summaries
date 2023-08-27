@@ -17,11 +17,9 @@ const MyLibrary = () => {
         setMyBooks(data.data ?? []);
       })
       .finally(() => setLoading(false));
-  }, []);
 
-  useEffect(() => {
     try {
-      const ws = new WebSocket(process.env.NEXT_PUBLIC_DJANGO_WS + "/ws/");
+      const ws = new WebSocket(process.env.NEXT_PUBLIC_DJANGO_WS ?? "");
       ws.onopen = () => {
         myBooks.forEach((book) => {
           if (book.status == "extracted") return;
@@ -37,10 +35,9 @@ const MyLibrary = () => {
       ws.onmessage = (e: any) => {
         const eData = JSON.parse(e.data);
         if (eData.action == "update") {
-          console.log(eData.data);
           setMyBooks(
             myBooks.map((book) => {
-              if (book.id == eData.data.id) {
+              if (book.id == eData.data.pk) {
                 return {
                   ...book,
                   ...eData.data,
@@ -61,7 +58,7 @@ const MyLibrary = () => {
     } catch (e) {
       console.log(e);
     }
-  }, [myBooks]);
+  }, []);
 
   return (
     <div className="w-full flex flex-col items-center">
