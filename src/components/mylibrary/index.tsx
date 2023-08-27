@@ -18,9 +18,13 @@ const MyLibrary = () => {
       })
       .finally(() => setLoading(false));
 
+    console.log("My library");
     try {
       const ws = new WebSocket(process.env.NEXT_PUBLIC_DJANGO_WS ?? "");
+
+      console.log("Connecting to ws");
       ws.onopen = () => {
+        console.log("Connected to ws");
         myBooks.forEach((book) => {
           if (book.status == "extracted") return;
           ws.send(
