@@ -6,8 +6,11 @@ import { useRouter } from "next/router";
 import { HiCog } from "react-icons/hi";
 
 const MyLibrary = () => {
-  const [myBooks, setMyBooks] = useState<Book[]>([]);
+  const [myBooks, setMyBooks] = useState<Book[]>();
   const [loading, setLoading] = useState(false);
+  const [subscribed, setSubscribed] = useState(false)
+  const [websocket, setWebsocket] = useState<WebSocket>()
+
   useEffect(() => {
     if (loading) return;
     setLoading(true);
@@ -17,29 +20,25 @@ const MyLibrary = () => {
         setMyBooks(data.data ?? []);
       })
       .finally(() => setLoading(false));
+    return () => {
+      websocket && websocket.close();
+    };
+  }, []);
 
-    console.log("My library");
+  useEffect(() => {
+    if (websocket) return;
     try {
       const ws = new WebSocket(process.env.NEXT_PUBLIC_DJANGO_WS ?? "");
 
       console.log("Connecting to ws");
       ws.onopen = () => {
         console.log("Connected to ws");
-        myBooks.forEach((book) => {
-          if (book.status == "extracted") return;
-          ws.send(
-            JSON.stringify({
-              action: "subscribe_instance",
-              request_id: new Date().getTime(),
-              pk: book.id,
-            })
-          );
-        });
+        
       };
       ws.onmessage = (e: any) => {
         const eData = JSON.parse(e.data);
         console.log(eData);
-        if (eData.action == "update") {
+        if (eData.action == "update" && myBooks) {
           setMyBooks(
             myBooks.map((book) => {
               if (book.id == eData.data.pk) {
@@ -51,20 +50,37 @@ const MyLibrary = () => {
               return book;
             })
           );
-        }
+          setSubscribed(true)
+        }     
       };
       ws.onclose = () => {
         console.log("disconnected");
       };
 
-      return () => {
-        ws.close();
-      };
+      setWebsocket(ws)
+    
     } catch (e) {
       console.log(e);
     }
-  }, []);
-
+  },[myBooks])
+      
+  useEffect(() =>
+    {
+      if(!myBooks || !websocket || subscribed) return
+      console.log("Subscribing to books");
+      myBooks.forEach((book) => {
+        if (book.status == "extracted") return;
+        websocket.send(
+          JSON.stringify({
+            action: "subscribe_instance",
+            request_id: new Date().getTime(),
+            pk: book.id,
+          })
+        );
+      });
+      setSubscribed(true)
+    },[websocket, myBooks]
+  )
   return (
     <div className="w-full flex flex-col items-center">
       <div className="w-full bg-[#F8F8F8] h-20 flex items-center justify-center">
@@ -81,7 +97,7 @@ const MyLibrary = () => {
       <div className="w-full lg:w-[80%] h-full flex justify-center ">
         {!loading ? (
           <div className="w-fit grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
-            {myBooks.map((book, key) => (
+            {myBooks&&myBooks.map((book, key) => (
               <MyBook book={book} key={key} />
             ))}
           </div>
