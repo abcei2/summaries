@@ -34,6 +34,7 @@ const MyLibrary = () => {
       };
       ws.onmessage = (e: any) => {
         const eData = JSON.parse(e.data);
+        console.log(eData);
         if (eData.action == "update") {
           setMyBooks(
             myBooks.map((book) => {
