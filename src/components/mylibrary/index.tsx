@@ -50,7 +50,6 @@ const MyLibrary = () => {
               return book;
             })
           );
-          setSubscribed(true)
         }     
       };
       ws.onclose = () => {
