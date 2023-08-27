@@ -7,7 +7,7 @@ import {
   HiOutlineShare,
 } from "react-icons/hi2";
 import { HiCog } from "react-icons/hi";
-import { Book, SurveyCreateParams } from "../../types";
+import { Book, SurveyCreateParams } from "../types";
 import { CustomModal2 } from "./utils/custommodals";
 import SurveyParamsSelector from "./summary/SurveyParamsSelector";
 

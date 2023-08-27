@@ -1,6 +1,6 @@
 import { HeadsetIcon } from "@/icons/Index";
 import { useState } from "react";
-import { Book } from "../../types";
+import { Book } from "../types";
 import { useEffect } from "react";
 import { HiSearch, HiCog } from "react-icons/hi";
 

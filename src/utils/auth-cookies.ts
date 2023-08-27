@@ -1,7 +1,7 @@
 import Router from "next/router";
 import { serialize, parse } from "cookie";
 import { TOKEN_MAX_AGE, TOKEN_NAME } from "./constants";
-import { UserAuthType } from "../../types";
+import { UserAuthType } from "../types";
 import { NextApiRequest } from "next";
 
 export function setAuthCookie(

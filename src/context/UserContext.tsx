@@ -1,5 +1,5 @@
 import { useState, useEffect, ReactNode, createContext } from "react";
-import { SignupFormType, UserAuthType } from "../../types";
+import { SignupFormType, UserAuthType } from "../types";
 
 
 export const UserContext = createContext<{

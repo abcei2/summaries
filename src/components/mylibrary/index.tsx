@@ -1,5 +1,5 @@
 import { useEffect } from "react";
-import { Book } from "../../../types";
+import { Book } from "../../types";
 import { useState } from "react";
 import { HeadsetIcon } from "@/icons/Index";
 import { useRouter } from "next/router";

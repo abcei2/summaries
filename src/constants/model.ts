@@ -1,4 +1,4 @@
-import { SurveyCreateParamFormType } from "../../types";
+import { SurveyCreateParamFormType } from "../types";
 
 const MODELS = [
   {

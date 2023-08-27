@@ -1,7 +1,7 @@
 import { useContext, useState } from "react";
 import { UserContext } from "@/context/UserContext";
 import { useRouter } from "next/router";
-import { SignupFormType } from "../../types";
+import { SignupFormType } from "../types";
 
 import { toast } from "react-toastify";
 

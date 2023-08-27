@@ -1,6 +1,6 @@
 import { useContext, useState } from "react";
 import { UserContext } from "../context/UserContext";
-import { SignupFormType } from "../../types";
+import { SignupFormType } from "../types";
 import { useRouter } from "next/router";
 
 const SignUp = () => {

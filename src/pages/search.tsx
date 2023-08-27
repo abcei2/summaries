@@ -1,7 +1,7 @@
 import Card from "@/components/Card";
 import { HiSearch, HiCog } from "react-icons/hi";
 import { useState } from "react";
-import { Book } from "../../types";
+import { Book } from "../types";
 
 export default function Home() {
   const [books, setBooks] = useState<Book[]>();

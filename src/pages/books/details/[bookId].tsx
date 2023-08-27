@@ -1,7 +1,7 @@
 import BookCard from "../../../components/BookCard";
 import { useRouter } from "next/router";
 import { useEffect, useState } from "react";
-import { Book } from "../../../../types";
+import { Book } from "../../../types";
 import LoadingSpin from "@/components/utils/LoadingSpin";
 
 const page = () => {

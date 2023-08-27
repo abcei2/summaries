@@ -1,4 +1,4 @@
-import { FormHookType, SelectOptionsType } from "../../../types";
+import { FormHookType, SelectOptionsType } from "../../types";
 
 export const CustomInput = (props: {
   label?: string;

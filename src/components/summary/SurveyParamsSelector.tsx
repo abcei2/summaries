@@ -1,4 +1,4 @@
-import { SurveyCreateParams } from "../../../types";
+import { SurveyCreateParams } from "../../types";
 import { PARAMS } from "@/constants/model";
 import { CustomInput } from "../utils/custominputs";
 import { RegisterOptions, useForm } from "react-hook-form";

@@ -1,6 +1,6 @@
 import { NextApiRequest, NextApiResponse } from "next";
 import { withAuth } from "@/utils/validator";
-import { SurveyCreateParams } from "../../../../types";
+import { SurveyCreateParams } from "../../../types";
 
 async function fn(req: NextApiRequest, res: NextApiResponse, token: string) {
   switch (req.method) {
