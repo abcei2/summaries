@@ -10,6 +10,7 @@ const MyLibrary = () => {
   const [loading, setLoading] = useState(false);
   const [subscribed, setSubscribed] = useState(false)
   const [websocket, setWebsocket] = useState<WebSocket>()
+  const [status, setStatus] = useState("init")
 
   useEffect(() => {
     if (loading) return;
@@ -21,24 +22,39 @@ const MyLibrary = () => {
       })
       .finally(() => setLoading(false));
     return () => {
-      websocket && websocket.close();
+      if(websocket){
+        myBooks && myBooks.forEach((book) => {
+          if (book.status == "extracted") return;
+          websocket.send(
+            JSON.stringify({
+              action: "subscribe_instance",
+              request_id: new Date().getTime(),
+              pk: book.id,
+            })
+          );
+        });
+
+        websocket.close();
+      }
     };
   }, []);
 
   useEffect(() => {
-    if (websocket) return;
+    if (websocket || !myBooks) return;
     try {
       const ws = new WebSocket(process.env.NEXT_PUBLIC_DJANGO_WS ?? "");
 
       console.log("Connecting to ws");
+      setStatus("connecting")
       ws.onopen = () => {
         console.log("Connected to ws");
+        setStatus("connected")
         
       };
       ws.onmessage = (e: any) => {
         const eData = JSON.parse(e.data);
-        console.log(eData);
         if (eData.action == "update" && myBooks) {
+          console.log(eData,myBooks)
           setMyBooks(
             myBooks.map((book) => {
               if (book.id == eData.data.pk) {
@@ -66,6 +82,7 @@ const MyLibrary = () => {
   useEffect(() =>
     {
       if(!myBooks || !websocket || subscribed) return
+      if(status!="connected") return
       console.log("Subscribing to books");
       myBooks.forEach((book) => {
         if (book.status == "extracted") return;
@@ -78,7 +95,7 @@ const MyLibrary = () => {
         );
       });
       setSubscribed(true)
-    },[websocket, myBooks]
+    },[websocket, myBooks, status]
   )
   return (
     <div className="w-full flex flex-col items-center">
