@@ -2,6 +2,7 @@ import { NextApiRequest, NextApiResponse } from "next";
 import { withAuth } from "@/utils/validator";
 
 async function fn(req: NextApiRequest, res: NextApiResponse, token: string) {
+  const { id } = req.query;
   switch (req.method) {
     case "POST":
       const { global_id } = req.body;
@@ -10,7 +11,7 @@ async function fn(req: NextApiRequest, res: NextApiResponse, token: string) {
       }
       try {
         const response = await fetch(
-          process.env.DJANGO_HOST + `/add-to-library/`,
+          process.env.DJANGO_HOST + `/my-library/`,
           {
             method: "POST",
             body: JSON.stringify(req.body),
@@ -30,7 +31,7 @@ async function fn(req: NextApiRequest, res: NextApiResponse, token: string) {
       } catch (error) {
         res.status(500).json({ error });
       }
-      break;
+      break;    
     default: //Method Not Allowed
       res.status(405).end();
       break;

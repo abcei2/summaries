@@ -27,7 +27,7 @@ const Card = ({ book, className }: { book: Book; className?: string }) => {
   const onAddToLibrary = () => {
     if (loading) return;
     setLoading(true);
-    fetch(`/api/users/library/add`, {
+    fetch(`/api/users/library`, {
       method: "POST",
       body: JSON.stringify(book),
       headers: {

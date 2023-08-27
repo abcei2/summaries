@@ -10,6 +10,7 @@ export default async function login(req: NextApiRequest, res: NextApiResponse) {
       }
 
       try {
+        console.log(process.env.DJANGO_HOST+"/login/")
         const data = await fetch(process.env.DJANGO_HOST+"/login/", {
           method: "POST",
           body: JSON.stringify({ username:email, password }),

@@ -1,8 +1,6 @@
 import { useEffect } from "react";
 import { Book } from "../../types";
 import { useState } from "react";
-import { HeadsetIcon } from "@/icons/Index";
-import { useRouter } from "next/router";
 import { HiCog } from "react-icons/hi";
 import MyBook from "./MyBook";
 
