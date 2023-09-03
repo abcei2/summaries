@@ -78,7 +78,7 @@ const MyBook = ({ book }: { book: Book }) => {
             <div className="flex flex-col ">
               {book.status == "downloading" ? (
                 <span className="font-bold text-gray-600 mb-2">
-                  Descargando {book?.progress + "%"}
+                  Descargando {book?.progress+ "%"}
                 </span>
               ) : book.status == "downloaded" ? (
                 <span className="font-bold text-gray-600 mb-2">
