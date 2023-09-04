@@ -14,20 +14,20 @@ export const USER_TABS = [
 ]
 
 export const MENU_SETTINGS = [
-    {
-        label:"Billing",
-        icon:BillingIcon
-    },
-    {
-        label:"Highlights",
-        icon:HighlightsIcon
-    },
+    // {
+    //     label:"Billing",
+    //     icon:BillingIcon
+    // },
+    // {
+    //     label:"Highlights",
+    //     icon:HighlightsIcon
+    // },
     {
         label:"Settings",
         icon:SettingsIcon
     },
-    {
-        label:"Suport",
-        icon:SupportIcon
-    }
+    // {
+    //     label:"Suport",
+    //     icon:SupportIcon
+    // }
 ]

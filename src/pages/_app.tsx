@@ -9,7 +9,7 @@ import { ToastContainer } from 'react-toastify';
 export default function App({ Component, pageProps }: AppProps) {
   return (
     <UserContextProvider>
-      <div className="h-screen overflow-auto">
+      <div className="h-screen overflow-hidden">
         <TabMenu />
         <div className="h-[75%] sm:h-full max-w-full overflow-auto">
           <Component {...pageProps} />
