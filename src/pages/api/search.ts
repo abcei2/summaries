@@ -10,7 +10,7 @@ async function fn(req: NextApiRequest, res: NextApiResponse, token: string) {
       }
       try {
         const response = await fetch(
-          process.env.DJANGO_HOST + `/search-topic?word=${word}&n=5`,
+          process.env.DJANGO_HOST + `/search-topic?word=${word}&n=10`,
           {
             method: "GET",
             headers: {

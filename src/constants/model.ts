@@ -21,6 +21,10 @@ const METHODS = [
     label: "sections2",
   },
   {
+    value: "sections_refine",
+    label: "sections_refine",
+  },
+  {
     value: "clustering",
     label: "clustering",
   },
@@ -81,5 +85,10 @@ export const PARAMS: SurveyCreateParamFormType[] = [
     type: "textarea",
     defaultValue: ""
     //defaultValue: "Give a informative title and summarize the text in three bullet points. The summary must contain insights and relevant ideas.",
+  },
+  {
+    name: "recurrency",
+    type: "number",
+    defaultValue: 5
   }
 ];

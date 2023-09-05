@@ -38,6 +38,7 @@ export type SurveyCreateParams = {
   length: string;
   p1: string;
   p2: string;
+  recurrency: number;
 };
 
 export type FormHookType = {

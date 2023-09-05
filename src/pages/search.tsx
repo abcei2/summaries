@@ -9,7 +9,7 @@ export default function Home() {
   const [searchTerm, setSearchTerm] = useState("");
 
   const onSearch = () => {
-    if (searchTerm.length > 5) {
+    if (searchTerm.length > 2) {
       setSearching(true);
       setBooks([]);
       fetch(`/api/search?word=${searchTerm}`)
@@ -19,7 +19,7 @@ export default function Home() {
         })
         .finally(() => setSearching(false));
     } else {
-      alert("Please enter at least 5 characters");
+      alert("Please enter at least 2 characters");
     }
   };
 
