@@ -11,7 +11,7 @@ const SurveyParamsSelector = ({
   handleCreateResume: (creationParams: SurveyCreateParams) => void;
 }) => {
   const paramsFormHook = useForm<SurveyCreateParams>({
-    defaultValues: PARAMS?.reduce((acc:any, param) => {
+    defaultValues: PARAMS?.reduce((acc: any, param) => {
       acc[param.name as keyof SurveyCreateParams] = param.defaultValue;
       return acc;
     }, {}),
@@ -33,31 +33,12 @@ const SurveyParamsSelector = ({
   ):
     | RegisterOptions<SurveyCreateParams, keyof SurveyCreateParams>
     | undefined => {
-    switch (name) {
-      case "temp":
-        return {
-          required: "Este campo es requerido",
-          valueAsNumber: true,
-          min: {
-            value: 0,
-            message: "El valor mínimo es 0",
-          },
-          max: {
-            value: 1,
-            message: "El valor máximo es 1",
-          },
-          onChange: () => {
-            errors[name] ?? clearErrors(name);
-          },
-        };
-      default:
-        return {
-          required: "Este campo es requerido",
-          onChange: () => {
-            errors[name] ?? clearErrors(name);
-          },
-        };
-    }
+    return {
+      required: "Este campo es requerido",
+      onChange: () => {
+        errors[name] ?? clearErrors(name);
+      },
+    };
   };
 
   return (

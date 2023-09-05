@@ -35,7 +35,6 @@ export type SurveyCreateParams = {
   m1: string;
   m2: string;
   method: string;
-  temp: number;
   length: string;
   p1: string;
   p2: string;
