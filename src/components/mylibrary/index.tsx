@@ -25,7 +25,7 @@ const MyLibrary = () => {
     fetch("/api/users/my-library")
       .then((res) => res.json())
       .then((data) => {
-        setMyBooks(data.data ?? []);
+        setMyBooks(data.data);
       })
       .finally(() => setLoading(false));
   }, []);

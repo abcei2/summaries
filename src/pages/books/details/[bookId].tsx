@@ -11,7 +11,7 @@ const page = () => {
   const [book, setBook] = useState<Book>();
   const [summaryList, setSummaryList] = useState<any[]>();
 
-  useModelObserver({
+  const { triggerReload } = useModelObserver({
     handleData: (data) => {
       setSummaryList(data);
     },
@@ -21,17 +21,23 @@ const page = () => {
   });
 
   useEffect(() => {
-    reloadData();
+    reloadBook();
+    reloadSummaries();
   }, [bookId]);
 
-  const reloadData = () => {
+  const reloadBook = () => {
     if (!bookId) return console.log("No bookId");
-    setSummaryList(undefined);
+
     fetch("/api/books/" + bookId)
       .then((res) => res.json())
       .then((data) => {
         setBook(data.data);
       });
+  };
+
+  const reloadSummaries = () => {
+    if (!bookId) return console.log("No bookId");
+
     fetch("/api/books/summaries/" + bookId)
       .then((res) => res.json())
       .then((data) => {
@@ -52,12 +58,13 @@ const page = () => {
   if (!book || !bookId) return <LoadingSpin text="Loading book details" />;
 
   return (
-    <div className="w-full flex justify-center items-center">
-      <div className="w-[90%] lg:w-[60%] flex flex-col gap-2 mt-10">
+    <div className="w-full flex justify-center">
+      <div className="w-[90%] lg:w-[60%] flex flex-col gap-2 ">
         <BookCard
           book={book}
           handleReloadData={() => {
-            router.reload();
+            triggerReload();
+            reloadSummaries();
           }}
         />
 

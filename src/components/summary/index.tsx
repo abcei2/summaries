@@ -23,14 +23,13 @@ const SummaryComp = ({
       .then((res) => res.json())
       .then((data) => {
         setSummary(data.data);
-        console.log(data.data);
       });
   }, [summaryId]);
 
   if (!summaryId || !summary) return <LoadingSpin text="Loading summary" />;
 
   return (
-    <div className="w-full flex justify-center items-center">
+    <div className="w-full flex">
       <div className="w-[90%] lg:w-[60%] flex flex-col gap-2 mt-10">
         <div className="grid grid-cols-2 gap-2">
           <div className="flex flex-col gap-2">

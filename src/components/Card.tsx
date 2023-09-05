@@ -23,6 +23,7 @@ const Card = ({ book, className }: { book: Book; className?: string }) => {
     if (!bookStatus) return;
     if (bookStatus.exists) return alert("Book already exists in your library");
   }, [bookStatus]);
+  
 
   const onAddToLibrary = () => {
     if (loading) return;
