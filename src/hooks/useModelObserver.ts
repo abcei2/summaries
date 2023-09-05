@@ -3,11 +3,13 @@ import { useEffect, useState } from "react";
 const useModelObserver = ({
     handleData,
     subscribedData,
-    noSubscribeData
+    noSubscribeData,
+    modelName
 }:{
     handleData: (data: any[]) => void,
     subscribedData?: any[],
-    noSubscribeData?: any[]
+    noSubscribeData?: any[],
+    modelName: "book" | "summary"
 }) => {
   const [subscribed, setSubscribed] = useState(false);
   const [websocket, setWebsocket] = useState<WebSocket>();
@@ -17,14 +19,17 @@ const useModelObserver = ({
     return () => {
       if (websocket) {
         websocket.close();
+        setWebsocket(undefined);
       }
     };
-  }, []);
+  }, [websocket]);
 
   useEffect(() => {
+    console.log("oee depsierthp")
     if (websocket || !subscribedData) return;
+    console.log(`${process.env.NEXT_PUBLIC_DJANGO_WS ?? ""}${modelName}/`)
     try {
-      const ws = new WebSocket(process.env.NEXT_PUBLIC_DJANGO_WS ?? "");
+      const ws = new WebSocket(`${process.env.NEXT_PUBLIC_DJANGO_WS ?? ""}${modelName}/`);
       console.log("Connecting to ws");
       setStatus("connecting");
       ws.onopen = () => {
@@ -33,6 +38,7 @@ const useModelObserver = ({
       };
       ws.onmessage = (e: any) => {
         const eData = JSON.parse(e.data);
+        console.log(eData);
         if (eData.action == "update" && subscribedData) {
           console.log(eData, subscribedData);
           handleData(
@@ -65,7 +71,7 @@ const useModelObserver = ({
   useEffect(() => {
     if (!subscribedData || !websocket || subscribed) return;
     if (status != "connected") return;
-    console.log("Subscribing to books");
+    console.log("Subscribing to books",subscribedData);
     subscribedData.forEach((item) => {
       websocket.send(
         JSON.stringify({

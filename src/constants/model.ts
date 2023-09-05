@@ -24,6 +24,10 @@ const METHODS = [
     value: "clustering",
     label: "clustering",
   },
+  {
+    value: "dummy",
+    label: "dummy (10 secs delay for frontend tests)",
+  }
 ];
 
 const LENGTHS = [

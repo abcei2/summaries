@@ -15,6 +15,7 @@ const MyLibrary = () => {
     },
     subscribedData: myBooks?.filter((book) => book.status !== "extracted"),
     noSubscribeData: myBooks?.filter((book) => book.status === "extracted"),
+    modelName: "book"
 
   });
 

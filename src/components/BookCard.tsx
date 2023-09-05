@@ -1,5 +1,5 @@
 // BEGIN: 7f8d4c3b8d9c
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import {
   HiBookmark,
   HiOutlineArrowDownTray,
@@ -11,10 +11,21 @@ import { Book, SurveyCreateParams } from "../types";
 import { CustomModal2 } from "./utils/custommodals";
 import SurveyParamsSelector from "./summary/SurveyParamsSelector";
 
-const BookCard = ({ book }: { book: Book }) => {
+const BookCard = ({
+  book,
+  handleReloadData,
+}: {
+  book: Book;
+  handleReloadData: () => void;
+}) => {
   const [loading, setLoading] = useState(false);
   const [currentBookData, setCurrentBookData] = useState<Book>(book);
   const [showModal, setShowModal] = useState(false);
+
+  useEffect(() => {
+    setCurrentBookData(book);
+  }, [book]);
+
 
   const onAskForSummary = () => {
     if (loading) return console.log("Loading...");
@@ -55,19 +66,23 @@ const BookCard = ({ book }: { book: Book }) => {
         if (res.status == 200) {
           return res.json();
         } else {
-          console.log(res.status, res.statusText)
+          console.log(res.status, res.statusText);
         }
       })
       .then((data) => {
-        if(!data) return console.log("No data")
+        if (!data) return console.log("No data");
         setCurrentBookData({
           ...currentBookData,
           status: data.status,
           can_do_summary: data.can_do_summary,
         });
         console.log(data);
+        handleReloadData()
       })
-      .finally(() => setLoading(false));
+      .finally(() => {
+        setLoading(false);
+        setShowModal(false);
+      });
   };
 
   return (
