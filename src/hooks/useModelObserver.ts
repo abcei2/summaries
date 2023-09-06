@@ -44,7 +44,7 @@ const useModelObserver = ({
   }, [subscribedData]);
 
   useEffect(() => {
-    if(!subscribedData || subscribedData.length==0) return;
+    if(!subscribedData) return;
     if (!reload) return;
     setSubscribed(false);
     if (websocket) {
@@ -62,7 +62,7 @@ const useModelObserver = ({
   }, [reload, subscribedData]);
 
   useEffect(() => {
-    if (!subscribedData || !websocket || subscribed) return;
+    if (!subscribedData || !websocket || subscribed || subscribedData.length == 0) return;
     if (status != "connected") return;
     console.log("Subscribing to books", subscribedData);
     subscribedData.forEach((item) => {
@@ -96,6 +96,7 @@ const useModelObserver = ({
     };
     ws.onmessage = (e: any) => {
       const eData = JSON.parse(e.data);
+      console.log(eData);
       if ((eData.action == "update")) {
         console.log("update");
         handleData([

@@ -13,8 +13,8 @@ const MyLibrary = () => {
     handleData: (data) => {
       setMyBooks(data);
     },
-    subscribedData: myBooks?.filter((book) => book.status !== "extracted"),
-    noSubscribeData: myBooks?.filter((book) => book.status === "extracted"),
+    subscribedData: myBooks?.filter((book) => book?.status && ["queue", "downloading" , "downloaded"].includes(book.status)),
+    noSubscribeData: myBooks?.filter((book) => !book?.status || !["queue", "downloading" , "downloaded"].includes(book.status)),
     modelName: "book"
 
   });

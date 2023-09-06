@@ -13,7 +13,7 @@ export type Book = {
   extension: string;
   title_2: string;
   download_link: string;
-  status?: "downloading" | "downloaded" | "queue" | "extracted";
+  status?: "downloading" | "downloaded" | "queue" | "extracted" | "error";
   can_do_summary?: boolean;
   in_my_library?: boolean;
   progress?: string;

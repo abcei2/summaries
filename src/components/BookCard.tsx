@@ -76,7 +76,6 @@ const BookCard = ({
           status: data.status,
           can_do_summary: data.can_do_summary,
         });
-        console.log(data);
         handleReloadData()
       })
       .finally(() => {

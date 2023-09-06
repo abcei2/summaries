@@ -15,8 +15,8 @@ const page = () => {
     handleData: (data) => {
       setSummaryList(data);
     },
-    subscribedData: summaryList?.filter((summary) => summary.state !== "done"),
-    noSubscribeData: summaryList?.filter((summary) => summary.state === "done"),
+    subscribedData: summaryList?.filter((summary) => (summary.state == "running" || summary.state == "queue")),
+    noSubscribeData: summaryList?.filter((summary) => summary.state != "running" && summary.state != "queue"),
     modelName: "summary",
   });
 
@@ -37,11 +37,9 @@ const page = () => {
 
   const reloadSummaries = () => {
     if (!bookId) return console.log("No bookId");
-
     fetch("/api/books/summaries/" + bookId)
       .then((res) => res.json())
       .then((data) => {
-        console.log(data);
         setSummaryList(data.data);
       });
   };
@@ -80,7 +78,7 @@ const page = () => {
               >
                 <div className="flex flex-col">
                   <span className="text-base font-semibold">Status: </span>
-                  {summary.state}
+                  {summary.state} {summary.state == "running" && (Number(summary.progress)*100).toFixed(1)+"%"}
                 </div>
                 <div className="flex flex-col">
                   <span className="text-base font-semibold">Date: </span>
