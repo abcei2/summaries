@@ -160,12 +160,7 @@ const BookCard = ({
         </div>
 
         <span className="border opacity-50 lg:block hidden" />
-        <div className="lg:w-1/3 flex flex-col justify-evenly items-center">
-          <p className="text-[#505258] text-base capitalize">Install the app</p>
-          <div className="w-[50%] bg-[#f5f5f5] rounded-full flex justify-center items-center">
-            <img src="/qrcode.png" alt="Book cover" />
-          </div>
-        </div>
+        
       </div>
     </div>
   );

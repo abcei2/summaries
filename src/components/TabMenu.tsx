@@ -28,16 +28,15 @@ const TabMenu = () => {
     return null;
   return (
     <>
-      <div className="flex w-full h-20 justify-between">
-        <div className="p-8 pl-16 pr-2 ">
-          <img src="/tab-menu.svg"></img>
-        </div>
-        <div className="lg:flex lg:w-fit overflow-hidden hidden gap-4 px-2">
+      <div className="flex justify-center w-full h-20 relative">
+        <div className="lg:flex lg:w-fit overflow-hidden hidden gap-4 px-2 ">
           {USER_TABS.map((item, key: any) => (
             <MenuTabItem key={key} {...item} />
           ))}
         </div>
-        <UserMenu />
+        <div className="flex justify-end items-center gap-4 absolute right-[0px] z-10">
+          <UserMenu />
+        </div>
       </div>
     </>
   );

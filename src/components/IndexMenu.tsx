@@ -4,6 +4,7 @@ import { LogOutIcon } from "@/icons/Index";
 import { ReactNode } from "react";
 import { useContext } from "react";
 import { useRouter } from "next/router";
+import OutsideAlerter from "./utils/OutsideAlerter";
 
 const IndexMenu = ({
   label,
@@ -15,7 +16,7 @@ const IndexMenu = ({
   onClick?: () => void;
 }) => {
   return (
-    <div className="flex justify-center items-center p-1 space-x-4 hover:bg-gray-50 ">
+    <div className="w-full flex justify-center items-center p-2 space-x-4  hover:bg-gray-100">
       <div className="w-[20px]">{icon}</div>
       <div className="w-[70px]">
         <a onClick={onClick} className="text-[16px]">
@@ -26,12 +27,17 @@ const IndexMenu = ({
   );
 };
 
-const MenuItems = () => {
+const MenuItems = ({ handleClose }: { handleClose: () => void }) => {
   const { signOut } = useContext(UserContext);
   const router = useRouter();
   return (
-    <div className="absolute z-20 rounded-lg -left-24 top-[80px] w-[266px] h-[250px] overflow-hidden p-4 border border-2 bg-white">
-      <div className="w-full border border-2 border-l-0 border-t-0 border-r-0 pr-10 ">
+    <OutsideAlerter
+      onClick={() => {
+        //handleClose();
+      }}
+      className="absolute z-10 rounded-lg right-[20%] top-[110%] overflow-hidden border border-2 bg-white"
+    >
+      <div className="w-full w-full bg-white">
         {MENU_SETTINGS.map((item: any, key: any) => (
           <IndexMenu key={key} {...item} />
         ))}
@@ -44,7 +50,7 @@ const MenuItems = () => {
           }}
         />
       </div>
-    </div>
+    </OutsideAlerter>
   );
 };
 

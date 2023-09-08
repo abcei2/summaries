@@ -7,7 +7,7 @@ import { HiSearch, HiCog } from "react-icons/hi";
 const Card = ({ book, className }: { book: Book; className?: string }) => {
   if (!book) return null;
   const [bookStatus, setBookStatus] = useState<{
-    status: "downloading" | "downloaded" | "queue" | "extracted" ;
+    status: "downloading" | "downloaded" | "queue" | "extracted" | "error";
     progress: number;
     exists: boolean;
     in_my_library?: boolean;

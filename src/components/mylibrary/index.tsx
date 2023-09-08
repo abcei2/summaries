@@ -13,10 +13,17 @@ const MyLibrary = () => {
     handleData: (data) => {
       setMyBooks(data);
     },
-    subscribedData: myBooks?.filter((book) => book?.status && ["queue", "downloading" , "downloaded"].includes(book.status)),
-    noSubscribeData: myBooks?.filter((book) => !book?.status || !["queue", "downloading" , "downloaded"].includes(book.status)),
-    modelName: "book"
-
+    subscribedData: myBooks?.filter(
+      (book) =>
+        book?.status &&
+        ["queue", "downloading", "downloaded"].includes(book.status)
+    ),
+    noSubscribeData: myBooks?.filter(
+      (book) =>
+        !book?.status ||
+        !["queue", "downloading", "downloaded"].includes(book.status)
+    ),
+    modelName: "book",
   });
 
   useEffect(() => {
@@ -43,9 +50,9 @@ const MyLibrary = () => {
           Reading Now
         </span>
       </div>
-      <div className="w-full lg:w-[80%] h-full flex justify-center ">
+      <div className="w-full h-full flex justify-center ">
         {!loading ? (
-          <div className="w-fit grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
+          <div className="w-fit grid grid-cols-2 md:grid-cols-4 lg:grid-cols-5 xl:grid-cols-6 gap-4">
             {myBooks &&
               myBooks.map((book, key) => <MyBook book={book} key={key} />)}
           </div>
