@@ -24,7 +24,9 @@ const MyBook = ({ book }: { book: Book }) => {
             <div className="text-4xl mb-2">🗑️</div>
             <span className="text-2xl font-bold mb-2 text-center">
               Confirm the deletion of the book
-              <div className="text-xl">{book?.title_2 ? book?.title_2.slice(0, 20) : ""}....{" "}</div>
+              <div className="text-xl">
+                {book?.title_2 ? book?.title_2.slice(0, 20) : ""}....{" "}
+              </div>
             </span>
             <span className="text-gray-500 mb-2">
               This action cannot be undone
@@ -78,17 +80,13 @@ const MyBook = ({ book }: { book: Book }) => {
             <div className="flex flex-col ">
               {book.status == "downloading" ? (
                 <span className="font-bold text-gray-600 mb-2">
-                  Descargando {book?.progress+ "%"}
+                  Descargando {book?.progress + "%"}
                 </span>
               ) : book.status == "downloaded" ? (
                 <span className="font-bold text-gray-600 mb-2">
                   Extrayendo texto
                 </span>
-              ) : book.status == "extracted" ? (
-                <span className="font-bold text-gray-600 mb-2">
-                  Texto disponible
-                </span>
-              ) : book.status == "queue" ? (
+              ) : book.status == "extracted" ? null : book.status == "queue" ? (
                 <span className="font-bold text-gray-600 mb-2">
                   En cola para descarga
                 </span>
@@ -99,12 +97,14 @@ const MyBook = ({ book }: { book: Book }) => {
               )}
 
               <span className="font-bold text-gray-600 mb-2">
-                {book?.title_2 ? book?.title_2.slice(0, 20) : ""}....
+                {book?.title_2 ? book?.title_2.slice(0, 50) : ""}{
+                  book?.title_2?.length > 50 ? "..." : ""
+                }
               </span>
             </div>
             <div className="p-1">
               <span className="  text-gray-600 mb-2">
-                By {book?.author ? book?.author?.slice(0, 20) : ""}...
+                By {book?.author ? book?.author?.slice(0, 50) : ""}...
               </span>
             </div>
           </div>

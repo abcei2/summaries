@@ -23,8 +23,6 @@ const Card = ({ book, className }: { book: Book; className?: string }) => {
     if (!bookStatus) return;
     if (bookStatus.exists) return alert("Book already exists in your library");
   }, [bookStatus]);
-  
-
   const onAddToLibrary = () => {
     if (loading) return;
     setLoading(true);
@@ -50,29 +48,40 @@ const Card = ({ book, className }: { book: Book; className?: string }) => {
         className ?? ""
       } w-[150px] sm:w-[200px] rounded-lg shadow-lg border border-2 flex flex-col justify-between`}
     >
-      <div className=" relative">
+      <div className="relative flex flex-col">
         <div className="absolute rounded-full w-fit  bg-white p-2 m-1 border shadow-md">
           {HeadsetIcon}
         </div>
+
+        {Number(book.pages) > 0 && (
+          <div className="absolute rounded-full w-fit  bg-white p-2 m-1 border shadow-md right-[0px] text-sm">
+            <span className="  text-gray-600 "> Pags. {book.pages} </span>
+          </div>
+        )}
         <div className="flex justify-center mb-2">
           <img className="ounded-lg mt-8 h-20 sm:h-32" src="/card-img.jpg" />
         </div>
+
+        <span className="pr-1 text-sm self-end">{book?.language}</span>
       </div>
 
-      <div className="p-1 text-center">
-        <div className="p-1">
+      <div className="text-center p-1">
+        <div className="">
           <span className="font-bold text-gray-600 mb-2">
             {book?.title_2 ? book?.title_2.slice(0, 50) : ""}
           </span>
         </div>
-        <div className="p-1">
-          <span className="  text-gray-600 mb-2">By {book.author}</span>
+        <div className="flex flex-col">
+          <span className="  text-gray-600 ">By {book.author}</span>
         </div>
       </div>
       {bookStatus.in_my_library ? (
-        <a className={`w-full h-10 bg-gray-100 rounded-b-lg flex justify-center items-center text-black`}
+        <a
+          className={`w-full h-10 bg-gray-100 rounded-b-lg flex justify-center items-center text-black`}
           href="/mylibrary"
-        >In my library</a>
+        >
+          In my library
+        </a>
       ) : (
         <button
           onClick={onAddToLibrary}

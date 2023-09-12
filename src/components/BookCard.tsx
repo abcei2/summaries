@@ -122,7 +122,7 @@ const BookCard = ({
         <div className="p-4 lg:w-2/3 flex flex-col justify-evenly gap-2 h-full ">
           <div>
             <h2 className="text-4xl pb-2 font-bold capitalize w-fit flex items-center">
-              {book.title}
+              {book.title_2}
             </h2>
             <p className="text-[#505258] text-base capitalize">
               By {book.author}
