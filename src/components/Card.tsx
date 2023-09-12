@@ -54,15 +54,17 @@ const Card = ({ book, className }: { book: Book; className?: string }) => {
         </div>
 
         {Number(book.pages) > 0 && (
-          <div className="absolute rounded-full w-fit  bg-white p-2 m-1 border shadow-md right-[0px] text-sm">
+          <div className="absolute rounded-full w-fit  bg-white p-0.5 m-1 border shadow-md right-[0px] text-sm">
             <span className="  text-gray-600 "> Pags. {book.pages} </span>
           </div>
         )}
         <div className="flex justify-center mb-2">
           <img className="ounded-lg mt-8 h-20 sm:h-32" src="/card-img.jpg" />
         </div>
-
-        <span className="pr-1 text-sm self-end">{book?.language}</span>
+        <div className="flex justify-between px-1 text-sm ">
+          <span>{book?.language}</span>
+          <span>.{book?.extension}</span>
+        </div>
       </div>
 
       <div className="text-center p-1">
@@ -70,7 +72,10 @@ const Card = ({ book, className }: { book: Book; className?: string }) => {
           <span className="font-bold text-gray-600 mb-2">
             {book?.title_2 ? book?.title_2.slice(0, 50) : ""}
           </span>
+          
         </div>
+        
+        {book?.year.toString() != "N/A" && <span>{book?.year}</span>}
         <div className="flex flex-col">
           <span className="  text-gray-600 ">By {book.author}</span>
         </div>

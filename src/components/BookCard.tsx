@@ -26,7 +26,6 @@ const BookCard = ({
     setCurrentBookData(book);
   }, [book]);
 
-
   const onAskForSummary = () => {
     if (loading) return console.log("Loading...");
     setLoading(true);
@@ -76,7 +75,7 @@ const BookCard = ({
           status: data.status,
           can_do_summary: data.can_do_summary,
         });
-        handleReloadData()
+        handleReloadData();
       })
       .finally(() => {
         setLoading(false);
@@ -119,34 +118,33 @@ const BookCard = ({
           />
         </div>
 
-        <div className="p-4 lg:w-2/3 flex flex-col justify-evenly gap-2 h-full ">
+        <div className="lg:p-4 flex flex-col justify-center gap-2 w-full h-full ">
           <div>
             <h2 className="text-4xl pb-2 font-bold capitalize w-fit flex items-center">
               {book.title_2}
             </h2>
             <p className="text-[#505258] text-base capitalize">
-              By {book.author}
+            <b>By:</b> {book.author}
             </p>
-          </div>
-          <div className="flex gap-4 text-[#999ba4] ">
-            <div className="details-icons-div ">
-              <HiBookmark className="details-icons" />
-            </div>
-            <span className="border opacity-50 " />
-            <div className="details-icons-div">
-              <HiOutlineArrowDownTray className="details-icons" />
-            </div>
-            <div className="details-icons-div">
-              <HiOutlineShare className="details-icons" />
-            </div>
-            <div className="details-icons-div">
-              <HiOutlineEllipsisVertical className="details-icons" />
-            </div>
+            <p className="text-[#505258] text-base capitalize">
+              <b>Year: </b> {book.year}
+            </p>
+            <p className="text-[#505258] text-base capitalize">
+              <b>Language:</b> {book.language}
+            </p>
+            <p className="text-[#505258] text-base">
+              <b>File extension:</b> .{book.extension}
+            </p>
+            {Number(book.pages) > 0 && (
+              <p className="text-[#505258] text-base capitalize">
+                {book.pages} pages
+              </p>
+            )}
           </div>
 
           <button
             onClick={() => onAskForSummary()}
-            className="flex items-center bg-blue-500 hover:bg-blue-700 text-white font-bold py-1 px-4 rounded-2xl w-fit self-center lg:self-start "
+            className="flex items-center bg-blue-500 hover:bg-blue-700 text-white font-bold py-1 px-4 rounded w-fit self-center lg:self-start "
           >
             {!currentBookData.can_do_summary ? (
               <div className="flex items-center justify-center">
@@ -160,7 +158,6 @@ const BookCard = ({
         </div>
 
         <span className="border opacity-50 lg:block hidden" />
-        
       </div>
     </div>
   );

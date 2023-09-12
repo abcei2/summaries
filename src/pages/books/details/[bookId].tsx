@@ -57,7 +57,7 @@ const page = () => {
 
   return (
     <div className="w-full flex justify-center">
-      <div className="w-[90%] lg:w-[60%] flex flex-col gap-2 ">
+      <div className="w-[90%] lg:w-[80%] flex flex-col gap-2 ">
         <BookCard
           book={book}
           handleReloadData={() => {

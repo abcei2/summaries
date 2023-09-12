@@ -48,13 +48,19 @@ const MyBook = ({ book }: { book: Book }) => {
           </div>
         </CustomModal2>
       )}
-      <div className="relative w-fit h-fit">
+      <div className="relative w-fit h-fit flex justify-center">
         <div
           className="absolute w-fit right-[2px] z-10 cursor-pointer hover:scale-105 top-1"
           onClick={() => setShowDeleteModal(true)}
         >
           ❌
         </div>
+
+        {Number(book.pages) > 0 && (
+          <div className="absolute rounded-full w-fit  bg-white p-0.5 m-1 border shadow-md text-sm">
+            <span className="  text-gray-600 "> Pags. {book.pages} </span>
+          </div>
+        )}
         <div className="absolute w-fit left-[2px] z-10 cursor-pointer hover:scale-105 top-1">
           {HeadsetIcon}
         </div>
@@ -74,6 +80,11 @@ const MyBook = ({ book }: { book: Book }) => {
         >
           <div className="flex justify-center mb-2">
             <img className="ounded-lg mt-8 h-20 sm:h-32" src="/card-img.jpg" />
+          </div>
+
+          <div className="flex justify-between px-1 text-sm ">
+            <span>{book?.language}</span>
+            <span>.{book?.extension}</span>
           </div>
 
           <div className="p-1 text-center overflow-auto">
@@ -97,13 +108,14 @@ const MyBook = ({ book }: { book: Book }) => {
               )}
 
               <span className="font-bold text-gray-600 mb-2">
-                {book?.title_2 ? book?.title_2.slice(0, 50) : ""}{
-                  book?.title_2?.length > 50 ? "..." : ""
-                }
+                {book?.title_2 ? book?.title_2.slice(0, 50) : ""}
+                {book?.title_2?.length > 50 ? "..." : ""}
               </span>
+
+              {book?.year.toString() != "N/A" && <span>{book?.year}</span>}
             </div>
             <div className="p-1">
-              <span className="  text-gray-600 mb-2">
+              <span className="text-gray-600 mb-2">
                 By {book?.author ? book?.author?.slice(0, 50) : ""}...
               </span>
             </div>
