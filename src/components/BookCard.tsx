@@ -24,6 +24,7 @@ const BookCard = ({
 
   useEffect(() => {
     setCurrentBookData(book);
+    console.log(book)
   }, [book]);
 
   const onAskForSummary = () => {
@@ -112,7 +113,11 @@ const BookCard = ({
       <div className="flex lg:flex-row flex-col h-full items-center">
         <div className="bg-blue-300 p-2 rounded-lg overflow-hidden w-[200px] lg:w-fit  h-fit">
           <img
-            src="/card-img.jpg"
+            src={
+              book?.cover_img_path 
+                ? `${process.env.NEXT_PUBLIC_DJANGO_MEDIA}/${book?.cover_img_path}`
+                : "/card-img.jpg"
+            }
             alt="Book cover"
             className="overflow-hidden rounded-lg"
           />
@@ -124,7 +129,7 @@ const BookCard = ({
               {book.title_2}
             </h2>
             <p className="text-[#505258] text-base capitalize">
-            <b>By:</b> {book.author}
+              <b>By:</b> {book.author}
             </p>
             <p className="text-[#505258] text-base capitalize">
               <b>Year: </b> {book.year}

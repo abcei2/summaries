@@ -17,6 +17,9 @@ export type Book = {
   can_do_summary?: boolean;
   in_my_library?: boolean;
   progress?: string;
+  cover_url?: string;
+  cover_img_path?: string;
+  link_a?: string;  
 };
 
 export type UserAuthType = {

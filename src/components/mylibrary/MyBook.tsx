@@ -79,7 +79,14 @@ const MyBook = ({ book }: { book: Book }) => {
         justify-between h-[300px] duration-500  bg-white`}
         >
           <div className="flex justify-center mb-2">
-            <img className="ounded-lg mt-8 h-20 sm:h-32" src="/card-img.jpg" />
+            <img
+              className="ounded-lg mt-8 h-20 sm:h-32"
+              src={
+                book?.cover_img_path
+                  ? `${process.env.NEXT_PUBLIC_DJANGO_MEDIA}/${book?.cover_img_path}`
+                  : "/card-img.jpg"
+              }
+            />
           </div>
 
           <div className="flex justify-between px-1 text-sm ">

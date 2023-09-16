@@ -59,7 +59,14 @@ const Card = ({ book, className }: { book: Book; className?: string }) => {
           </div>
         )}
         <div className="flex justify-center mb-2">
-          <img className="ounded-lg mt-8 h-20 sm:h-32" src="/card-img.jpg" />
+          <img
+            className="ounded-lg mt-8 h-20 sm:h-32"
+            src={
+              book?.cover_img_path != "null"
+                ? `${process.env.NEXT_PUBLIC_DJANGO_MEDIA}/${book?.cover_img_path}`
+                : "/card-img.jpg"
+            }
+          />
         </div>
         <div className="flex justify-between px-1 text-sm ">
           <span>{book?.language}</span>
@@ -72,9 +79,8 @@ const Card = ({ book, className }: { book: Book; className?: string }) => {
           <span className="font-bold text-gray-600 mb-2">
             {book?.title_2 ? book?.title_2.slice(0, 50) : ""}
           </span>
-          
         </div>
-        
+
         {book?.year.toString() != "N/A" && <span>{book?.year}</span>}
         <div className="flex flex-col">
           <span className="  text-gray-600 ">By {book.author}</span>
