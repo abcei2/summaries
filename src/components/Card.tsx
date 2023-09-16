@@ -83,7 +83,7 @@ const Card = ({ book, className }: { book: Book; className?: string }) => {
       {bookStatus.in_my_library ? (
         <a
           className={`w-full h-10 bg-gray-100 rounded-b-lg flex justify-center items-center text-black`}
-          href="/mylibrary"
+          href={`/books/details/${book.global_id}`}
         >
           In my library
         </a>
