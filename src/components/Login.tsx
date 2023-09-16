@@ -79,7 +79,7 @@ const Login = () => {
             Log In
           </button>
           <p className="my-16">
-            New to Meggasummary?{" "}
+            New to Megasummary?{" "}
             <a href="/signup" className="text-link font-bold ">
               Sing up now
             </a>

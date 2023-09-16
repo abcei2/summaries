@@ -40,13 +40,13 @@ const MyLibrary = () => {
   return (
     <div className="w-full flex flex-col items-center">
       <div className="w-full bg-[#F8F8F8] h-20 flex items-center justify-center">
-        <span className="w-[80%] text-3xl font-bold text-gray-600 w-full ">
+        <span className="w-[80%] text-4xl font-bold text-gray-600 w-full ">
           My Library
         </span>
       </div>
 
       <div className="w-full h-20 flex items-center justify-center">
-        <span className="w-[80%] text-4xl font-semibold text-gray-600 w-full ">
+        <span className="w-[80%] text-3xl font-semibold text-gray-600 w-full ">
           Reading Now
         </span>
       </div>
