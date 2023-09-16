@@ -31,7 +31,7 @@ const Login = () => {
     if (!signIn) return alert("Error, please try again");
     const res = await signIn(formValues);
     if (res.status == 200) {
-      toast.success("Welcome back!");
+      // toast.success("Welcome back!");
       router.push("/");
     } else if (res.status == 401) {
       toast.error("User or password incorrect");
