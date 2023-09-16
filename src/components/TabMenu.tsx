@@ -13,12 +13,12 @@ const MenuTabItem = ({
   icon: ReactNode;
 }) => {
   return (
-    <div className="flex justify-center gap-2 items-center hover:border-b-4">
+    <a href={pathname} className="flex justify-center gap-2 items-center hover:border-b-4 cursor-pointer">
       <div className="w-[25px]">{icon}</div>
-      <a href={pathname} className="text-[16px]">
+      <span  className="text-[16px]">
         {label}
-      </a>
-    </div>
+      </span>
+    </a>
   );
 };
 
