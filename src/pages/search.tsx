@@ -9,7 +9,7 @@ export default function Home() {
   const [searchTerm, setSearchTerm] = useState("");
 
   const onSearch = () => {
-    if (searchTerm.length > 2) {
+    if (searchTerm.length >= 2) {
       setSearching(true);
       setBooks([]);
       fetch(`/api/search?word=${searchTerm}`)
