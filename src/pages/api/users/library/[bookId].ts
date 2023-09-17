@@ -58,7 +58,7 @@ async function fn(req: NextApiRequest, res: NextApiResponse, userAuth: UserAuthT
             }),
             headers: {
               "Content-Type": "application/json",
-              Authorization: `token ${token}`,
+              Authorization: `token ${userAuth.token}`,
             },
           }
         );
