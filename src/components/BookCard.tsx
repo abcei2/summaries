@@ -7,24 +7,27 @@ import {
   HiOutlineShare,
 } from "react-icons/hi2";
 import { HiCog } from "react-icons/hi";
-import { Book, SurveyCreateParams } from "../types";
+import { Book, SumaryCreateParams } from "../types";
 import { CustomModal2 } from "./utils/custommodals";
 import SurveyParamsSelector from "./summary/SurveyParamsSelector";
+import { useContext } from "react";
+import { UserContext } from "@/context/UserContext";
 
 const BookCard = ({
   book,
   handleReloadData,
 }: {
   book: Book;
-  handleReloadData: () => void;
+  handleReloadData?: () => void;
 }) => {
+  const { user } = useContext(UserContext);
   const [loading, setLoading] = useState(false);
   const [currentBookData, setCurrentBookData] = useState<Book>(book);
   const [showModal, setShowModal] = useState(false);
 
   useEffect(() => {
     setCurrentBookData(book);
-    console.log(book)
+    console.log(book);
   }, [book]);
 
   const onAskForSummary = () => {
@@ -48,7 +51,7 @@ const BookCard = ({
     setShowModal(true);
   };
 
-  const createResume = (creationParams: SurveyCreateParams) => {
+  const createResume = (creationParams: SumaryCreateParams) => {
     if (loading) return console.log("Loading...");
     if (!creationParams) return console.log("No creation params");
     setLoading(true);
@@ -76,7 +79,7 @@ const BookCard = ({
           status: data.status,
           can_do_summary: data.can_do_summary,
         });
-        handleReloadData();
+        handleReloadData && handleReloadData();
       })
       .finally(() => {
         setLoading(false);
@@ -92,6 +95,7 @@ const BookCard = ({
             <SurveyParamsSelector
               handleClose={() => setShowModal(false)}
               handleCreateResume={createResume}
+              bookId={book.global_id}
             />
           ) : (
             <div className="flex flex-col gap-4 bg-white h-fit rounded-lg p-2 w-full">
@@ -111,15 +115,15 @@ const BookCard = ({
       )}
 
       <div className="flex lg:flex-row flex-col h-full items-center">
-        <div className="bg-blue-300 p-2 rounded-lg overflow-hidden w-[200px] lg:w-fit  h-fit">
+        <div className="bg-blue-300 p-2 rounded-lg overflow-hidden w-[200px] lg:w-[400px] h-fit">
           <img
             src={
-              book?.cover_img_path 
+              book?.cover_img_path
                 ? `${process.env.NEXT_PUBLIC_DJANGO_MEDIA}/${book?.cover_img_path}`
                 : "/card-img.jpg"
             }
             alt="Book cover"
-            className="overflow-hidden rounded-lg"
+            className="w-full h-full rounded-lg"
           />
         </div>
 
@@ -147,19 +151,21 @@ const BookCard = ({
             )}
           </div>
 
-          <button
-            onClick={() => onAskForSummary()}
-            className="flex items-center bg-blue-500 hover:bg-blue-700 text-white font-bold py-1 px-4 rounded w-fit self-center lg:self-start "
-          >
-            {!currentBookData.can_do_summary ? (
-              <div className="flex items-center justify-center">
-                Loading{" "}
-                <HiCog className="text-gray-500 animate-spin duration-[1000] h-10 w-10" />
-              </div>
-            ) : (
-              <span>Ask for summary</span>
-            )}
-          </button>
+          {user?.is_superuser && (
+            <button
+              onClick={() => onAskForSummary()}
+              className="flex items-center bg-blue-500 hover:bg-blue-700 text-white font-bold py-1 px-4 rounded w-fit self-center lg:self-start "
+            >
+              {!currentBookData.can_do_summary ? (
+                <div className="flex items-center justify-center">
+                  Loading{" "}
+                  <HiCog className="text-gray-500 animate-spin duration-[1000] h-10 w-10" />
+                </div>
+              ) : (
+                <span>Ask for summary</span>
+              )}
+            </button>
+          )}
         </div>
 
         <span className="border opacity-50 lg:block hidden" />

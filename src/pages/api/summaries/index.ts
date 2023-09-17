@@ -1,8 +1,8 @@
 import { NextApiRequest, NextApiResponse } from "next";
 import { withAuth } from "@/utils/validator";
-import { SurveyCreateParams } from "../../../types";
+import { SumaryCreateParams, UserAuthType } from "../../../types";
 
-async function fn(req: NextApiRequest, res: NextApiResponse, token: string) {
+async function fn(req: NextApiRequest, res: NextApiResponse, userAuth: UserAuthType) {
   switch (req.method) {
     case "POST":
       const {
@@ -14,7 +14,7 @@ async function fn(req: NextApiRequest, res: NextApiResponse, token: string) {
         p2,
         length,
         recurrency
-      }: SurveyCreateParams = req.body;
+      }: SumaryCreateParams = req.body;
 
       if (!bookId) {
         return res.status(400).send("bookId not provided");
@@ -36,7 +36,7 @@ async function fn(req: NextApiRequest, res: NextApiResponse, token: string) {
           {
             method: "GET",
             headers: {
-              Authorization: `token ${token}`,
+              Authorization: `token ${userAuth.token}`,
             },
           }
         );

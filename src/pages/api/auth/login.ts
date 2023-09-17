@@ -10,22 +10,40 @@ export default async function login(req: NextApiRequest, res: NextApiResponse) {
       }
 
       try {
-        console.log(process.env.DJANGO_HOST+"/login/")
-        const data = await fetch(process.env.DJANGO_HOST+"/login/", {
+        const data = await fetch(process.env.DJANGO_HOST + "/login/", {
           method: "POST",
-          body: JSON.stringify({ username:email, password }),
+          body: JSON.stringify({ username: email, password }),
           headers: {
             "Content-Type": "application/json",
           },
         }).then(async (resAuth) => {
           if (resAuth.status == 200) {
             const data = await resAuth.json();
-            console.log(data)
-            setAuthCookie(res, data);
-            return {
-              success: true,
-              message: "Login success",
-            };
+            try {
+              const resp = await fetch(process.env.DJANGO_HOST + "/profile/", {
+                headers: {
+                  Authorization: `token ${data.token}`,
+                },
+              });
+              if (resp.status == 403 || resp.status == 401) {
+                return {
+                  success: false,
+                  message: "Login success",
+                };
+              } else {
+                const userInfo = await resp.json();
+                setAuthCookie(res, { ...userInfo, token: data.token });
+                return {
+                  success: true,
+                  message: "Login success",
+                };
+              }
+            } catch (error) {
+              return {
+                success: false,
+                message: "Profile error",
+              };
+            }
           } else {
             removeAuthCookie(res);
             return {
@@ -34,7 +52,6 @@ export default async function login(req: NextApiRequest, res: NextApiResponse) {
             };
           }
         });
-        
 
         res.status(data.success ? 200 : 401).json(data);
       } catch (error) {

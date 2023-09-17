@@ -1,21 +1,27 @@
-import { SurveyCreateParams } from "../../types";
+import { SumaryCreateParams } from "../../types";
 import { PARAMS } from "@/constants/model";
 import { CustomInput } from "../utils/custominputs";
 import { RegisterOptions, useForm } from "react-hook-form";
+import { useState, useEffect } from "react";
 
 const SurveyParamsSelector = ({
   handleClose,
   handleCreateResume,
+  bookId,
 }: {
   handleClose: () => void;
-  handleCreateResume: (creationParams: SurveyCreateParams) => void;
+  handleCreateResume: (creationParams: SumaryCreateParams) => void;
+  bookId: number;
 }) => {
-  const paramsFormHook = useForm<SurveyCreateParams>({
+  const paramsFormHook = useForm<SumaryCreateParams>({
     defaultValues: PARAMS?.reduce((acc: any, param) => {
-      acc[param.name as keyof SurveyCreateParams] = param.defaultValue;
+      acc[param.name as keyof SumaryCreateParams] = param.defaultValue;
       return acc;
     }, {}),
   });
+
+  const [currentCost, setCurrentCost] = useState<string>("");
+  const [loading, setLoading] = useState(false);
 
   const {
     handleSubmit,
@@ -24,14 +30,18 @@ const SurveyParamsSelector = ({
     formState: { errors },
   } = paramsFormHook;
 
-  const onSubmit = (data: SurveyCreateParams) => {
+  const onSubmit = (data: SumaryCreateParams) => {
     handleCreateResume(data);
   };
 
+  useEffect(() => {
+    calculateCost(paramsFormHook.getValues());
+  }, []);
+
   const commonReactHookFormProps = (
-    name: keyof SurveyCreateParams
+    name: keyof SumaryCreateParams
   ):
-    | RegisterOptions<SurveyCreateParams, keyof SurveyCreateParams>
+    | RegisterOptions<SumaryCreateParams, keyof SumaryCreateParams>
     | undefined => {
     if (name == "recurrency") {
       return {
@@ -50,15 +60,49 @@ const SurveyParamsSelector = ({
         },
       };
     }
-    if(name=="p1" || name == "p2"){
+    if (name == "p1" || name == "p2") {
       return {};
     }
     return {
       required: "Este campo es requerido",
       onChange: () => {
         errors[name] ?? clearErrors(name);
+
+        if (
+          PARAMS.filter((param) => param.costeable)
+            .map((param) => param.name)
+            .includes(name)
+        ) {
+          calculateCost(paramsFormHook.getValues());
+        }
       },
     };
+  };
+
+  const calculateCost = (data: SumaryCreateParams) => {
+    if(loading) return;
+    setLoading(true);
+    fetch("/api/summaries/cost", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({
+        ...data,
+        bookId,
+      }),
+    })
+      .then((res) => {
+        if (res.status == 200) {
+          return res.json();
+        } else {
+          console.log(res.status, res.statusText);
+        }
+      })
+      .then((dataJson) => {
+        if (!dataJson) return console.log("No data");
+        setCurrentCost(dataJson);
+      }).finally(()=>setLoading(false));
   };
 
   return (
@@ -67,19 +111,22 @@ const SurveyParamsSelector = ({
       className="flex flex-col gap-4 bg-white h-fit rounded-lg p-2 w-full"
     >
       <div className="text-2xl font-bold">Create a new summary</div>
+      <span className="text-gray-500 text-center italic text-red-400">
+        {loading?"Loading cost...":currentCost}
+      </span>
       {PARAMS &&
         PARAMS.map((param, index) => (
           <CustomInput
             key={index}
             type={param.type}
-            error={errors[param.name as keyof SurveyCreateParams]}
+            error={errors[param.name as keyof SumaryCreateParams]}
             selectOptions={param.values}
             label={param.name}
             reactFormHookProps={register(
-              param.name as keyof SurveyCreateParams,
+              param.name as keyof SumaryCreateParams,
               {
                 ...commonReactHookFormProps(
-                  param.name as keyof SurveyCreateParams
+                  param.name as keyof SumaryCreateParams
                 ),
               }
             )}

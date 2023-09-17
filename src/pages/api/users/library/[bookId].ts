@@ -1,7 +1,8 @@
 import { NextApiRequest, NextApiResponse } from "next";
 import { withAuth } from "@/utils/validator";
+import { UserAuthType } from "@/types";
 
-async function fn(req: NextApiRequest, res: NextApiResponse, token: string) {
+async function fn(req: NextApiRequest, res: NextApiResponse, userAuth: UserAuthType) {
   const { bookId } = req.query;
   switch (req.method) {
     case "DELETE":
@@ -15,7 +16,7 @@ async function fn(req: NextApiRequest, res: NextApiResponse, token: string) {
             method: "DELETE",
             headers: {
               "Content-Type": "application/json",
-              Authorization: `token ${token}`,
+              Authorization: `token ${userAuth.token}`,
             },
           }
         );

@@ -19,10 +19,10 @@ const UserContextProvider = ({ children }: { children: ReactNode }) => {
   const [user, setUser] = useState<UserAuthType>();
   const [loading, setLoading] = useState<boolean>(true);
   const [modalSignout, setModalSignout] = useState<boolean>(false);
-  const HOST = process.env.NEXT_PUBLIC_HOST;
   useEffect(() => {
     const boostrapAsync = async () => {
-      const res = await fetch(HOST + "/profile");
+      console.log("boostrapAsync");
+      const res = await fetch("/api/auth/profile");
       setLoading(false);
       if (res.status == 200) {
         setUser(await res.json());
@@ -46,7 +46,6 @@ const UserContextProvider = ({ children }: { children: ReactNode }) => {
   };
 
   const signUp = async (formValues: SignupFormType) => {
-    console.log(formValues)
     const res = await fetch("/api/users/signup", {
       method: "POST",
       body: JSON.stringify(formValues),

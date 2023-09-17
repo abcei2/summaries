@@ -1,7 +1,8 @@
 import { NextApiRequest, NextApiResponse } from "next";
 import { withAuth } from "@/utils/validator";
+import { UserAuthType } from "@/types";
 
-async function fn(req: NextApiRequest, res: NextApiResponse, token: string) {
+async function fn(req: NextApiRequest, res: NextApiResponse, userAuth: UserAuthType) {
   switch (req.method) {
     case "GET":
       try {
@@ -10,7 +11,7 @@ async function fn(req: NextApiRequest, res: NextApiResponse, token: string) {
           {
             method: "GET",
             headers: {
-              Authorization: `token ${token}`,
+              Authorization: `token ${userAuth.token}`,
             },
           }
         );

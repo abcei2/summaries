@@ -3,10 +3,13 @@ import { Book } from "../../types";
 import { HeadsetIcon } from "@/icons/Index";
 import { useState } from "react";
 import { CustomModal2 } from "../utils/custommodals";
+import { useContext } from "react";
+import { UserContext } from "@/context/UserContext";
 
 const MyBook = ({ book }: { book: Book }) => {
   const router = useRouter();
   const [showDeleteModal, setShowDeleteModal] = useState(false);
+  const { user } = useContext(UserContext);
 
   const onDelete = () => {
     fetch(`/api/users/library/${book.global_id}`, {
@@ -67,7 +70,7 @@ const MyBook = ({ book }: { book: Book }) => {
         <div
           onClick={() => {
             book.status == "extracted"
-              ? router.push(`/books/details/${book.global_id}`)
+              ? user?.is_superuser? router.push(`/books/admin/details/${book.global_id}`):router.push(`/books/details/${book.global_id}`)
               : alert("El libro no esta disponible");
           }}
           className={`w-[150px] sm:w-[200px] rounded-lg shadow-lg border border-2 flex flex-col 

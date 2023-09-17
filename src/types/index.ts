@@ -23,9 +23,11 @@ export type Book = {
 };
 
 export type UserAuthType = {
-  id: string;
   email: string;
-  name: string;
+  is_staff: string;
+  is_superuser: string;
+  token: string;
+  is_subscribed: boolean;
 };
 
 export type SignupFormType = {
@@ -33,7 +35,7 @@ export type SignupFormType = {
   password: string;
 };
 
-export type SurveyCreateParams = {
+export type SumaryCreateParams = {
   bookId?: string;
   m1: string;
   m2: string;
@@ -57,12 +59,30 @@ export type SelectOptionsType = {
 };
 
 
-export type SurveyCreateParamFormType = {
+export type SumaryCreateParamFormType = {
   name: string;
   type: string;
   defaultValue: string | number;
+  costeable?: boolean;
   values?: {
     value: string;
     label: string;
   }[];
+}
+
+export type SummaryType = {
+  book: string;
+  text: string | null;
+  method: string | null;
+  model1: string | null;
+  model2: string | null;
+  created_at: string;
+  updated_at: string;
+  prompt1: string | null;
+  prompt2: string | null;
+  temperature: number | null;
+  length: string | null;
+  state: string | null;
+  progress: number | null;
+  total_tokens: number | null;
 }

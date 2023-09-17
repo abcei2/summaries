@@ -1,7 +1,8 @@
 import { NextApiRequest, NextApiResponse } from "next";
 import { withAuth } from "@/utils/validator";
+import { UserAuthType } from "@/types";
 
-async function fn(req: NextApiRequest, res: NextApiResponse, token: string) {
+async function fn(req: NextApiRequest, res: NextApiResponse, userAuth: UserAuthType) {
   const { id } = req.query;
   switch (req.method) {
     case "POST":
@@ -17,7 +18,7 @@ async function fn(req: NextApiRequest, res: NextApiResponse, token: string) {
             body: JSON.stringify(req.body),
             headers: {
               "Content-Type": "application/json",
-              Authorization: `token ${token}`,
+              Authorization: `token ${userAuth.token}`,
             },
           }
         );

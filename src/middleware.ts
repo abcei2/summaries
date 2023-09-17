@@ -1,8 +1,9 @@
 import { TOKEN_NAME } from "@/utils/constants";
 import { NextResponse } from "next/server";
 import { NextRequest } from "next/server";
+import { UserAuthType } from "./types";
 
-const validatePath = (path: string, paths: string[], equals = false) => {
+const isValidPath = (path: string, paths: string[], equals = false) => {
   return paths.reduce((acc, curr) => {
     if (curr == path) return true;
     if (!equals && curr != "/" && path.startsWith(curr)) return true;
@@ -12,14 +13,32 @@ const validatePath = (path: string, paths: string[], equals = false) => {
 
 export function middleware(req: NextRequest) {
   const noUserPaths = ["/login", "/signup"];
-  const userPaths = ["/", "/profile", "/search","/mylibrary","/books"];
+  const subscribedPaths = [
+    "/",
+    "/profile",
+    "/search",
+    "/mylibrary",
+    "/books/details",
+  ];
+  const adminPaths = [
+    "/",
+    "/profile",
+    "/search",
+    "/mylibrary",
+    "/books/admin/details",
+  ];
   const fileFormats = [".pdf", ".docx", ".jpg", ".png", ".jpeg"];
+
+  const nextSlashUrl =
+    req.nextUrl.pathname != "/"
+      ? NextResponse.redirect(new URL("/", req.nextUrl))
+      : NextResponse.next();
 
   if (fileFormats.find((format) => req.nextUrl.pathname.endsWith(format)))
     return NextResponse.next();
   const cookieValue = req.cookies.get(TOKEN_NAME)?.value;
   if (cookieValue) {
-    let userAuth = null;
+    let userAuth: UserAuthType | null = null;
 
     try {
       userAuth = cookieValue ? JSON.parse(cookieValue) : null;
@@ -27,15 +46,27 @@ export function middleware(req: NextRequest) {
       console.log(error);
     }
     if (!userAuth) {
-      if (!validatePath(req.nextUrl.pathname, noUserPaths, true)) {
+      if (!isValidPath(req.nextUrl.pathname, noUserPaths, true)) {
         return NextResponse.redirect(new URL("/login", req.nextUrl));
       }
     } else {
-      if (!validatePath(req.nextUrl.pathname, userPaths))
-        return NextResponse.redirect(new URL("/", req.nextUrl));
+      if (!userAuth.is_superuser && !userAuth.is_subscribed)
+        return nextSlashUrl;
+
+      if (
+        userAuth.is_superuser &&
+        !isValidPath(req.nextUrl.pathname, adminPaths)
+      )
+        return nextSlashUrl;
+
+      if (
+        userAuth.is_subscribed &&
+        !isValidPath(req.nextUrl.pathname, subscribedPaths)
+      )
+        return nextSlashUrl;
     }
   } else {
-    if (!validatePath(req.nextUrl.pathname, noUserPaths, true))
+    if (!isValidPath(req.nextUrl.pathname, noUserPaths, true))
       return NextResponse.redirect(new URL("/login", req.nextUrl));
   }
 
