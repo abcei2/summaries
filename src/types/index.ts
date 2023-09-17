@@ -24,8 +24,8 @@ export type Book = {
 
 export type UserAuthType = {
   email: string;
-  is_staff: string;
-  is_superuser: string;
+  is_staff: boolean;
+  is_superuser: boolean;
   token: string;
   is_subscribed: boolean;
 };

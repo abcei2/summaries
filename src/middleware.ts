@@ -60,7 +60,7 @@ export function middleware(req: NextRequest) {
         return nextSlashUrl;
 
       if (
-        userAuth.is_subscribed &&
+        !userAuth.is_superuser && userAuth.is_subscribed &&
         !isValidPath(req.nextUrl.pathname, subscribedPaths)
       )
         return nextSlashUrl;

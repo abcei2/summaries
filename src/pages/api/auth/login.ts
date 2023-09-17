@@ -36,6 +36,7 @@ export default async function login(req: NextApiRequest, res: NextApiResponse) {
                 return {
                   success: true,
                   message: "Login success",
+                  user: userInfo,
                 };
               }
             } catch (error) {

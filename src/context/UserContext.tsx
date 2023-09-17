@@ -1,5 +1,6 @@
 import { useState, useEffect, ReactNode, createContext } from "react";
 import { SignupFormType, UserAuthType } from "../types";
+import { useRouter } from "next/router";
 
 
 export const UserContext = createContext<{
@@ -16,6 +17,8 @@ export const UserContext = createContext<{
 }>({});
 
 const UserContextProvider = ({ children }: { children: ReactNode }) => {
+
+  const router = useRouter();
   const [user, setUser] = useState<UserAuthType>();
   const [loading, setLoading] = useState<boolean>(true);
   const [modalSignout, setModalSignout] = useState<boolean>(false);
@@ -25,7 +28,8 @@ const UserContextProvider = ({ children }: { children: ReactNode }) => {
       const res = await fetch("/api/auth/profile");
       setLoading(false);
       if (res.status == 200) {
-        setUser(await res.json());
+        const user = await res.json();
+        setUser(user);
       } else {
         setUser(undefined);
       }
@@ -41,7 +45,10 @@ const UserContextProvider = ({ children }: { children: ReactNode }) => {
         "Content-Type": "application/json",
       },
     });
-    if (res.ok) setUser(await res.json());
+    if (res.status == 200) {
+      const data = await res.json();
+      setUser(data.user);
+    };
     return res;
   };
 
@@ -53,7 +60,7 @@ const UserContextProvider = ({ children }: { children: ReactNode }) => {
         "Content-Type": "application/json",
       },
     });
-    if (res.ok) setUser(await res.json());
+    if (res.status==200) router.replace("/");
     return res;
   };
 
