@@ -26,6 +26,7 @@ export function middleware(req: NextRequest) {
     "/search",
     "/mylibrary",
     "/books/admin/details",
+    "/summary",
   ];
   const fileFormats = [".pdf", ".docx", ".jpg", ".png", ".jpeg"];
 

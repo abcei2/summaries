@@ -4,7 +4,9 @@ const page = () => {
   const router = useRouter();
   const { summaryId } = router.query;
 
-  return <SummaryComp summaryId={summaryId as string} />;
+  return <SummaryComp summaryId={summaryId as string} 
+  showDetails={true}
+  />;
     
 };
 

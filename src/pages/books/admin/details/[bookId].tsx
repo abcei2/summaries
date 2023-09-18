@@ -71,7 +71,7 @@ const page = () => {
           {summaryList &&
             summaryList.map((summary, index) => (
               <div
-                onClick={() => router.push("/books/summary/" + summary.id)}
+                onClick={() => router.push("/summary/" + summary.id)}
                 key={index}
                 className="grid grid-col-2 md:grid-cols-5 gap-2 items-center rounded-lg shadow-sm bg-[#F8F8F8]
             hover:scale-105 duration-200 transform cursor-pointer text-lg"
