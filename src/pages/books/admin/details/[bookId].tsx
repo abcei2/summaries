@@ -11,7 +11,7 @@ const page = () => {
   const [book, setBook] = useState<Book>();
   const [summaryList, setSummaryList] = useState<any[]>();
 
-  const { triggerReload } = useModelObserver({
+  useModelObserver({
     handleData: (data) => {
       setSummaryList(data);
     },
@@ -61,7 +61,6 @@ const page = () => {
         <BookCard
           book={book}
           handleReloadData={() => {
-            triggerReload();
             reloadSummaries();
           }}
         />

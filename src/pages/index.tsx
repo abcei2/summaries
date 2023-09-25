@@ -12,7 +12,7 @@ const page = () => {
       ) : user?.is_superuser || user?.is_subscribed ? (
         <div className="flex flex-col items-center">
           <div className="text-2xl font-bold">
-            Welcome to Mega Summary 
+            Welcome to MegaSummary 
           </div>
         </div>
       ) : (

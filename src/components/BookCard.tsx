@@ -27,7 +27,6 @@ const BookCard = ({
 
   useEffect(() => {
     setCurrentBookData(book);
-    console.log(book);
   }, [book]);
 
   const onAskForSummary = () => {
@@ -42,6 +41,7 @@ const BookCard = ({
         }
       })
       .then((data) => {
+        console.log(data);
         setCurrentBookData(data.data);
       })
       .finally(() => setLoading(false));

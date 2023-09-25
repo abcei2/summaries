@@ -1,3 +1,5 @@
+import { subscribe } from "diagnostics_channel";
+import { cp } from "fs";
 import { use, useEffect, useState } from "react";
 import { set } from "react-hook-form";
 
@@ -11,60 +13,49 @@ const useModelObserver = ({
   subscribedData?: any[];
   noSubscribeData?: any[];
   modelName: "book" | "summary";
-}): {
-  triggerReload: () => void;
-} => {
+}) => {
   const [subscribed, setSubscribed] = useState(false);
   const [websocket, setWebsocket] = useState<WebSocket>();
   const [status, setStatus] = useState("init");
-  const [reload, setReload] = useState(false);
-
-  const triggerReload = () => {
-    setReload(true);
-  };
 
   useEffect(() => {
-    return () => {
-      // if (websocket) {
-      //   websocket.close();
-      //   setWebsocket(undefined);
-      // }
+    if(subscribedData && subscribedData.length==0)  {
+      reloadData();
+    }
+    if (status != "init" || !subscribedData || subscribedData.length==0) return;
+
+    console.log("Connecting to ws");
+    const ws = new WebSocket(
+      `${process.env.NEXT_PUBLIC_DJANGO_WS ?? ""}${modelName}/`
+    );
+    setStatus("connecting");
+    ws.onopen = () => {
+      console.log("Connected to ws");
+      setStatus("connected");
     };
-  }, [websocket]);
+    ws.onmessage = (e: any) => {
+      const eData = JSON.parse(e.data);
+      if (eData.action == "update") {
+        updateMessage(eData);
+      }
+    };
+    ws.onclose = () => {
+      console.log("disconnected");
+    };
+    setWebsocket(ws);
+  }, [subscribedData, status]);
+  
+
 
   useEffect(() => {
-    
-    if(websocket || !subscribedData) return;
-    console.log(`${process.env.NEXT_PUBLIC_DJANGO_WS ?? ""}${modelName}/`);
-    try {
-      connect();
-    } catch (e) {
-      console.log(e);
-    }
-  }, [subscribedData]);
+    if (!subscribedData || !websocket || status != "connected" || subscribed)
+      return;
+    subscribeDataMessage();
+  }, [websocket, status, subscribedData]);
+  
+  const subscribeDataMessage = () => {
+    if (!subscribedData || !websocket) return;
 
-  useEffect(() => {
-    if(!subscribedData) return;
-    if (!reload) return;
-    setSubscribed(false);
-    if (websocket) {
-      websocket.close();
-      setWebsocket(undefined);
-    }
-    setStatus("init");
-    setReload(false);
-
-    try {
-      connect();
-    } catch (e) {
-      console.log(e);
-    }
-  }, [reload, subscribedData]);
-
-  useEffect(() => {
-    if (!subscribedData || !websocket || subscribed || subscribedData.length == 0) return;
-    if (status != "connected") return;
-    console.log("Subscribing to books", subscribedData);
     subscribedData.forEach((item) => {
       websocket.send(
         JSON.stringify({
@@ -74,33 +65,22 @@ const useModelObserver = ({
         })
       );
     });
-    subscribedData.forEach((item) => {
-        websocket.send(JSON.stringify({
-          action: "retrieve",
-          request_id: new Date().getTime(),
-          pk: item.id,
-      }))
-    });
-    setSubscribed(true);
-  }, [websocket, subscribedData, status]);
 
-  const connect = () => {
-    const ws = new WebSocket(
-      `${process.env.NEXT_PUBLIC_DJANGO_WS ?? ""}${modelName}/`
-    );
-    console.log("Connecting to ws");
-    setStatus("connecting");
-    ws.onopen = () => {
-      console.log("Connected to ws");
-      setStatus("connected");
-    };
-    ws.onmessage = (e: any) => {
-      const eData = JSON.parse(e.data);
-      console.log(eData);
-      if ((eData.action == "update")) {
-        console.log("update");
-        handleData([
-          ...subscribedData?subscribedData.map((item) => {
+    setSubscribed(true);
+  };
+
+  const reloadData = () => {
+    setSubscribed(false);
+    setStatus("init");
+    if (websocket) websocket.close();
+    setWebsocket(undefined)
+  };
+
+  const updateMessage = (eData: any) => {
+
+    handleData([
+      ...(subscribedData
+        ? subscribedData.map((item) => {
             if (item.id == eData.data.pk) {
               return {
                 ...item,
@@ -108,19 +88,10 @@ const useModelObserver = ({
               };
             }
             return item;
-          }):[],
-          ...(noSubscribeData ?? []),
-        ]);
-      }
-    };
-    ws.onclose = () => {
-      console.log("disconnected");
-    };
-
-    setWebsocket(ws);
-  };
-  return {
-    triggerReload,
+          })
+        : []),
+      ...(noSubscribeData ?? []),
+    ]);
   };
 };
 export default useModelObserver;

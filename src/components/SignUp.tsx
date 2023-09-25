@@ -36,7 +36,7 @@ const SignUp = () => {
       <div className="w-full">
         <div className="w-full flex flex-col items-center">
           <h1 className="text-[18px] md:text-[28.5px] font-semibold pt-20 m-4 ">
-            Sign Up to Megasummary
+            Sign Up to MegaSummary
           </h1>
           <div className="flex flex-col w-full lg:w-[50%] px-4 gap-2">
             <h4 className="text-sm font-bold">Email Address</h4>
