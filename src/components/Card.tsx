@@ -3,6 +3,8 @@ import { useState } from "react";
 import { Book } from "../types";
 import { useEffect } from "react";
 import { HiSearch, HiCog } from "react-icons/hi";
+import { useContext } from "react";
+import { UserContext } from "@/context/UserContext";
 
 const Card = ({ book, className }: { book: Book; className?: string }) => {
   if (!book) return null;
@@ -18,6 +20,7 @@ const Card = ({ book, className }: { book: Book; className?: string }) => {
     in_my_library: book.in_my_library,
   });
   const [loading, setLoading] = useState(false);
+  const { user } = useContext(UserContext);
 
   useEffect(() => {
     if (!bookStatus) return;
@@ -89,7 +92,11 @@ const Card = ({ book, className }: { book: Book; className?: string }) => {
       {bookStatus.in_my_library ? (
         <a
           className={`w-full h-10 bg-gray-100 rounded-b-lg flex justify-center items-center text-black`}
-          href={`/books/details/${book.global_id}`}
+          href={
+            user?.is_staff || user?.is_superuser
+              ? `/books/admin/details/${book.global_id}`
+              : `/books/details/${book.global_id}`
+          }
         >
           In my library
         </a>

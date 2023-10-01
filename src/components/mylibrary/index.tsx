@@ -4,6 +4,7 @@ import { useState } from "react";
 import { HiCog } from "react-icons/hi";
 import MyBook from "./MyBook";
 import useModelObserver from "@/hooks/useModelObserver";
+import { BOOK_BACKEND_STATUS } from "@/constants";
 
 const MyLibrary = () => {
   const [myBooks, setMyBooks] = useState<Book[]>();
@@ -16,12 +17,20 @@ const MyLibrary = () => {
     subscribedData: myBooks?.filter(
       (book) =>
         book?.status &&
-        ["queue", "downloading", "downloaded"].includes(book.status)
+        [
+          BOOK_BACKEND_STATUS.QUEUE,
+          BOOK_BACKEND_STATUS.DOWNLOADING,
+          BOOK_BACKEND_STATUS.DOWNLOADED,
+        ].includes(book.status)
     ),
     noSubscribeData: myBooks?.filter(
       (book) =>
         !book?.status ||
-        !["queue", "downloading", "downloaded"].includes(book.status)
+        ![
+          BOOK_BACKEND_STATUS.QUEUE,
+          BOOK_BACKEND_STATUS.DOWNLOADING,
+          BOOK_BACKEND_STATUS.DOWNLOADED,
+        ].includes(book.status)
     ),
     modelName: "book",
   });
@@ -54,7 +63,22 @@ const MyLibrary = () => {
         {!loading ? (
           <div className="w-fit grid grid-cols-2 md:grid-cols-4 lg:grid-cols-5 xl:grid-cols-6 gap-4">
             {myBooks &&
-              myBooks.map((book, key) => <MyBook book={book} key={key} />)}
+              myBooks.map((book, key) => (
+                <MyBook
+                  book={book}
+                  updateBook={(book) => {
+                    setMyBooks(
+                      myBooks.map((b) => {
+                        if (b.global_id == book.global_id) {
+                          return book;
+                        }
+                        return b;
+                      })
+                    );
+                  }}
+                  key={key}
+                />
+              ))}
           </div>
         ) : (
           <div className="flex flex-col items-center justify-center text-center text-gray-500 mt-10">

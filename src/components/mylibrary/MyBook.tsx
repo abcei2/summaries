@@ -1,15 +1,34 @@
 import { useRouter } from "next/router";
 import { Book } from "../../types";
-import { HeadsetIcon } from "@/icons/Index";
 import { useState } from "react";
 import { CustomModal2 } from "../utils/custommodals";
 import { useContext } from "react";
 import { UserContext } from "@/context/UserContext";
+import { CgHeadset, CgSoftwareDownload } from "react-icons/cg";
+import DeleteModal from "./DeleteModal";
+import RetryDownloadModal from "./RetryDownloadModal";
+import { BOOK_BACKEND_STATUS } from "@/constants";
 
-const MyBook = ({ book }: { book: Book }) => {
+const MyBook = ({
+  updateBook,
+  book,
+}: {
+  book: Book;
+  updateBook: (book: Book) => void;
+}) => {
   const router = useRouter();
   const [showDeleteModal, setShowDeleteModal] = useState(false);
+  const [showRetryDownloadModal, setShowRetryDownloadModal] = useState(false);
   const { user } = useContext(UserContext);
+  const bookCover = book?.cover_img_path
+    ? `${process.env.NEXT_PUBLIC_DJANGO_MEDIA}/${book?.cover_img_path}`
+    : "/card-img.jpg";
+
+  const bookModalTitle = book?.title_2
+    ? book?.title_2.length > 80
+      ? book?.title_2.slice(0, 80) + "..."
+      : book?.title_2
+    : "";
 
   const onDelete = () => {
     fetch(`/api/users/library/${book.global_id}`, {
@@ -19,36 +38,73 @@ const MyBook = ({ book }: { book: Book }) => {
     });
   };
 
+  const onRetryDowload = () => {
+    fetch(`/api/books/download/${book.global_id}`, {
+      method: "GET",
+    })
+      .then(async (resp) => {
+        if (resp.status == 200) {
+          updateBook({
+            ...book,
+            ...(await resp.json()),
+          });
+        } else {
+          alert("Error, please try again");
+        }
+      })
+      .finally(() => {
+        setShowRetryDownloadModal(false);
+      });
+  };
+
+  const bookStatus = () => {
+    switch (book.status) {
+      case BOOK_BACKEND_STATUS.DOWNLOADING:
+        return (
+          <span className="font-bold text-gray-600 mb-2">
+            Downloading {book?.progress + "%"}
+          </span>
+        );
+      case BOOK_BACKEND_STATUS.DOWNLOADED:
+        return (
+          <span className="font-bold text-gray-600 mb-2">Retreiving text</span>
+        );
+      case BOOK_BACKEND_STATUS.EXTRACTED:
+        return null;
+      case BOOK_BACKEND_STATUS.QUEUE:
+        return (
+          <span className="font-bold text-gray-600 mb-2">Waiting in queue</span>
+        );
+      case BOOK_BACKEND_STATUS.ERROR:
+        return (
+          <span className="font-bold text-gray-600 mb-2">Download error</span>
+        );
+      default:
+        return (
+          <span className="font-bold text-gray-600 mb-2">{book?.status}</span>
+        );
+    }
+  };
+
   return (
     <div>
       {showDeleteModal && (
         <CustomModal2 handleClose={() => setShowDeleteModal(false)}>
-          <div className="bg-white rounded-lg flex flex-col items-center p-2 h-fit">
-            <div className="text-4xl mb-2">🗑️</div>
-            <span className="text-2xl font-bold mb-2 text-center">
-              Confirm the deletion of the book
-              <div className="text-xl">
-                {book?.title_2 ? book?.title_2.slice(0, 20) : ""}....{" "}
-              </div>
-            </span>
-            <span className="text-gray-500 mb-2">
-              This action cannot be undone
-            </span>
-            <div className="flex justify-center items-center">
-              <button
-                className="bg-red-500 text-white rounded-lg px-4 py-2 mr-2"
-                onClick={onDelete}
-              >
-                Confirm
-              </button>
-              <button
-                className="bg-gray-500 text-white rounded-lg px-4 py-2"
-                onClick={() => setShowDeleteModal(false)}
-              >
-                Cancel
-              </button>
-            </div>
-          </div>
+          <DeleteModal
+            title={bookModalTitle}
+            handleConfirm={onDelete}
+            handleClose={() => setShowDeleteModal(false)}
+          />
+        </CustomModal2>
+      )}
+      {showRetryDownloadModal && (
+        <CustomModal2 handleClose={() => setShowRetryDownloadModal(false)}>
+          <RetryDownloadModal
+            bookCover={bookCover}
+            title={bookModalTitle}
+            handleConfirm={onRetryDowload}
+            handleClose={() => setShowRetryDownloadModal(false)}
+          />
         </CustomModal2>
       )}
       <div className="relative w-fit h-fit flex justify-center">
@@ -65,31 +121,26 @@ const MyBook = ({ book }: { book: Book }) => {
           </div>
         )}
         <div className="absolute w-fit left-[2px] z-10 cursor-pointer hover:scale-105 top-1">
-          {HeadsetIcon}
+          {book?.status == "error" ? (
+            <CgSoftwareDownload
+              className="w-6 h-6"
+              onClick={() => setShowRetryDownloadModal(true)}
+            />
+          ) : (
+            <CgHeadset className="w-6 h-6" />
+          )}
         </div>
         <div
           onClick={() => {
-            book.status == "extracted"
-              ? user?.is_superuser? router.push(`/books/admin/details/${book.global_id}`):router.push(`/books/details/${book.global_id}`)
-              : alert("El libro no esta disponible");
+            user?.is_superuser
+              ? router.push(`/books/admin/details/${book.global_id}`)
+              : router.push(`/books/details/${book.global_id}`);
           }}
           className={`w-[150px] sm:w-[200px] rounded-lg shadow-lg border border-2 flex flex-col 
-        ${
-          book?.status != "extracted"
-            ? "opacity-50 cursor-not-allowed"
-            : "cursor-pointer hover:bg-gray-200 hover:shadow-xl"
-        }
         justify-between h-[300px] duration-500  bg-white`}
         >
           <div className="flex justify-center mb-2">
-            <img
-              className="ounded-lg mt-8 h-20 sm:h-32"
-              src={
-                book?.cover_img_path
-                  ? `${process.env.NEXT_PUBLIC_DJANGO_MEDIA}/${book?.cover_img_path}`
-                  : "/card-img.jpg"
-              }
-            />
+            <img className="ounded-lg mt-8 h-20 sm:h-32" src={bookCover} />
           </div>
 
           <div className="flex justify-between px-1 text-sm ">
@@ -99,23 +150,7 @@ const MyBook = ({ book }: { book: Book }) => {
 
           <div className="p-1 text-center overflow-auto">
             <div className="flex flex-col ">
-              {book.status == "downloading" ? (
-                <span className="font-bold text-gray-600 mb-2">
-                  Descargando {book?.progress + "%"}
-                </span>
-              ) : book.status == "downloaded" ? (
-                <span className="font-bold text-gray-600 mb-2">
-                  Extrayendo texto
-                </span>
-              ) : book.status == "extracted" ? null : book.status == "queue" ? (
-                <span className="font-bold text-gray-600 mb-2">
-                  En cola para descarga
-                </span>
-              ) : (
-                <span className="font-bold text-gray-600 mb-2">
-                  {book?.status}
-                </span>
-              )}
+              {bookStatus()}
 
               <span className="font-bold text-gray-600 mb-2">
                 {book?.title_2 ? book?.title_2.slice(0, 50) : ""}

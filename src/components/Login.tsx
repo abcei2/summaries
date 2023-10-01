@@ -32,7 +32,7 @@ const Login = () => {
     const res = await signIn(formValues);
     if (res.status == 200) {
       // toast.success("Welcome back!");
-      router.push("/");
+      router.replace("/search");
     } else if (res.status == 401) {
       toast.error("User or password incorrect");
     } else {
