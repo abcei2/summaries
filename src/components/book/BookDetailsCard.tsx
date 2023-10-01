@@ -1,33 +1,61 @@
-// BEGIN: 7f8d4c3b8d9c
 import { useState, useEffect } from "react";
-import {
-  HiBookmark,
-  HiOutlineArrowDownTray,
-  HiOutlineEllipsisVertical,
-  HiOutlineShare,
-} from "react-icons/hi2";
 import { HiCog } from "react-icons/hi";
-import { Book, SumaryCreateParams } from "../types";
-import { CustomModal2 } from "./utils/custommodals";
-import SurveyParamsSelector from "./summary/SurveyParamsSelector";
+import { Book, SumaryCreateParams } from "../../types";
+import { CustomModal2 } from "../utils/custommodals";
+import SurveyParamsSelector from "../summary/SurveyParamsSelector";
 import { useContext } from "react";
 import { UserContext } from "@/context/UserContext";
+import { CgHeadset, CgSoftwareDownload } from "react-icons/cg";
+import RetryDownloadModal from "@/components/mylibrary/RetryDownloadModal";
+import { bookStatus } from "@/utils/books";
 
-const BookCard = ({
+const BookDetailsCard = ({
   book,
-  handleReloadData,
+  handleUpdateBook,
 }: {
   book: Book;
-  handleReloadData?: () => void;
+  handleUpdateBook: (book: Book) => void;
 }) => {
   const { user } = useContext(UserContext);
   const [loading, setLoading] = useState(false);
   const [currentBookData, setCurrentBookData] = useState<Book>(book);
-  const [showModal, setShowModal] = useState(false);
+  const [showSummaryModal, setShowSummaryModal] = useState(false);
+  const [showRetryDownloadModal, setShowRetryDownloadModal] = useState(false);
 
   useEffect(() => {
     setCurrentBookData(book);
   }, [book]);
+
+  const bookCover = book?.cover_img_path
+    ? `${process.env.NEXT_PUBLIC_DJANGO_MEDIA}/${book?.cover_img_path}`
+    : "/card-img.jpg";
+
+  const bookModalTitle = book?.title_2
+    ? book?.title_2.length > 80
+      ? book?.title_2.slice(0, 80) + "..."
+      : book?.title_2
+    : "";
+
+  const onRetryDowload = () => {
+    if (!book) return console.log("No book");
+
+    fetch(`/api/books/download/${book.global_id}`, {
+      method: "GET",
+    })
+      .then(async (resp) => {
+        if (resp.status == 200) {
+          handleUpdateBook({
+            ...book,
+            ...(await resp.json()),
+          });
+        } else {
+          alert("Error, please try again");
+        }
+      })
+      .finally(() => {
+        setShowRetryDownloadModal(false);
+      });
+  };
 
   const onAskForSummary = () => {
     if (loading) return console.log("Loading...");
@@ -48,7 +76,7 @@ const BookCard = ({
 
     if (!currentBookData.can_do_summary)
       return alert("Book is being " + currentBookData.status);
-    setShowModal(true);
+    setShowSummaryModal(true);
   };
 
   const createResume = (creationParams: SumaryCreateParams) => {
@@ -79,21 +107,30 @@ const BookCard = ({
           status: data.status,
           can_do_summary: data.can_do_summary,
         });
-        handleReloadData && handleReloadData();
       })
       .finally(() => {
         setLoading(false);
-        setShowModal(false);
+        setShowSummaryModal(false);
       });
   };
 
   return (
     <div className="bg-white rounded-lg overflow-hidden lg:h-full  lg:w-full">
-      {showModal && (
-        <CustomModal2 handleClose={() => setShowModal(false)}>
+      {showRetryDownloadModal && (
+        <CustomModal2 handleClose={() => setShowRetryDownloadModal(false)}>
+          <RetryDownloadModal
+            bookCover={bookCover}
+            title={bookModalTitle}
+            handleConfirm={onRetryDowload}
+            handleClose={() => setShowRetryDownloadModal(false)}
+          />
+        </CustomModal2>
+      )}
+      {showSummaryModal && (
+        <CustomModal2 handleClose={() => setShowSummaryModal(false)}>
           {currentBookData.can_do_summary ? (
             <SurveyParamsSelector
-              handleClose={() => setShowModal(false)}
+              handleClose={() => setShowSummaryModal(false)}
               handleCreateResume={createResume}
               bookId={book.global_id}
             />
@@ -104,7 +141,7 @@ const BookCard = ({
                 <HiCog className="text-gray-500 animate-spin duration-[1000] h-24 w-24" />
               </div>
               <button
-                onClick={() => setShowModal(false)}
+                onClick={() => setShowSummaryModal(false)}
                 className="bg-white hover:bg-gray-100 text-gray-800 font-semibold py-1 px-4 border border-gray-400 rounded-2xl w-fit "
               >
                 Close
@@ -151,6 +188,17 @@ const BookCard = ({
             )}
           </div>
 
+          {book?.status == "error" ? (
+            <CgSoftwareDownload
+              className="w-6 h-6"
+              onClick={() => setShowRetryDownloadModal(true)}
+            />
+          ) : (
+            <CgHeadset className="w-6 h-6" />
+          )}
+          
+          {bookStatus(book)}
+          
           {user?.is_superuser && (
             <button
               onClick={() => onAskForSummary()}
@@ -174,4 +222,4 @@ const BookCard = ({
   );
 };
 
-export default BookCard;
+export default BookDetailsCard;

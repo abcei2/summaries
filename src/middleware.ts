@@ -21,11 +21,7 @@ export function middleware(req: NextRequest) {
     "/books/details",
   ];
   const adminPaths = [
-    "/",
-    "/profile",
-    "/search",
-    "/mylibrary",
-    "/books/admin/details",
+    ...subscribedPaths,
     "/summary",
   ];
   const fileFormats = [".pdf", ".docx", ".jpg", ".png", ".jpeg"];

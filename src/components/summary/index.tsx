@@ -24,13 +24,18 @@ const SummaryComp = ({
   >([]);
 
   useEffect(() => {
-    if (!summaryId || summary) return console.log("No summaryId", summaryId);
+    if (!summaryId) return console.log("No summaryId", summaryId);
     fetch("/api/summaries/" + summaryId)
       .then((res) => res.json())
       .then((data) => {
         setSummary(data.data);
       });
   }, [summaryId]);
+
+  useEffect(() => {
+    if (!currentSummary) return;
+    setSummary(currentSummary);
+  }, [currentSummary]);
 
   useEffect(() => {
     if (!summary) return console.log("No summary");
@@ -53,7 +58,7 @@ const SummaryComp = ({
     }
   }, [summary]);
 
-  if (!summary) return <LoadingSpin text="Loading summary" />;
+  if (!summary) return null;
 
   return (
     <div className="w-full flex justify-center items-center">

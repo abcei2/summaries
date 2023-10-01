@@ -10,27 +10,23 @@ const MyLibrary = () => {
   const [myBooks, setMyBooks] = useState<Book[]>();
   const [loading, setLoading] = useState(false);
 
+  const subscribeToBook = (status?: string) =>
+    status &&
+    [
+      BOOK_BACKEND_STATUS.QUEUE,
+      BOOK_BACKEND_STATUS.DOWNLOADING,
+      BOOK_BACKEND_STATUS.DOWNLOADED,
+    ].includes(status);
+
   useModelObserver({
     handleData: (data) => {
       setMyBooks(data);
     },
     subscribedData: myBooks?.filter(
-      (book) =>
-        book?.status &&
-        [
-          BOOK_BACKEND_STATUS.QUEUE,
-          BOOK_BACKEND_STATUS.DOWNLOADING,
-          BOOK_BACKEND_STATUS.DOWNLOADED,
-        ].includes(book.status)
+      (book) => book?.status && subscribeToBook(book.status)
     ),
     noSubscribeData: myBooks?.filter(
-      (book) =>
-        !book?.status ||
-        ![
-          BOOK_BACKEND_STATUS.QUEUE,
-          BOOK_BACKEND_STATUS.DOWNLOADING,
-          BOOK_BACKEND_STATUS.DOWNLOADED,
-        ].includes(book.status)
+      (book) => !book?.status || !subscribeToBook(book.status)
     ),
     modelName: "book",
   });

@@ -52,3 +52,10 @@ export const BOOK_BACKEND_STATUS = {
   ERROR: "error",
 };
 
+export const SUMMARY_BACKEND_STATUS = {
+  DONE: "done",
+  RUNNING: "running",
+  QUEUE: "queue",
+  ERROR: "error",
+};
+

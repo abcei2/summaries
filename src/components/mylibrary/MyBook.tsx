@@ -2,12 +2,11 @@ import { useRouter } from "next/router";
 import { Book } from "../../types";
 import { useState } from "react";
 import { CustomModal2 } from "../utils/custommodals";
-import { useContext } from "react";
-import { UserContext } from "@/context/UserContext";
 import { CgHeadset, CgSoftwareDownload } from "react-icons/cg";
 import DeleteModal from "./DeleteModal";
 import RetryDownloadModal from "./RetryDownloadModal";
 import { BOOK_BACKEND_STATUS } from "@/constants";
+import { bookStatus } from "@/utils/books";
 
 const MyBook = ({
   updateBook,
@@ -19,7 +18,6 @@ const MyBook = ({
   const router = useRouter();
   const [showDeleteModal, setShowDeleteModal] = useState(false);
   const [showRetryDownloadModal, setShowRetryDownloadModal] = useState(false);
-  const { user } = useContext(UserContext);
   const bookCover = book?.cover_img_path
     ? `${process.env.NEXT_PUBLIC_DJANGO_MEDIA}/${book?.cover_img_path}`
     : "/card-img.jpg";
@@ -55,35 +53,6 @@ const MyBook = ({
       .finally(() => {
         setShowRetryDownloadModal(false);
       });
-  };
-
-  const bookStatus = () => {
-    switch (book.status) {
-      case BOOK_BACKEND_STATUS.DOWNLOADING:
-        return (
-          <span className="font-bold text-gray-600 mb-2">
-            Downloading {book?.progress + "%"}
-          </span>
-        );
-      case BOOK_BACKEND_STATUS.DOWNLOADED:
-        return (
-          <span className="font-bold text-gray-600 mb-2">Retreiving text</span>
-        );
-      case BOOK_BACKEND_STATUS.EXTRACTED:
-        return null;
-      case BOOK_BACKEND_STATUS.QUEUE:
-        return (
-          <span className="font-bold text-gray-600 mb-2">Waiting in queue</span>
-        );
-      case BOOK_BACKEND_STATUS.ERROR:
-        return (
-          <span className="font-bold text-gray-600 mb-2">Download error</span>
-        );
-      default:
-        return (
-          <span className="font-bold text-gray-600 mb-2">{book?.status}</span>
-        );
-    }
   };
 
   return (
@@ -132,9 +101,7 @@ const MyBook = ({
         </div>
         <div
           onClick={() => {
-            user?.is_superuser
-              ? router.push(`/books/admin/details/${book.global_id}`)
-              : router.push(`/books/details/${book.global_id}`);
+            router.push(`/books/details/${book.global_id}`);
           }}
           className={`w-[150px] sm:w-[200px] rounded-lg shadow-lg border border-2 flex flex-col 
         justify-between h-[300px] duration-500  bg-white`}
@@ -150,7 +117,7 @@ const MyBook = ({
 
           <div className="p-1 text-center overflow-auto">
             <div className="flex flex-col ">
-              {bookStatus()}
+              {bookStatus(book)}
 
               <span className="font-bold text-gray-600 mb-2">
                 {book?.title_2 ? book?.title_2.slice(0, 50) : ""}
