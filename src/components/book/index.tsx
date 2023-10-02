@@ -61,6 +61,14 @@ const MainBookComponent = ({ bookId }: { bookId: string }) => {
     reloadSummaries();
   }, [bookId]);
 
+  useEffect(() => {
+    if (!book) return;
+    console.log("book", book.can_do_summary)
+    if(book.status == BOOK_BACKEND_STATUS.EXTRACTED && book.can_do_summary && !currentSummary){
+      reloadSummaries();
+    }
+  }, [book])
+
   const reloadBook = () => {
     if (!bookId) return console.log("No bookId");
 
@@ -95,6 +103,14 @@ const MainBookComponent = ({ bookId }: { bookId: string }) => {
           }}
         />
       </div>
+      {user && !user.is_staff && !user.is_superuser && user.is_subscribed && (
+        <div className="flex gap-2">
+        {book.can_do_summary}
+          <span>{currentSummary?.state} </span>
+          <span>{currentSummary?.progress}</span>
+        </div>
+      )}
+      
       <div className="w-[90%] lg:w-[80%] flex flex-col gap-2 ">
         {user && (user.is_staff || user.is_superuser) ? (
           <SummaryList summaryList={summaryList ?? []} />

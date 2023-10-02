@@ -34,6 +34,21 @@ const METHODS = [
   }
 ];
 
+const PROMPTS = [
+  {
+    value: "prompt0",
+    label: "prompt 0",
+  },
+  {
+    value: "prompt1",
+    label: "prompt 1",
+  },
+  {
+    value: "prompt2",
+    label: "prompt 2",
+  }
+];
+
 const LENGTHS = [
   {
     value: "short",
@@ -65,13 +80,6 @@ export const PARAMS: SumaryCreateParamFormType[] = [
     costeable: true
   },
   {
-    name: "m2",
-    type: "select",
-    values: MODELS,
-    defaultValue: "gpt-3.5-turbo-16k",
-    costeable: true
-  },
-  {
     name: "length",
     type: "select",
     values: LENGTHS,
@@ -79,23 +87,11 @@ export const PARAMS: SumaryCreateParamFormType[] = [
     costeable: false
   },
   {
-    name: "p1",
-    type: "textarea",
-    defaultValue: "",
+    name: "prompt",
+    type: "select",
+    values: PROMPTS,
+    defaultValue: "prompt0",
     costeable: false
     // defaultValue: "Summarize the text, extract relevant information, explaining themes, key concepts and ideas in a detailed and long summary (not bullet points or numbered).",
-  },
-  {
-    name: "p2",
-    type: "textarea",
-    defaultValue: "",
-    costeable: false
-    //defaultValue: "Give a informative title and summarize the text in three bullet points. The summary must contain insights and relevant ideas.",
-  },
-  {
-    name: "recurrency",
-    type: "number",
-    defaultValue: 5,
-    costeable: false
   }
 ];

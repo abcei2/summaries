@@ -27,26 +27,6 @@ const DefaultSurveyParamsForm = () => {
   ):
     | RegisterOptions<SumaryCreateParams, keyof SumaryCreateParams>
     | undefined => {
-    if (name == "recurrency") {
-      return {
-        required: "Este campo es requerido",
-        valueAsNumber: true,
-        min: {
-          value: 1,
-          message: "El valor mínimo es 1",
-        },
-        max: {
-          value: 10,
-          message: "El valor máximo es 10",
-        },
-        onChange: () => {
-          errors[name] ?? clearErrors(name);
-        },
-      };
-    }
-    if (name == "p1" || name == "p2") {
-      return {};
-    }
     return {
       required: "Este campo es requerido",
       onChange: () => {

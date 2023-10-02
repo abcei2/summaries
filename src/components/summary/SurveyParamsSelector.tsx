@@ -43,26 +43,6 @@ const SurveyParamsSelector = ({
   ):
     | RegisterOptions<SumaryCreateParams, keyof SumaryCreateParams>
     | undefined => {
-    if (name == "recurrency") {
-      return {
-        required: "Este campo es requerido",
-        valueAsNumber: true,
-        min: {
-          value: 1,
-          message: "El valor mínimo es 1",
-        },
-        max: {
-          value: 10,
-          message: "El valor máximo es 10",
-        },
-        onChange: () => {
-          errors[name] ?? clearErrors(name);
-        },
-      };
-    }
-    if (name == "p1" || name == "p2") {
-      return {};
-    }
     return {
       required: "Este campo es requerido",
       onChange: () => {
@@ -80,7 +60,7 @@ const SurveyParamsSelector = ({
   };
 
   const calculateCost = (data: SumaryCreateParams) => {
-    if(loading) return;
+    if (loading) return;
     setLoading(true);
     fetch("/api/summaries/cost", {
       method: "POST",
@@ -102,7 +82,8 @@ const SurveyParamsSelector = ({
       .then((dataJson) => {
         if (!dataJson) return console.log("No data");
         setCurrentCost(dataJson);
-      }).finally(()=>setLoading(false));
+      })
+      .finally(() => setLoading(false));
   };
 
   return (
@@ -112,7 +93,7 @@ const SurveyParamsSelector = ({
     >
       <div className="text-2xl font-bold">Create a new summary</div>
       <span className="text-gray-500 text-center italic text-red-400">
-        {loading?"Loading cost...":currentCost}
+        {loading ? "Loading cost..." : currentCost}
       </span>
       {PARAMS &&
         PARAMS.map((param, index) => (

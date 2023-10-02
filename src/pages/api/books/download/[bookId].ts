@@ -5,13 +5,14 @@ import { UserAuthType } from "@/types";
 async function fn(req: NextApiRequest, res: NextApiResponse, userAuth: UserAuthType) {
   switch (req.method) {
     case "GET":
-      const { bookId } = req.query;
+      const { bookId, do_summary } = req.query;
       if (!bookId) {
         return res.status(400).send("bookId not provided");
       }
+      console.log("do_summary", do_summary==undefined)
       try {
         const response = await fetch(
-          process.env.DJANGO_HOST + `/books/download/${bookId}/`,
+          process.env.DJANGO_HOST + `/books/download/${bookId}/${do_summary ? "?do_summary=True" : ""}`,
           {
             method: "GET",
             headers: {

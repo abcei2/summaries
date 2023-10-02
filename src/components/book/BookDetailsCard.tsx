@@ -8,6 +8,7 @@ import { UserContext } from "@/context/UserContext";
 import { CgHeadset, CgSoftwareDownload } from "react-icons/cg";
 import RetryDownloadModal from "@/components/mylibrary/RetryDownloadModal";
 import { bookStatus } from "@/utils/books";
+import { BOOK_BACKEND_STATUS } from "@/constants";
 
 const BookDetailsCard = ({
   book,
@@ -39,9 +40,16 @@ const BookDetailsCard = ({
   const onRetryDowload = () => {
     if (!book) return console.log("No book");
 
-    fetch(`/api/books/download/${book.global_id}`, {
-      method: "GET",
-    })
+    fetch(
+      `/api/books/download/${book.global_id}${
+        !user?.is_staff && !user?.is_superuser && user?.is_subscribed
+          ? "?do_summary=True"
+          : ""
+      }`,
+      {
+        method: "GET",
+      }
+    )
       .then(async (resp) => {
         if (resp.status == 200) {
           handleUpdateBook({
@@ -196,10 +204,10 @@ const BookDetailsCard = ({
           ) : (
             <CgHeadset className="w-6 h-6" />
           )}
-          
+
           {bookStatus(book)}
-          
-          {user?.is_superuser && (
+
+          {user?.is_superuser && currentBookData.status==BOOK_BACKEND_STATUS.EXTRACTED && (
             <button
               onClick={() => onAskForSummary()}
               className="flex items-center bg-blue-500 hover:bg-blue-700 text-white font-bold py-1 px-4 rounded w-fit self-center lg:self-start "

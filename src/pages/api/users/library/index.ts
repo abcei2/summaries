@@ -2,8 +2,12 @@ import { NextApiRequest, NextApiResponse } from "next";
 import { withAuth } from "@/utils/validator";
 import { UserAuthType } from "@/types";
 
-async function fn(req: NextApiRequest, res: NextApiResponse, userAuth: UserAuthType) {
-  const { id } = req.query;
+async function fn(
+  req: NextApiRequest,
+  res: NextApiResponse,
+  userAuth: UserAuthType
+) {
+  const { do_summary } = req.query;
   switch (req.method) {
     case "POST":
       const { global_id } = req.body;
@@ -12,7 +16,10 @@ async function fn(req: NextApiRequest, res: NextApiResponse, userAuth: UserAuthT
       }
       try {
         const response = await fetch(
-          process.env.DJANGO_HOST + `/my-library/`,
+          process.env.DJANGO_HOST +
+            `/my-library/${
+              do_summary ? "?do_summary=True" : ""
+            }`,
           {
             method: "POST",
             body: JSON.stringify(req.body),
@@ -32,7 +39,7 @@ async function fn(req: NextApiRequest, res: NextApiResponse, userAuth: UserAuthT
       } catch (error) {
         res.status(500).json({ error });
       }
-      break;    
+      break;
     default: //Method Not Allowed
       res.status(405).end();
       break;

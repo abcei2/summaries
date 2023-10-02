@@ -5,8 +5,9 @@ import { CustomModal2 } from "../utils/custommodals";
 import { CgHeadset, CgSoftwareDownload } from "react-icons/cg";
 import DeleteModal from "./DeleteModal";
 import RetryDownloadModal from "./RetryDownloadModal";
-import { BOOK_BACKEND_STATUS } from "@/constants";
 import { bookStatus } from "@/utils/books";
+import { useContext } from "react";
+import { UserContext } from "@/context/UserContext";
 
 const MyBook = ({
   updateBook,
@@ -16,6 +17,7 @@ const MyBook = ({
   updateBook: (book: Book) => void;
 }) => {
   const router = useRouter();
+  const { user } = useContext(UserContext);
   const [showDeleteModal, setShowDeleteModal] = useState(false);
   const [showRetryDownloadModal, setShowRetryDownloadModal] = useState(false);
   const bookCover = book?.cover_img_path
@@ -37,9 +39,16 @@ const MyBook = ({
   };
 
   const onRetryDowload = () => {
-    fetch(`/api/books/download/${book.global_id}`, {
-      method: "GET",
-    })
+    fetch(
+      `/api/books/download/${book.global_id}${
+        !user?.is_staff && !user?.is_superuser && user?.is_subscribed
+          ? "?do_summary=True"
+          : ""
+      }`,
+      {
+        method: "GET",
+      }
+    )
       .then(async (resp) => {
         if (resp.status == 200) {
           updateBook({

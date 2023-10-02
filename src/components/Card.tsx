@@ -29,13 +29,18 @@ const Card = ({ book, className }: { book: Book; className?: string }) => {
   const onAddToLibrary = () => {
     if (loading) return;
     setLoading(true);
-    fetch(`/api/users/library`, {
-      method: "POST",
-      body: JSON.stringify(book),
-      headers: {
-        "Content-Type": "application/json",
-      },
-    })
+    fetch(
+      `/api/users/library?do_summary=${
+        !user?.is_superuser && !user?.is_staff && user?.is_subscribed
+      }`,
+      {
+        method: "POST",
+        body: JSON.stringify(book),
+        headers: {
+          "Content-Type": "application/json",
+        },
+      }
+    )
       .then((res) => res.json())
       .then((data) => {
         setBookStatus(data);
@@ -92,11 +97,7 @@ const Card = ({ book, className }: { book: Book; className?: string }) => {
       {bookStatus.in_my_library ? (
         <a
           className={`w-full h-10 bg-gray-100 rounded-b-lg flex justify-center items-center text-black`}
-          href={
-            user?.is_staff || user?.is_superuser
-              ? `/books/admin/details/${book.global_id}`
-              : `/books/details/${book.global_id}`
-          }
+          href={`/books/details/${book.global_id}`}
         >
           In my library
         </a>
