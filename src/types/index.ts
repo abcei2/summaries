@@ -68,6 +68,7 @@ export type SumaryCreateParamFormType = {
 }
 
 export type SummaryType = {
+  id: string;
   book: string;
   text: string | null;
   method: string | null;

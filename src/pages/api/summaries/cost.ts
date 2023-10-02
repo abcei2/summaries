@@ -8,26 +8,16 @@ async function fn(req: NextApiRequest, res: NextApiResponse, userAuth: UserAuthT
       const {
         bookId,
         m1,
-        m2,
         method,
       }: SumaryCreateParams = req.body;
 
       if (!bookId) {
         return res.status(400).send("bookId not provided");
       }
-      if (!m1) {
-        return res.status(400).send("m1 not provided");
-      }
-      if (!m2) {
-        return res.status(400).send("m2 not provided");
-      }
-      if (!method) {
-        return res.status(400).send("method not provided");
-      }
       try {
         const response = await fetch(
           process.env.DJANGO_HOST +
-            `/get-cost/?book_id=${bookId}&m1=${m1}&m2=${m2}&method=${method}`,
+            `/get-cost/?book_id=${bookId}&m1=${m1}&method=${method}`,
           {
             method: "GET",
             headers: {
