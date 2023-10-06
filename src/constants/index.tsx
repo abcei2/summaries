@@ -20,8 +20,13 @@ export const USER_TABS = [
   },
   {
     pathname: "/search",
-    label: "Search",
+    label: "Search/Upload",
     icon: SearchIcon,
+  },
+  {
+    pathname: "/highlights",
+    label: "Highlights",
+    icon: HighlightsIcon,
   },
 ];
 
@@ -35,13 +40,17 @@ export const MENU_SETTINGS = [
   //     icon:HighlightsIcon
   // },
   {
-    label: "Settings",
-    icon: SettingsIcon,
+    label: "My account",
+    icon: UserIcon,
   },
-  // {
-  //     label:"Suport",
-  //     icon:SupportIcon
-  // }
+   {
+    label:"Suport",
+    icon:SupportIcon,
+   },
+  {
+    label:"User experience survey",
+    icon:ArticleIcon,
+  },
 ];
 // Used to manage the book's status comming from the backend
 export const BOOK_BACKEND_STATUS = {

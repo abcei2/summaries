@@ -69,7 +69,7 @@ export const PARAMS: SumaryCreateParamFormType[] = [
     name: "method",
     type: "select",
     values: METHODS,
-    defaultValue: "sections2",
+    defaultValue: "sections_refine",
     costeable: true
   },
   {
@@ -90,7 +90,7 @@ export const PARAMS: SumaryCreateParamFormType[] = [
     name: "prompt",
     type: "select",
     values: PROMPTS,
-    defaultValue: "prompt0",
+    defaultValue: "prompt1",
     costeable: false
     // defaultValue: "Summarize the text, extract relevant information, explaining themes, key concepts and ideas in a detailed and long summary (not bullet points or numbered).",
   }

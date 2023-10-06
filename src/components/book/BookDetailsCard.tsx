@@ -83,7 +83,7 @@ const BookDetailsCard = ({
       .finally(() => setLoading(false));
 
     if (!currentBookData.can_do_summary)
-      return alert("Book is being " + currentBookData.status);
+      return alert("The Summary is being " + currentBookData.status);
     setShowSummaryModal(true);
   };
 
@@ -218,7 +218,7 @@ const BookDetailsCard = ({
                   <HiCog className="text-gray-500 animate-spin duration-[1000] h-10 w-10" />
                 </div>
               ) : (
-                <span>Ask for summary</span>
+                <span>Generate summary</span>
               )}
             </button>
           )}
