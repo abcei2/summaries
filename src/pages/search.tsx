@@ -2,12 +2,13 @@ import Card from "@/components/Card";
 import { HiSearch, HiCog } from "react-icons/hi";
 import { useState } from "react";
 import { Book } from "../types";
+import { HiUpload } from 'react-icons/hi';
 
 export default function Home() {
   const [books, setBooks] = useState<Book[]>();
   const [searching, setSearching] = useState(false);
   const [searchTerm, setSearchTerm] = useState("");
-
+  const [hasSearched, setHasSearched] = useState(false);
   const onSearch = () => {
     if (searchTerm.length >= 2) {
       setSearching(true);
@@ -18,10 +19,41 @@ export default function Home() {
           setBooks(data.data);
         })
         .finally(() => setSearching(false));
+        setHasSearched(true);
     } else {
       alert("Please enter at least 2 characters");
     }
   };
+
+  // Function to handle document upload
+  const handleDocumentUpload = async (e) => {
+    const file = e.target.files[0];
+    if (!file) return;
+  
+    // Create FormData and append the file
+    const formData = new FormData();
+    formData.append("document", file);
+  
+    try {
+      const response = await fetch("/upload_doc", {
+        method: "POST",
+        body: formData,
+      });
+  
+      if (response.ok) {
+        const data = await response.json();
+        // Handle successful upload
+        console.log("1111");
+      } else {
+        // Handle error
+        console.log("22222");
+      }
+    } catch (error) {
+      // Handle fetch error
+      console.log("33333");
+    }
+  };
+  
 
   return (
     <div className="w-full flex flex-col gap-6 items-center">
@@ -42,6 +74,21 @@ export default function Home() {
         >
           <HiSearch className="hover:scale-125 duration-300 hover:animate-pulse" />
         </button>
+
+        
+        <div className="w-1 h-10 bg-white"></div>
+
+
+        <label className="w-10 h-10 bg-primary rounded flex justify-center items-center cursor-pointer">
+          <input 
+            type="file"
+            className="hidden"
+            onChange={handleDocumentUpload}
+          />
+          <HiUpload className="hover:scale-125 duration-300 hover:animate-pulse" />
+        </label>
+        
+
       </div>
       {books && books.length > 0 ? (
         <div className="w-full xl:w-[90%] grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 overflow-auto">
@@ -54,15 +101,14 @@ export default function Home() {
           ))}
         </div>
       ) : searching ? (
-        <div className="w-full h-full  text-center text-2xl text-gray-500 flex flex-col items-center gap-2">
+        <div className="w-full h-full text-center text-2xl text-gray-500 flex flex-col items-center gap-2">
           <span>Searching...</span>
           <HiCog className="animate-spin duration-[3000] h-12 w-12" />
         </div>
-      ) : (
-        <div className="w-full h-full  text-center text-2xl text-gray-500">
-          No books found
-        </div>
-      )}
+      ) : hasSearched ? (
+        <div className="w-full h-full text-center text-2xl text-gray-500">No books found</div>
+      ) : null}
+
     </div>
   );
 }

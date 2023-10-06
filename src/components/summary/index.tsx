@@ -1,7 +1,9 @@
 import LoadingSpin from "@/components/utils/LoadingSpin";
 import { SummaryType } from "@/types";
 import { useRouter } from "next/router";
-import { useEffect, useState } from "react";
+import React, { useEffect, useState, useRef } from 'react';
+import { HighlightsIcon } from 'src/icons/Index.tsx';
+
 
 const SummaryComp = ({
   summaryId,
@@ -22,6 +24,63 @@ const SummaryComp = ({
       summary: string;
     }[]
   >([]);
+
+  const [floatingButtonPos, setFloatingButtonPos] = useState({ top: 0, left: 0 });
+  const [selectedText, setSelectedText] = useState('');
+  const floatingBtnRef = useRef(null);
+
+  const handleTextSelection = () => {
+    const selected = window.getSelection().toString().trim();
+    setSelectedText(selected);
+    if (selected.length > 0) {
+      const range = window.getSelection().getRangeAt(0);
+      const rect = range.getBoundingClientRect();
+      setFloatingButtonPos({
+        top: rect.top + window.scrollY - 40,
+        left: rect.right,
+      });
+    }
+  };
+
+  const updateFloatingButtonPosOnScroll = () => {
+    if (floatingBtnRef.current) {
+      const rect = floatingBtnRef.current.getBoundingClientRect();
+      setFloatingButtonPos({
+        top: rect.top + window.scrollY,
+        left: rect.right,
+      });
+    }
+  };
+
+  useEffect(() => {
+    document.addEventListener('mouseup', handleTextSelection);
+    window.addEventListener('scroll', updateFloatingButtonPosOnScroll);
+    
+    return () => {
+      document.removeEventListener('mouseup', handleTextSelection);
+      window.removeEventListener('scroll', updateFloatingButtonPosOnScroll);
+    };
+  }, []);
+
+  
+
+  const handleHighlightClick = async () => {
+    const response = await fetch('/django_endpoint/', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({ highlighted_text: selectedText }),
+    });
+    // Handle response
+  };
+
+  useEffect(() => {
+    document.addEventListener('mouseup', handleTextSelection);
+    return () => {
+      document.removeEventListener('mouseup', handleTextSelection);
+    };
+  }, []);
 
   useEffect(() => {
     if (!summaryId) return console.log("No summaryId", summaryId);
@@ -96,13 +155,30 @@ const SummaryComp = ({
                   <div className="font-bold text-2xl text-center">
                     {item.title}
                   </div>
-                  <div className="text-justify">{item.summary}</div>
+                <div className="text-justify">{item.summary}</div>
                 </div>
               ))
             : summary.text}
         </div>
+         {/* Floating button */}
+         {selectedText && (
+      <div
+        ref={floatingBtnRef}
+        style={{
+          position: 'absolute',
+          top: `${floatingButtonPos.top}px`,
+          left: `${floatingButtonPos.left}px`,
+        }}
+      >
+        <button onClick={handleHighlightClick}>
+        {HighlightsIcon}
+        </button>
       </div>
+    )}
+      </div>
+      
     </div>
+    
   );
 };
 
