@@ -35,7 +35,7 @@ export default function Home() {
     formData.append("document", file);
   
     try {
-      const response = await fetch("/upload_doc", {
+      const response = await fetch("api/upload_doc", {
         method: "POST",
         body: formData,
       });
@@ -46,10 +46,12 @@ export default function Home() {
         console.log("1111");
       } else {
         // Handle error
+        console.log(response);
         console.log("22222");
       }
     } catch (error) {
       // Handle fetch error
+      console.log(error);
       console.log("33333");
     }
   };
