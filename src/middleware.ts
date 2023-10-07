@@ -24,7 +24,7 @@ export function middleware(req: NextRequest) {
     ...subscribedPaths,
     "/summary",
   ];
-  const fileFormats = [".pdf", ".docx", ".jpg", ".png", ".jpeg"];
+  const fileFormats = [".pdf", ".docx", ".jpg", ".png", ".jpeg",".svg"];
 
   const nextSlashUrl =
     req.nextUrl.pathname != "/"

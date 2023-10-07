@@ -63,8 +63,9 @@ const MainBookComponent = ({ bookId }: { bookId: string }) => {
 
   useEffect(() => {
     if (!book) return;
-    console.log("book", book.can_do_summary)
-    if(book.status == BOOK_BACKEND_STATUS.EXTRACTED && book.can_do_summary && !currentSummary){
+    console.log("Book changed", book)
+    console.log("Current summary", currentSummary)
+    if(book.status == BOOK_BACKEND_STATUS.EXTRACTED && !book.can_do_summary && !currentSummary){
       reloadSummaries();
     }
   }, [book])
