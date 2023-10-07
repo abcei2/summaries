@@ -224,3 +224,4 @@ export const HeadsetIcon = (
     <path d="M4 15v-3a8 8 0 0 1 16 0v3"></path>
   </svg>
 );
+
