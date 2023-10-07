@@ -17,7 +17,7 @@ async function uploadDoc(req: NextApiRequest, res: NextApiResponse, userAuth: Us
     const form = new formidable.IncomingForm();
     form.maxFileSize = MAX_FILE_SIZE;
 
-    form.parse(req, async (err, fields, files) => {
+    form.parse(req, async (err: { message: string | string[]; }, fields: any, files: { document: any[]; }) => {
       if (err) {
         if (err.message.includes("maxFileSize exceeded")) {
           return res.status(400).json({ message: "Max 10MB allowed" });
@@ -25,11 +25,12 @@ async function uploadDoc(req: NextApiRequest, res: NextApiResponse, userAuth: Us
         return res.status(500).json({ err });
       }
 
-      const document = files.document;
+      const documents = files.document;
 
-      if (!document) {
+      if (!documents || documents.length === 0) {
         return res.status(400).json({ status: "error", message: "No document provided" });
       }
+      const document = documents[0];
       console.log('Document:', document);
       console.log('Original Filename:', document.originalFilename);
 
