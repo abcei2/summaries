@@ -2,17 +2,25 @@ import { NextApiRequest, NextApiResponse } from "next";
 import { withAuth } from "@/utils/validator";
 import { UserAuthType } from "@/types";
 
-async function fn(req: NextApiRequest, res: NextApiResponse, userAuth: UserAuthType) {
+async function fn(
+  req: NextApiRequest,
+  res: NextApiResponse,
+  userAuth: UserAuthType
+) {
   switch (req.method) {
     case "GET":
-      const { bookId, do_summary } = req.query;
+      const { bookId } = req.query;
       if (!bookId) {
         return res.status(400).send("bookId not provided");
       }
-      console.log("do_summary", do_summary==undefined)
       try {
         const response = await fetch(
-          process.env.DJANGO_HOST + `/books/download/${bookId}/${do_summary ? "?do_summary=True" : ""}`,
+          process.env.DJANGO_HOST +
+            `/books/download/${bookId}/${
+              !userAuth.is_staff && userAuth.is_superuser
+                ? "?do_summary=True"
+                : ""
+            }`,
           {
             method: "GET",
             headers: {

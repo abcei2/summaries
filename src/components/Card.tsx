@@ -30,9 +30,7 @@ const Card = ({ book, className }: { book: Book; className?: string }) => {
     if (loading) return;
     setLoading(true);
     fetch(
-      `/api/users/library?do_summary=${
-        !user?.is_superuser && !user?.is_staff && user?.is_subscribed
-      }`,
+      `/api/users/library`,
       {
         method: "POST",
         body: JSON.stringify(book),

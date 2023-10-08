@@ -7,7 +7,6 @@ async function fn(
   res: NextApiResponse,
   userAuth: UserAuthType
 ) {
-  const { do_summary } = req.query;
   switch (req.method) {
     case "POST":
       const { global_id } = req.body;
@@ -18,7 +17,7 @@ async function fn(
         const response = await fetch(
           process.env.DJANGO_HOST +
             `/my-library/${
-              do_summary ? "?do_summary=True" : ""
+              !userAuth.is_staff && userAuth.is_superuser ? "?do_summary=True" : ""
             }`,
           {
             method: "POST",

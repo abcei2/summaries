@@ -40,11 +40,7 @@ const MyBook = ({
 
   const onRetryDowload = () => {
     fetch(
-      `/api/books/download/${book.global_id}${
-        !user?.is_staff && !user?.is_superuser && user?.is_subscribed
-          ? "?do_summary=True"
-          : ""
-      }`,
+      `/api/books/download/${book.global_id}`,
       {
         method: "GET",
       }

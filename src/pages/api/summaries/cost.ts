@@ -17,7 +17,7 @@ async function fn(req: NextApiRequest, res: NextApiResponse, userAuth: UserAuthT
       try {
         const response = await fetch(
           process.env.DJANGO_HOST +
-            `/get-cost/?book_id=${bookId}&m1=${m1}&method=${method}`,
+            `/get-cost/?book_id=${bookId}&m1=${m1}&m2=${m1}&method=${method}`,
           {
             method: "GET",
             headers: {
