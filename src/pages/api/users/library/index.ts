@@ -17,7 +17,7 @@ async function fn(
         const response = await fetch(
           process.env.DJANGO_HOST +
             `/my-library/${
-              !userAuth.is_staff && userAuth.is_superuser ? "?do_summary=True" : ""
+              !userAuth.is_superuser && userAuth.is_subscribed ? "?do_summary=True" : ""
             }`,
           {
             method: "POST",

@@ -14,9 +14,13 @@ const MainBookComponent = ({ bookId }: { bookId: string }) => {
   const [summaryList, setSummaryList] = useState<SummaryType[]>();
   const { user } = useContext(UserContext);
 
-  const currentSummary = summaryList?.find(
+  const currentShowSummary = summaryList?.find(
     (summary) => summary?.method != "dummy"
   );
+
+  const lastSummary = summaryList?.sort(
+    (a, b) => new Date(b.created_at).getTime() - new Date(a.created_at).getTime()
+  )[0];
 
   const subscribeToBook =
     book &&
@@ -25,7 +29,7 @@ const MainBookComponent = ({ bookId }: { bookId: string }) => {
       BOOK_BACKEND_STATUS.QUEUE,
       BOOK_BACKEND_STATUS.DOWNLOADING,
       BOOK_BACKEND_STATUS.DOWNLOADED,
-    ].includes(book.status);
+    ].includes(book.status) 
 
   const subscribeToSummary = (state: string) =>
     [SUMMARY_BACKEND_STATUS.QUEUE, SUMMARY_BACKEND_STATUS.RUNNING].includes(
@@ -63,12 +67,20 @@ const MainBookComponent = ({ bookId }: { bookId: string }) => {
 
   useEffect(() => {
     if (!book) return;
-    console.log("Book changed", book)
-    console.log("Current summary", currentSummary)
-    if(book.status == BOOK_BACKEND_STATUS.EXTRACTED && !book.can_do_summary && !currentSummary){
+    console.log("Book changed", book.status);
+    console.log("Current summary", currentShowSummary?.state);
+    
+    if (
+      book.status == BOOK_BACKEND_STATUS.EXTRACTED &&
+      !book.can_do_summary &&
+      !currentShowSummary &&
+      !user?.is_superuser &&
+      user?.is_subscribed
+    ) {
+      console.log("RELOAD SUMMARIES");
       reloadSummaries();
     }
-  }, [book])
+  }, [book]);
 
   const reloadBook = () => {
     if (!bookId) return console.log("No bookId");
@@ -96,6 +108,8 @@ const MainBookComponent = ({ bookId }: { bookId: string }) => {
       <div className="w-[90%] lg:w-[80%] flex flex-col gap-2 ">
         <BookDetailsCard
           book={book}
+          lastSummary={lastSummary}
+          reloadSummaries={reloadSummaries}
           handleUpdateBook={(newBook) => {
             setBook({
               ...book,
@@ -106,17 +120,17 @@ const MainBookComponent = ({ bookId }: { bookId: string }) => {
       </div>
       {user && !user.is_staff && !user.is_superuser && user.is_subscribed && (
         <div className="flex gap-2">
-        {book.can_do_summary}
-          <span>{currentSummary?.state} </span>
-          <span>{currentSummary?.progress}</span>
+          {book.can_do_summary}
+          <span>{currentShowSummary?.state} </span>
+          <span>{currentShowSummary?.progress}</span>
         </div>
       )}
-      
+
       <div className="w-[90%] lg:w-[80%] flex flex-col gap-2 ">
         {user && (user.is_staff || user.is_superuser) ? (
           <SummaryList summaryList={summaryList ?? []} />
         ) : (
-          <SummaryComp currentSummary={currentSummary} />
+          <SummaryComp currentShowSummary={currentShowSummary} />
         )}
       </div>
     </div>

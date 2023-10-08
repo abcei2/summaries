@@ -10,7 +10,7 @@ import {
   SettingsIcon,
   SupportIcon,
   UserIcon,
-} from "@/icons/Index";
+} from "@/customIcons";
 
 export const USER_TABS = [
   {

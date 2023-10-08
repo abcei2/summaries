@@ -26,10 +26,9 @@ export default function Home() {
   };
 
   // Function to handle document upload
-  const handleDocumentUpload = async (e) => {
-    const file = e.target.files[0];
-    if (!file) return;
-  
+  const handleDocumentUpload = async (e: React.ChangeEvent<HTMLInputElement>) => {
+    const file = e.target.files?.[0];
+    if (!file) return;  
     // Create FormData and append the file
     const formData = new FormData();
     formData.append("document", file);

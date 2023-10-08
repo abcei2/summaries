@@ -1,5 +1,5 @@
 "use client";
-import { ArrowIcon, UserIcon } from "@/icons/Index";
+import { ArrowIcon, UserIcon } from "@/customIcons";
 import { useState } from "react";
 import MenuItems from "./IndexMenu";
 

@@ -1,4 +1,4 @@
-import { HeadsetIcon } from "@/icons/Index";
+import { HeadsetIcon } from "../customIcons";
 import { useState } from "react";
 import { Book } from "../types";
 import { useEffect } from "react";

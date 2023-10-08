@@ -1,6 +1,6 @@
 import { useState, useEffect } from "react";
 import { HiCog } from "react-icons/hi";
-import { Book, SumaryCreateParams } from "../../types";
+import { Book, SumaryCreateParams, SummaryType } from "../../types";
 import { CustomModal2 } from "../utils/custommodals";
 import SurveyParamsSelector from "../summary/SurveyParamsSelector";
 import { useContext } from "react";
@@ -8,24 +8,23 @@ import { UserContext } from "@/context/UserContext";
 import { CgHeadset, CgSoftwareDownload } from "react-icons/cg";
 import RetryDownloadModal from "@/components/mylibrary/RetryDownloadModal";
 import { bookStatus } from "@/utils/books";
-import { BOOK_BACKEND_STATUS } from "@/constants";
+import { BOOK_BACKEND_STATUS, SUMMARY_BACKEND_STATUS } from "@/constants";
 
 const BookDetailsCard = ({
   book,
   handleUpdateBook,
+  reloadSummaries,
+  lastSummary
 }: {
   book: Book;
   handleUpdateBook: (book: Book) => void;
+  reloadSummaries: () => void;
+  lastSummary?: SummaryType;
 }) => {
   const { user } = useContext(UserContext);
   const [loading, setLoading] = useState(false);
-  const [currentBookData, setCurrentBookData] = useState<Book>(book);
   const [showSummaryModal, setShowSummaryModal] = useState(false);
   const [showRetryDownloadModal, setShowRetryDownloadModal] = useState(false);
-
-  useEffect(() => {
-    setCurrentBookData(book);
-  }, [book]);
 
   const bookCover = book?.cover_img_path
     ? `${process.env.NEXT_PUBLIC_DJANGO_MEDIA}/${book?.cover_img_path}`
@@ -74,12 +73,12 @@ const BookDetailsCard = ({
       })
       .then((data) => {
         console.log(data);
-        setCurrentBookData(data.data);
+        handleUpdateBook(data.data);
       })
       .finally(() => setLoading(false));
 
-    if (!currentBookData.can_do_summary)
-      return alert("The Summary is being " + currentBookData.status);
+    if (!book.can_do_summary)
+      return alert("The Summary is being " + book.status);
     setShowSummaryModal(true);
   };
 
@@ -106,11 +105,8 @@ const BookDetailsCard = ({
       })
       .then((data) => {
         if (!data) return console.log("No data");
-        setCurrentBookData({
-          ...currentBookData,
-          status: data.status,
-          can_do_summary: data.can_do_summary,
-        });
+        console.log("createsummari, reload",data)
+        reloadSummaries();
       })
       .finally(() => {
         setLoading(false);
@@ -132,7 +128,7 @@ const BookDetailsCard = ({
       )}
       {showSummaryModal && (
         <CustomModal2 handleClose={() => setShowSummaryModal(false)}>
-          {currentBookData.can_do_summary ? (
+          {book.can_do_summary ? (
             <SurveyParamsSelector
               handleClose={() => setShowSummaryModal(false)}
               handleCreateResume={createResume}
@@ -203,12 +199,12 @@ const BookDetailsCard = ({
 
           {bookStatus(book)}
 
-          {user?.is_superuser && currentBookData.status==BOOK_BACKEND_STATUS.EXTRACTED && (
+          {user?.is_superuser && book.status==BOOK_BACKEND_STATUS.EXTRACTED && (
             <button
               onClick={() => onAskForSummary()}
               className="flex items-center bg-blue-500 hover:bg-blue-700 text-white font-bold py-1 px-4 rounded w-fit self-center lg:self-start "
             >
-              {!currentBookData.can_do_summary ? (
+              {lastSummary && lastSummary.state != SUMMARY_BACKEND_STATUS.DONE ? (
                 <div className="flex items-center justify-center">
                   Loading{" "}
                   <HiCog className="text-gray-500 animate-spin duration-[1000] h-10 w-10" />

@@ -1,21 +1,20 @@
 import LoadingSpin from "@/components/utils/LoadingSpin";
+import { HighlightsIcon } from "@/customIcons";
 import { SummaryType } from "@/types";
 import { useRouter } from "next/router";
-import React, { useEffect, useState, useRef } from 'react';
-import { HighlightsIcon } from 'src/icons/Index.tsx';
-
+import React, { useEffect, useState, useRef } from "react";
 
 const SummaryComp = ({
   summaryId,
-  currentSummary,
+  currentShowSummary,
   showDetails,
 }: {
   summaryId?: string;
-  currentSummary?: SummaryType;
+  currentShowSummary?: SummaryType;
   showDetails?: boolean;
 }) => {
   const [summary, setSummary] = useState<SummaryType | undefined>(
-    currentSummary
+    currentShowSummary
   );
 
   const [content, setContent] = useState<
@@ -25,15 +24,21 @@ const SummaryComp = ({
     }[]
   >([]);
 
-  const [floatingButtonPos, setFloatingButtonPos] = useState({ top: 0, left: 0 });
-  const [selectedText, setSelectedText] = useState('');
-  const floatingBtnRef = useRef(null);
+  const [floatingButtonPos, setFloatingButtonPos] = useState({
+    top: 0,
+    left: 0,
+  });
+  const [selectedText, setSelectedText] = useState("");
+  const floatingBtnRef: React.MutableRefObject<HTMLDivElement | null> =
+    useRef(null);
 
   const handleTextSelection = () => {
-    const selected = window.getSelection().toString().trim();
+    const selected = window?.getSelection()?.toString().trim();
+    if (!selected) return;
     setSelectedText(selected);
     if (selected.length > 0) {
-      const range = window.getSelection().getRangeAt(0);
+      const range = window?.getSelection()?.getRangeAt(0);
+      if (!range) return console.log("No range");
       const rect = range.getBoundingClientRect();
       setFloatingButtonPos({
         top: rect.top + window.scrollY - 40,
@@ -53,22 +58,20 @@ const SummaryComp = ({
   };
 
   useEffect(() => {
-    document.addEventListener('mouseup', handleTextSelection);
-    window.addEventListener('scroll', updateFloatingButtonPosOnScroll);
-    
+    document.addEventListener("mouseup", handleTextSelection);
+    window.addEventListener("scroll", updateFloatingButtonPosOnScroll);
+
     return () => {
-      document.removeEventListener('mouseup', handleTextSelection);
-      window.removeEventListener('scroll', updateFloatingButtonPosOnScroll);
+      document.removeEventListener("mouseup", handleTextSelection);
+      window.removeEventListener("scroll", updateFloatingButtonPosOnScroll);
     };
   }, []);
 
-  
-
   const handleHighlightClick = async () => {
-    const response = await fetch('/django_endpoint/', {
-      method: 'POST',
+    const response = await fetch("/django_endpoint/", {
+      method: "POST",
       headers: {
-        'Content-Type': 'application/json',
+        "Content-Type": "application/json",
       },
       body: JSON.stringify({ highlighted_text: selectedText }),
     });
@@ -76,9 +79,9 @@ const SummaryComp = ({
   };
 
   useEffect(() => {
-    document.addEventListener('mouseup', handleTextSelection);
+    document.addEventListener("mouseup", handleTextSelection);
     return () => {
-      document.removeEventListener('mouseup', handleTextSelection);
+      document.removeEventListener("mouseup", handleTextSelection);
     };
   }, []);
 
@@ -92,9 +95,9 @@ const SummaryComp = ({
   }, [summaryId]);
 
   useEffect(() => {
-    if (!currentSummary) return;
-    setSummary(currentSummary);
-  }, [currentSummary]);
+    if (!currentShowSummary) return;
+    setSummary(currentShowSummary);
+  }, [currentShowSummary]);
 
   useEffect(() => {
     if (!summary) return console.log("No summary");
@@ -155,30 +158,26 @@ const SummaryComp = ({
                   <div className="font-bold text-2xl text-center">
                     {item.title}
                   </div>
-                <div className="text-justify">{item.summary}</div>
+                  <div className="text-justify">{item.summary}</div>
                 </div>
               ))
             : summary.text}
         </div>
-         {/* Floating button */}
-         {selectedText && (
-      <div
-        ref={floatingBtnRef}
-        style={{
-          position: 'absolute',
-          top: `${floatingButtonPos.top}px`,
-          left: `${floatingButtonPos.left}px`,
-        }}
-      >
-        <button onClick={handleHighlightClick}>
-        {HighlightsIcon}
-        </button>
+        {/* Floating button */}
+        {selectedText && (
+          <div
+            ref={floatingBtnRef}
+            style={{
+              position: "absolute",
+              top: `${floatingButtonPos.top}px`,
+              left: `${floatingButtonPos.left}px`,
+            }}
+          >
+            <button onClick={handleHighlightClick}>{HighlightsIcon}</button>
+          </div>
+        )}
       </div>
-    )}
-      </div>
-      
     </div>
-    
   );
 };
 

@@ -1,6 +1,6 @@
 import { MENU_SETTINGS } from "@/constants";
 import { UserContext } from "@/context/UserContext";
-import { LogOutIcon } from "@/icons/Index";
+import { LogOutIcon } from "@/customIcons";
 import { ReactNode } from "react";
 import { useContext } from "react";
 import { useRouter } from "next/router";

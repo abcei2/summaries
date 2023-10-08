@@ -17,7 +17,7 @@ async function fn(
         const response = await fetch(
           process.env.DJANGO_HOST +
             `/books/download/${bookId}/${
-              !userAuth.is_staff && userAuth.is_superuser
+              !userAuth.is_superuser && userAuth.is_subscribed
                 ? "?do_summary=True"
                 : ""
             }`,
