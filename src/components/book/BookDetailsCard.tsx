@@ -2,19 +2,21 @@ import { useState, useEffect } from "react";
 import { HiCog } from "react-icons/hi";
 import { Book, SumaryCreateParams, SummaryType } from "../../types";
 import { CustomModal2 } from "../utils/custommodals";
-import SurveyParamsSelector from "../summary/SurveyParamsSelector";
+import SummaryParamsSelector from "../summary/SummaryParamsSelector";
 import { useContext } from "react";
 import { UserContext } from "@/context/UserContext";
 import { CgHeadset, CgSoftwareDownload } from "react-icons/cg";
 import RetryDownloadModal from "@/components/mylibrary/RetryDownloadModal";
 import { bookStatus } from "@/utils/books";
 import { BOOK_BACKEND_STATUS, SUMMARY_BACKEND_STATUS } from "@/constants";
+import SubscribedSummaryRequest from "@/components/summary/SubscribedSummaryRequest";
+import { DEFAULT_SUMMARY_PARAMS } from "@/constants/model";
 
 const BookDetailsCard = ({
   book,
   handleUpdateBook,
   reloadSummaries,
-  lastSummary
+  lastSummary,
 }: {
   book: Book;
   handleUpdateBook: (book: Book) => void;
@@ -39,12 +41,9 @@ const BookDetailsCard = ({
   const onRetryDowload = () => {
     if (!book) return console.log("No book");
 
-    fetch(
-      `/api/books/download/${book.global_id}$`,
-      {
-        method: "GET",
-      }
-    )
+    fetch(`/api/books/download/${book.global_id}$`, {
+      method: "GET",
+    })
       .then(async (resp) => {
         if (resp.status == 200) {
           handleUpdateBook({
@@ -62,7 +61,11 @@ const BookDetailsCard = ({
 
   const onAskForSummary = () => {
     if (loading) return console.log("Loading...");
+    if (!book.can_do_summary)
+      return alert("The Summary is being " + book.status);
+
     setLoading(true);
+
     fetch("/api/books/" + book.global_id, {
       method: "GET",
     })
@@ -74,12 +77,9 @@ const BookDetailsCard = ({
       .then((data) => {
         console.log(data);
         handleUpdateBook(data.data);
+        if (data.data.can_do_summary) setShowSummaryModal(true);
       })
       .finally(() => setLoading(false));
-
-    if (!book.can_do_summary)
-      return alert("The Summary is being " + book.status);
-    setShowSummaryModal(true);
   };
 
   const createResume = (creationParams: SumaryCreateParams) => {
@@ -105,13 +105,51 @@ const BookDetailsCard = ({
       })
       .then((data) => {
         if (!data) return console.log("No data");
-        console.log("createsummari, reload",data)
+        console.log("createsummari, reload", data);
         reloadSummaries();
       })
       .finally(() => {
         setLoading(false);
         setShowSummaryModal(false);
       });
+  };
+
+  const summaryModalChildren = () => {
+    if (!book.can_do_summary)
+      return (
+        <div className="flex flex-col gap-4 bg-white h-fit rounded-lg p-2 w-full">
+          <div className="text-2xl font-bold">Working on it</div>
+          <div className="flex items-center justify-center h-64">
+            <HiCog className="text-gray-500 animate-spin duration-[1000] h-24 w-24" />
+          </div>
+          <button
+            onClick={() => setShowSummaryModal(false)}
+            className="bg-white hover:bg-gray-100 text-gray-800 font-semibold py-1 px-4 border border-gray-400 rounded-2xl w-fit "
+          >
+            Close
+          </button>
+        </div>
+      );
+    else if (user?.is_superuser) {
+      return (
+        <SummaryParamsSelector
+          handleClose={() => setShowSummaryModal(false)}
+          handleCreateResume={(creationParams: SumaryCreateParams) =>
+            createResume(creationParams)
+          }
+          bookId={book.global_id}
+        />
+      );
+    } else if (!user?.is_superuser && user?.is_subscribed) {
+      return (
+        <SubscribedSummaryRequest
+          handleClose={() => setShowSummaryModal(false)}
+          handleConfirm={() => createResume(DEFAULT_SUMMARY_PARAMS)}
+          title={bookModalTitle}
+          bookCover={bookCover}
+        />
+      );
+    }
   };
 
   return (
@@ -128,26 +166,7 @@ const BookDetailsCard = ({
       )}
       {showSummaryModal && (
         <CustomModal2 handleClose={() => setShowSummaryModal(false)}>
-          {book.can_do_summary ? (
-            <SurveyParamsSelector
-              handleClose={() => setShowSummaryModal(false)}
-              handleCreateResume={createResume}
-              bookId={book.global_id}
-            />
-          ) : (
-            <div className="flex flex-col gap-4 bg-white h-fit rounded-lg p-2 w-full">
-              <div className="text-2xl font-bold">Working on it</div>
-              <div className="flex items-center justify-center h-64">
-                <HiCog className="text-gray-500 animate-spin duration-[1000] h-24 w-24" />
-              </div>
-              <button
-                onClick={() => setShowSummaryModal(false)}
-                className="bg-white hover:bg-gray-100 text-gray-800 font-semibold py-1 px-4 border border-gray-400 rounded-2xl w-fit "
-              >
-                Close
-              </button>
-            </div>
-          )}
+          {summaryModalChildren()}
         </CustomModal2>
       )}
 
@@ -199,21 +218,24 @@ const BookDetailsCard = ({
 
           {bookStatus(book)}
 
-          {user?.is_superuser && book.status==BOOK_BACKEND_STATUS.EXTRACTED && (
-            <button
-              onClick={() => onAskForSummary()}
-              className="flex items-center bg-blue-500 hover:bg-blue-700 text-white font-bold py-1 px-4 rounded w-fit self-center lg:self-start "
-            >
-              {lastSummary && lastSummary.state != SUMMARY_BACKEND_STATUS.DONE ? (
-                <div className="flex items-center justify-center">
-                  Loading{" "}
-                  <HiCog className="text-gray-500 animate-spin duration-[1000] h-10 w-10" />
-                </div>
-              ) : (
-                <span>Generate summary</span>
-              )}
-            </button>
-          )}
+          {book.status == BOOK_BACKEND_STATUS.EXTRACTED &&
+            (user?.is_superuser ||
+              (!user?.is_superuser && user?.is_subscribed && !lastSummary)) && (
+              <button
+                onClick={() => onAskForSummary()}
+                className="flex items-center bg-blue-500 hover:bg-blue-700 text-white font-bold py-1 px-4 rounded w-fit self-center lg:self-start "
+              >
+                {lastSummary &&
+                lastSummary.state != SUMMARY_BACKEND_STATUS.DONE ? (
+                  <div className="flex items-center justify-center">
+                    Loading{" "}
+                    <HiCog className="text-gray-500 animate-spin duration-[1000] h-10 w-10" />
+                  </div>
+                ) : (
+                  <span>Generate summary</span>
+                )}
+              </button>
+            )}
         </div>
 
         <span className="border opacity-50 lg:block hidden" />
