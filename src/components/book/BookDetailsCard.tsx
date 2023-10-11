@@ -65,6 +65,7 @@ const BookDetailsCard = ({
       return alert("The Summary is being " + book.status);
 
     setLoading(true);
+    setShowSummaryModal(true);
 
     fetch("/api/books/" + book.global_id, {
       method: "GET",
@@ -75,9 +76,8 @@ const BookDetailsCard = ({
         }
       })
       .then((data) => {
-        console.log(data);
         handleUpdateBook(data.data);
-        if (data.data.can_do_summary) setShowSummaryModal(true);
+        if (!data.data.can_do_summary) setShowSummaryModal(false);
       })
       .finally(() => setLoading(false));
   };
@@ -115,6 +115,19 @@ const BookDetailsCard = ({
   };
 
   const summaryModalChildren = () => {
+    if (loading)
+      return (
+        <div
+          className={`rounded-lg bg-gray-200 animate-pulse ${
+            user?.is_superuser
+              ? "h-[400px] w-[300px]"
+              : !user?.is_superuser && user?.is_subscribed
+              ? "h-[300px] w-[600px]"
+              : ""
+          } 
+        }`}
+        ></div>
+      );
     if (!book.can_do_summary)
       return (
         <div className="flex flex-col gap-4 bg-white h-fit rounded-lg p-2 w-full">
@@ -153,7 +166,7 @@ const BookDetailsCard = ({
   };
 
   return (
-    <div className="bg-white rounded-lg overflow-hidden lg:h-full  lg:w-full">
+    <div className="bg-white rounded-lg overflow-hidden h-full w-full">
       {showRetryDownloadModal && (
         <CustomModal2 handleClose={() => setShowRetryDownloadModal(false)}>
           <RetryDownloadModal
@@ -166,7 +179,9 @@ const BookDetailsCard = ({
       )}
       {showSummaryModal && (
         <CustomModal2 handleClose={() => setShowSummaryModal(false)}>
-          {summaryModalChildren()}
+          <div className="flex justify-center items-center w-full">
+            <div className="w-[80%]">{summaryModalChildren()}</div>
+          </div>
         </CustomModal2>
       )}
 
@@ -185,7 +200,7 @@ const BookDetailsCard = ({
 
         <div className="lg:p-4 flex flex-col justify-center gap-2 w-full h-full ">
           <div>
-            <h2 className="text-4xl pb-2 font-bold capitalize w-fit flex items-center">
+            <h2 className="text-2xl md:text-4xl pb-2 font-bold capitalize w-fit flex items-center">
               {book.title_2}
             </h2>
             <p className="text-[#505258] text-base capitalize">
