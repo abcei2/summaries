@@ -73,7 +73,7 @@ export const PARAMS: SumaryCreateParamFormType[] = [
     costeable: true
   },
   {
-    name: "m1",
+    name: "model",
     type: "select",
     values: MODELS,
     defaultValue: "gpt-3.5-turbo-16k",

@@ -37,10 +37,10 @@ export type SignupFormType = {
 
 export type SumaryCreateParams = {
   bookId?: string;
-  m1: string;
+  model: string;
   method: string;
   length: string;
-  p1: string;
+  prompt: string;
 };
 
 export type FormHookType = {

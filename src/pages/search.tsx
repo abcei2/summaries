@@ -44,9 +44,9 @@ export default function Home() {
         // Handle successful upload
         console.log("1111");
       } else {
-        // Handle error
-        console.log(response);
-        console.log("22222");
+        // Handle error 
+        const errorData = await response.json();
+        window.alert(`Error: ${errorData.message}`);
       }
     } catch (error) {
       // Handle fetch error

@@ -100,6 +100,7 @@ const SummaryComp = ({
   }, [currentShowSummary]);
 
   useEffect(() => {
+    
     if (!summary) return console.log("No summary");
     const text = summary.text + "Title:";
     const titleRegex = /Title:(.*?)Summary:/gs;
@@ -140,14 +141,22 @@ const SummaryComp = ({
               <div className="font-bold text-2xl">Model1</div>
               <div>{summary.model1}</div>
             </div>
+
             <div className="flex flex-col gap-2">
               <div className="font-bold text-2xl">Model2</div>
               <div>{summary.model2}</div>
             </div>
+
             <div className="flex flex-col gap-2">
               <div className="font-bold text-2xl">Method</div>
               <div>{summary.method}</div>
             </div>
+
+            <div className="flex flex-col gap-2">
+              <div className="font-bold text-2xl">Prompt1</div>
+              <div>{summary.prompt1}</div>
+            </div>
+            
           </div>
         )}
 
@@ -158,7 +167,14 @@ const SummaryComp = ({
                   <div className="font-bold text-2xl text-center">
                     {item.title}
                   </div>
-                  <div className="text-justify">{item.summary}</div>
+                  <div className="text-justify">
+  {item.summary.replace(/\n\n/g, '\n').split('\n').map((line, index) => (
+    <React.Fragment key={index}>
+      {line}
+      <br />
+    </React.Fragment>
+  ))}
+</div>
                 </div>
               ))
             : summary.text}
