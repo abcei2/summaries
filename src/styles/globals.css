@@ -2,12 +2,14 @@
 @tailwind components;
 @tailwind utilities;
 
-
 @layer components {
   .details-icons-div {
     @apply rounded-full border p-2 flex items-center justify-center h-10 w-10;
   }
   .details-icons {
     @apply w-full h-full;
+  }
+  .highlighted {
+    @apply bg-yellow-300;
   }
 }

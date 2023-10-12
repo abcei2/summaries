@@ -19,6 +19,7 @@ export function middleware(req: NextRequest) {
     "/search",
     "/mylibrary",
     "/books/details",
+    "/myhighlights",
   ];
   const adminPaths = [
     ...subscribedPaths,

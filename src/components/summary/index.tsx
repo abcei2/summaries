@@ -4,6 +4,8 @@ import { SummaryType } from "@/types";
 import { useRouter } from "next/router";
 import React, { useEffect, useState, useRef } from "react";
 
+
+
 const SummaryComp = ({
   summaryId,
   currentShowSummary,
@@ -31,59 +33,72 @@ const SummaryComp = ({
   const [selectedText, setSelectedText] = useState("");
   const floatingBtnRef: React.MutableRefObject<HTMLDivElement | null> =
     useRef(null);
+  
+  const [highlightedTexts, setHighlightedTexts] = useState<string[]>([]);
+
 
   const handleTextSelection = () => {
+
     const selected = window?.getSelection()?.toString().trim();
+    
     if (!selected) return;
+    
+
     setSelectedText(selected);
+    //console.log(selected);
     if (selected.length > 0) {
       const range = window?.getSelection()?.getRangeAt(0);
       if (!range) return console.log("No range");
       const rect = range.getBoundingClientRect();
       setFloatingButtonPos({
-        top: rect.top + window.scrollY - 40,
+        top: rect.top + document.body.scrollTop - 40,
         left: rect.right,
       });
     }
   };
 
   const updateFloatingButtonPosOnScroll = () => {
+    
     if (floatingBtnRef.current) {
       const rect = floatingBtnRef.current.getBoundingClientRect();
+      var scrollPos =  document.body.scrollTop;
+      console.log(scrollPos);
+
       setFloatingButtonPos({
-        top: rect.top + window.scrollY,
-        left: rect.right,
+        top: rect.top + scrollPos,
+        left: rect.left,
       });
     }
   };
 
-  useEffect(() => {
-    document.addEventListener("mouseup", handleTextSelection);
-    window.addEventListener("scroll", updateFloatingButtonPosOnScroll);
 
+  useEffect(() => {
+
+    document.addEventListener("click", handleTextSelection);
+    document.addEventListener("wheel", updateFloatingButtonPosOnScroll);
+    
     return () => {
-      document.removeEventListener("mouseup", handleTextSelection);
-      window.removeEventListener("scroll", updateFloatingButtonPosOnScroll);
+      document.removeEventListener("click", handleTextSelection);
+      document.removeEventListener("wheel", updateFloatingButtonPosOnScroll);
     };
+
   }, []);
 
   const handleHighlightClick = async () => {
-    const response = await fetch("/django_endpoint/", {
+  
+    
+    const response = await fetch("/api/highlight/", {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
       },
-      body: JSON.stringify({ highlighted_text: selectedText }),
+      body: JSON.stringify({ highlighted_text: selectedText, summary_id: summaryId }),
     });
     // Handle response
+    fetchHighlightedText();
   };
 
-  useEffect(() => {
-    document.addEventListener("mouseup", handleTextSelection);
-    return () => {
-      document.removeEventListener("mouseup", handleTextSelection);
-    };
-  }, []);
+ 
 
   useEffect(() => {
     if (!summaryId) return console.log("No summaryId", summaryId);
@@ -121,6 +136,45 @@ const SummaryComp = ({
     }
   }, [summary]);
 
+
+  
+    // Fetching the highlighted text when summaryId is available.
+  const fetchHighlightedText = async () => {
+    if (!summaryId) return;
+      
+      try {
+        const response = await fetch(`/api/get-highlighted-text/?summary_id=${summaryId}`);
+        const data = await response.json();
+        
+        
+        
+        
+        if (data.data) {
+          const highlightedTextsArray = data.data.map(item => item.text);
+          
+            setHighlightedTexts(highlightedTextsArray);
+        }
+      } catch (error) {
+        console.error("Error fetching highlighted text:", error);
+      }
+    };
+
+  useEffect(() => {
+    fetchHighlightedText();
+  }, [summaryId]);
+
+  const highlightText = (text: string) => {
+    let newText = text.replace(/\n\n/g, '\n').split('\n').join('<br/>');
+
+    
+    highlightedTexts.forEach((ht) => {
+      //console.log(ht);
+      const replaceWith = `<span class='highlighted'>${ht}</span>`;
+      newText = newText.split(ht).join(replaceWith);
+    });
+    return { __html: newText };
+  };
+
   if (!summary) return null;
 
   return (
@@ -156,6 +210,10 @@ const SummaryComp = ({
               <div className="font-bold text-2xl">Prompt1</div>
               <div>{summary.prompt1}</div>
             </div>
+            <div className="flex flex-col gap-2">
+              <div className="font-bold text-2xl">Id</div>
+              <div>{summary.id}</div>
+            </div>
             
           </div>
         )}
@@ -167,20 +225,16 @@ const SummaryComp = ({
                   <div className="font-bold text-2xl text-center">
                     {item.title}
                   </div>
-                  <div className="text-justify">
-  {item.summary.replace(/\n\n/g, '\n').split('\n').map((line, index) => (
-    <React.Fragment key={index}>
-      {line}
-      <br />
-    </React.Fragment>
-  ))}
-</div>
+                  <div className="text-justify" dangerouslySetInnerHTML={highlightText(item.summary)}>
+                  </div>
                 </div>
               ))
-            : summary.text}
+            : null}
         </div>
+
         {/* Floating button */}
-        {selectedText && (
+        console.log(selectedText);
+        {selectedText.length > 0 && (
           <div
             ref={floatingBtnRef}
             style={{

@@ -24,7 +24,7 @@ export const USER_TABS = [
     icon: SearchIcon,
   },
   {
-    pathname: "/highlights",
+    pathname: "/myhighlights",
     label: "Highlights",
     icon: HighlightsIcon,
   },
