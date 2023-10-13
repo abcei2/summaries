@@ -1,4 +1,4 @@
-import { SumaryCreateParamFormType } from "../types";
+import { SumaryCreateParamFormType, SumaryCreateParams } from "../types";
 
 const MODELS = [
   {
@@ -8,7 +8,7 @@ const MODELS = [
   {
     value: "gpt-4",
     label: "gpt-4  (slow)",
-  }
+  },
 ];
 
 const METHODS = [
@@ -31,7 +31,7 @@ const METHODS = [
   {
     value: "dummy",
     label: "dummy (10 secs delay for frontend tests)",
-  }
+  },
 ];
 
 const PROMPTS = [
@@ -46,7 +46,7 @@ const PROMPTS = [
   {
     value: "prompt2",
     label: "prompt 2",
-  }
+  },
 ];
 
 const LENGTHS = [
@@ -70,28 +70,35 @@ export const PARAMS: SumaryCreateParamFormType[] = [
     type: "select",
     values: METHODS,
     defaultValue: "sections_refine",
-    costeable: true
+    costeable: true,
   },
   {
     name: "model",
     type: "select",
     values: MODELS,
     defaultValue: "gpt-3.5-turbo-16k",
-    costeable: true
+    costeable: true,
   },
   {
     name: "length",
     type: "select",
     values: LENGTHS,
     defaultValue: "medium",
-    costeable: false
+    costeable: false,
   },
   {
     name: "prompt",
     type: "select",
     values: PROMPTS,
     defaultValue: "prompt1",
-    costeable: false
+    costeable: false,
     // defaultValue: "Summarize the text, extract relevant information, explaining themes, key concepts and ideas in a detailed and long summary (not bullet points or numbered).",
-  }
+  },
 ];
+
+export const DEFAULT_SUMMARY_PARAMS:SumaryCreateParams = {
+  method: "sections_refine",
+  m1: "gpt-4",
+  length: "long",
+  p1: "prompt1",
+};

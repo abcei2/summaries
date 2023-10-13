@@ -4,7 +4,7 @@ import { CustomInput } from "../utils/custominputs";
 import { RegisterOptions, useForm } from "react-hook-form";
 import { useState, useEffect } from "react";
 
-const SurveyParamsSelector = ({
+const SummaryParamsSelector = ({
   handleClose,
   handleCreateResume,
   bookId,
@@ -132,4 +132,4 @@ const SurveyParamsSelector = ({
   );
 };
 
-export default SurveyParamsSelector;
+export default SummaryParamsSelector;
