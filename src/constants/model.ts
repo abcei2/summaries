@@ -98,7 +98,7 @@ export const PARAMS: SumaryCreateParamFormType[] = [
 
 export const DEFAULT_SUMMARY_PARAMS:SumaryCreateParams = {
   method: "sections_refine",
-  m1: "gpt-4",
+  model: "gpt-4",
   length: "long",
-  p1: "prompt1",
+  prompt: "prompt1",
 };

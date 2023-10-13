@@ -150,7 +150,8 @@ const SummaryComp = ({
         
         
         if (data.data) {
-          const highlightedTextsArray = data.data.map(item => item.text);
+          const highlightedTextsArray = data.data.map((item: { text: string }) => item.text);
+
           
             setHighlightedTexts(highlightedTextsArray);
         }
