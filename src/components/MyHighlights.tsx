@@ -13,6 +13,8 @@ type Highlight = {
   text: string;
   created_at: string;
   updated_at: string;
+  summary_id: number;
+  book_name: string;
 };
 
 const HighlightCard = ({ highlight }: { highlight: Highlight }) => {
