@@ -20,7 +20,7 @@ async function fn(req: NextApiRequest, res: NextApiResponse, userAuth: UserAuthT
       try {
         const response = await fetch(
           process.env.DJANGO_HOST +
-            `/summarise-book/?book_id=${bookId}&m1=${m1}&m2=${""}&method=${method}&p1=${p1}}&p2=""&length=${length}&temp=${0.5}`,
+            `/summarise-book/?book_id=${bookId}&m1=${m1}&m2=${""}&method=${method}&p1=${p1}&p2=""&length=${length}&temp=${0.5}`,
           {
             method: "GET",
             headers: {

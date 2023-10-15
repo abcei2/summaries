@@ -87,7 +87,7 @@ export const PARAMS: SumaryCreateParamFormType[] = [
     costeable: false,
   },
   {
-    name: "prompt",
+    name: "p1",
     type: "select",
     values: PROMPTS,
     defaultValue: "prompt1",
