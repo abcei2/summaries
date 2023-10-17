@@ -15,7 +15,7 @@ const MainBookComponent = ({ bookId }: { bookId: string }) => {
   const { user } = useContext(UserContext);
 
   const currentShowSummary = summaryList?.find(
-    (summary) => summary?.method != "dummy"
+    (summary) => summary?.method != "dummy" && summary?.state != "error"
   );
 
   const lastSummary = summaryList?.sort(

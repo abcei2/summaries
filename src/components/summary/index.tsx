@@ -4,8 +4,6 @@ import { SummaryType } from "@/types";
 import { useRouter } from "next/router";
 import React, { useEffect, useState, useRef } from "react";
 
-
-
 const SummaryComp = ({
   summaryId,
   currentShowSummary,
@@ -33,16 +31,13 @@ const SummaryComp = ({
   const [selectedText, setSelectedText] = useState("");
   const floatingBtnRef: React.MutableRefObject<HTMLDivElement | null> =
     useRef(null);
-  
+
   const [highlightedTexts, setHighlightedTexts] = useState<string[]>([]);
 
-
   const handleTextSelection = () => {
-
     const selected = window?.getSelection()?.toString().trim();
-    
+
     if (!selected) return;
-    
 
     setSelectedText(selected);
     //console.log(selected);
@@ -58,10 +53,9 @@ const SummaryComp = ({
   };
 
   const updateFloatingButtonPosOnScroll = () => {
-    
     if (floatingBtnRef.current) {
       const rect = floatingBtnRef.current.getBoundingClientRect();
-      var scrollPos =  document.body.scrollTop;
+      var scrollPos = document.body.scrollTop;
       console.log(scrollPos);
 
       setFloatingButtonPos({
@@ -71,34 +65,30 @@ const SummaryComp = ({
     }
   };
 
-
   useEffect(() => {
-
     document.addEventListener("click", handleTextSelection);
     document.addEventListener("wheel", updateFloatingButtonPosOnScroll);
-    
+
     return () => {
       document.removeEventListener("click", handleTextSelection);
       document.removeEventListener("wheel", updateFloatingButtonPosOnScroll);
     };
-
   }, []);
 
   const handleHighlightClick = async () => {
-  
-    
     const response = await fetch("/api/highlight/", {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
       },
-      body: JSON.stringify({ highlighted_text: selectedText, summary_id: summaryId }),
+      body: JSON.stringify({
+        highlighted_text: selectedText,
+        summary_id: summaryId,
+      }),
     });
     // Handle response
     fetchHighlightedText();
   };
-
- 
 
   useEffect(() => {
     if (!summaryId) return console.log("No summaryId", summaryId);
@@ -115,7 +105,6 @@ const SummaryComp = ({
   }, [currentShowSummary]);
 
   useEffect(() => {
-    
     if (!summary) return console.log("No summary");
     const text = summary.text + "Title:";
     const titleRegex = /Title:(.*?)Summary:/gs;
@@ -133,41 +122,40 @@ const SummaryComp = ({
           summary,
         }))
       );
+    } else {
+      setContent([{ title: "", summary: summary.text ?? "" }]);
     }
   }, [summary]);
 
-
-  
-    // Fetching the highlighted text when summaryId is available.
+  // Fetching the highlighted text when summaryId is available.
   const fetchHighlightedText = async () => {
     if (!summaryId) return;
-      
-      try {
-        const response = await fetch(`/api/get-highlighted-text/?summary_id=${summaryId}`);
-        const data = await response.json();
-        
-        
-        
-        
-        if (data.data) {
-          const highlightedTextsArray = data.data.map((item: { text: string }) => item.text);
 
-          
-            setHighlightedTexts(highlightedTextsArray);
-        }
-      } catch (error) {
-        console.error("Error fetching highlighted text:", error);
+    try {
+      const response = await fetch(
+        `/api/get-highlighted-text/?summary_id=${summaryId}`
+      );
+      const data = await response.json();
+
+      if (data.data) {
+        const highlightedTextsArray = data.data.map(
+          (item: { text: string }) => item.text
+        );
+
+        setHighlightedTexts(highlightedTextsArray);
       }
-    };
+    } catch (error) {
+      console.error("Error fetching highlighted text:", error);
+    }
+  };
 
   useEffect(() => {
     fetchHighlightedText();
   }, [summaryId]);
 
   const highlightText = (text: string) => {
-    let newText = text.replace(/\n\n/g, '\n').split('\n').join('<br/>');
+    let newText = text.replace(/\n\n/g, "\n").split("\n").join("<br/>");
 
-    
     highlightedTexts.forEach((ht) => {
       //console.log(ht);
       const replaceWith = `<span class='highlighted'>${ht}</span>`;
@@ -215,7 +203,6 @@ const SummaryComp = ({
               <div className="font-bold text-2xl">Id</div>
               <div>{summary.id}</div>
             </div>
-            
           </div>
         )}
 
@@ -226,8 +213,10 @@ const SummaryComp = ({
                   <div className="font-bold text-2xl text-center">
                     {item.title}
                   </div>
-                  <div className="text-justify" dangerouslySetInnerHTML={highlightText(item.summary)}>
-                  </div>
+                  <div
+                    className="text-justify"
+                    dangerouslySetInnerHTML={highlightText(item.summary)}
+                  ></div>
                 </div>
               ))
             : null}
