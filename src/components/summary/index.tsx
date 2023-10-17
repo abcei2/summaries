@@ -234,7 +234,6 @@ const SummaryComp = ({
         </div>
 
         {/* Floating button */}
-        console.log(selectedText);
         {selectedText.length > 0 && (
           <div
             ref={floatingBtnRef}
