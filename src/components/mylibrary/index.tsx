@@ -5,7 +5,7 @@ import { HiCog } from "react-icons/hi";
 import MyBook from "./MyBook";
 import useModelObserver from "@/hooks/useModelObserver";
 import { BOOK_BACKEND_STATUS } from "@/constants";
-
+import { HiUpload } from 'react-icons/hi';
 const MyLibrary = () => {
   const [myBooks, setMyBooks] = useState<Book[]>();
   const [loading, setLoading] = useState(false);
@@ -42,6 +42,31 @@ const MyLibrary = () => {
       .finally(() => setLoading(false));
   }, []);
 
+
+  const handleDocumentUpload = async (e: React.ChangeEvent<HTMLInputElement>) => {
+    const file = e.target.files?.[0];
+    if (!file) return;
+    const formData = new FormData();
+    formData.append("document", file);
+  
+    try {
+      const response = await fetch("api/upload_doc", {
+        method: "POST",
+        body: formData,
+      });
+  
+      if (response.ok) {
+        // Refresh the page when the file is successfully uploaded
+        window.location.reload();
+      } else {
+        const errorData = await response.json();
+        window.alert(`Error: ${errorData.message}`);
+      }
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
   return (
     <div className="w-full flex flex-col items-center">
       <div className="w-full bg-[#F8F8F8] h-20 flex items-center justify-center">
@@ -50,11 +75,29 @@ const MyLibrary = () => {
         </span>
       </div>
 
-      <div className="w-full h-20 flex items-center justify-center">
+      <br></br>
+      <div className="w-full flex justify-start items-center">
+        <label className="flex items-center bg-primary rounded cursor-pointer w-40 justify-center"> 
+          <span className="mr-2 text-sm text-white">Upload Document</span>
+            <input 
+              type="file"
+              className="hidden"
+              onChange={handleDocumentUpload}
+            />
+          <HiUpload className="hover:scale-125 duration-300 hover:animate-pulse text-white" />
+        </label>
+      </div>
+      <br></br>
+
+
         <span className="w-[80%] text-3xl font-semibold text-gray-600 w-full ">
           Reading Now
         </span>
-      </div>
+        <br></br>
+        
+
+      
+
       <div className="w-full h-full flex justify-center ">
         {!loading ? (
           <div className="w-fit grid grid-cols-2 md:grid-cols-4 lg:grid-cols-5 xl:grid-cols-6 gap-4">

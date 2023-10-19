@@ -83,4 +83,5 @@ export type SummaryType = {
   state: string | null;
   progress: number | null;
   total_tokens: number | null;
+  status_message: string | null;
 }

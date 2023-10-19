@@ -2,58 +2,45 @@ import Card from "@/components/Card";
 import { HiSearch, HiCog } from "react-icons/hi";
 import { useState } from "react";
 import { Book } from "../types";
-import { HiUpload } from 'react-icons/hi';
+
 
 export default function Home() {
   const [books, setBooks] = useState<Book[]>();
   const [searching, setSearching] = useState(false);
   const [searchTerm, setSearchTerm] = useState("");
   const [hasSearched, setHasSearched] = useState(false);
-  const onSearch = () => {
-    if (searchTerm.length >= 2) {
-      setSearching(true);
-      setBooks([]);
-      fetch(`/api/search?word=${searchTerm}`)
-        .then((res) => res.json())
-        .then((data) => {
-          setBooks(data.data);
-        })
-        .finally(() => setSearching(false));
-        setHasSearched(true);
-    } else {
-      alert("Please enter at least 2 characters");
-    }
-  };
+  const [search_response, setSearchResponse] = useState("");
 
-  // Function to handle document upload
-  const handleDocumentUpload = async (e: React.ChangeEvent<HTMLInputElement>) => {
-    const file = e.target.files?.[0];
-    if (!file) return;  
-    // Create FormData and append the file
-    const formData = new FormData();
-    formData.append("document", file);
+  const onSearch = async () => {
+    if (searchTerm.length < 2) {
+      alert("Please enter at least 2 characters");
+      return;
+    }
   
     try {
-      const response = await fetch("api/upload_doc", {
-        method: "POST",
-        body: formData,
-      });
-  
-      if (response.ok) {
-        const data = await response.json();
-        // Handle successful upload
-        console.log("1111");
-      } else {
-        // Handle error 
-        const errorData = await response.json();
-        window.alert(`Error: ${errorData.message}`);
+      setSearching(true);
+      setBooks([]);
+      const res = await fetch(`/api/search?word=${searchTerm}`);
+      
+      if (!res.ok) {
+        throw new Error(`HTTP error ${res.status}`);
       }
-    } catch (error) {
-      // Handle fetch error
-      console.log(error);
-      console.log("33333");
+      const data = await res.json();
+      if (data && data.data && data.data.length > 0) {
+        setBooks(data.data);
+        setSearchResponse("");
+      } else {
+        setSearchResponse("No books found");
+      }
+    } catch (error: any) {
+      setSearchResponse(`${error.message}`);
+    } finally {
+      setSearching(false);
+      setHasSearched(true);
     }
   };
+ 
+  
   
 
   return (
@@ -80,14 +67,7 @@ export default function Home() {
         <div className="w-1 h-10 bg-white"></div>
 
 
-        <label className="w-10 h-10 bg-primary rounded flex justify-center items-center cursor-pointer">
-          <input 
-            type="file"
-            className="hidden"
-            onChange={handleDocumentUpload}
-          />
-          <HiUpload className="hover:scale-125 duration-300 hover:animate-pulse" />
-        </label>
+        
         
 
       </div>
@@ -107,7 +87,9 @@ export default function Home() {
           <HiCog className="animate-spin duration-[3000] h-12 w-12" />
         </div>
       ) : hasSearched ? (
-        <div className="w-full h-full text-center text-2xl text-gray-500">No books found</div>
+        <div className="w-full h-full text-center text-2xl text-gray-500">
+        {search_response || "No books found"}
+      </div>
       ) : null}
 
     </div>

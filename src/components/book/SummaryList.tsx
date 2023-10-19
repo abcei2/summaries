@@ -16,8 +16,8 @@ const SummaryList = ({ summaryList }: { summaryList: SummaryType[] }) => {
           >
             <div className="flex flex-col">
               <span className="text-base font-semibold">Status: </span>
-              {summary.state}{" "}
-              {summary.state == "running" &&
+              {summary.state}{": "}{summary.status_message}
+              {summary.state == "running" && " "+
                 (Number(summary.progress) * 100).toFixed(1) + "%"}
             </div>
             <div className="flex flex-col">
@@ -25,13 +25,10 @@ const SummaryList = ({ summaryList }: { summaryList: SummaryType[] }) => {
               {new Date(summary.created_at).toDateString()}
             </div>
             <div className="flex flex-col ">
-              <span className="text-base font-semibold">Model1: </span>
+              <span className="text-base font-semibold">Model: </span>
               {summary.model1}
             </div>
-            <div className="flex flex-col">
-              <span className="text-base font-semibold">Model2: </span>
-              {summary.model2}
-            </div>
+            
             <div className="flex flex-col">
               <span className="text-base font-semibold">Method: </span>
               {summary.method}

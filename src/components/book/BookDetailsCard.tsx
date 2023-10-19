@@ -231,20 +231,23 @@ const BookDetailsCard = ({
             <CgHeadset className="w-6 h-6" />
           )}
 
-          {bookStatus(book)}
+          
 
           {book.status == BOOK_BACKEND_STATUS.EXTRACTED &&
             (user?.is_superuser ||
               (!user?.is_superuser && user?.is_subscribed && !lastSummary)) && (
+                
               <button
                 onClick={() => onAskForSummary()}
                 className="flex items-center bg-blue-500 hover:bg-blue-700 text-white font-bold py-1 px-4 rounded w-fit self-center lg:self-start "
               >
+                
                 {lastSummary &&
                 (lastSummary.state != SUMMARY_BACKEND_STATUS.DONE &&
                 lastSummary.state != SUMMARY_BACKEND_STATUS.ERROR) ? (
                   <div className="flex items-center justify-center">
                     Loading{" "}
+                    
                     <HiCog className="text-gray-500 animate-spin duration-[1000] h-10 w-10" />
                   </div>
                 ) : (

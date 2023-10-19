@@ -15,7 +15,7 @@ const MainBookComponent = ({ bookId }: { bookId: string }) => {
   const { user } = useContext(UserContext);
 
   const currentShowSummary = summaryList?.find(
-    (summary) => summary?.method != "dummy" && summary?.state != "error"
+    (summary) => summary?.method != "dummy" //&& summary?.state != "error"
   );
 
   const lastSummary = summaryList?.sort(
@@ -115,20 +115,32 @@ const MainBookComponent = ({ bookId }: { bookId: string }) => {
           }}
         />
       </div>
+      
       {user && !user.is_staff && !user.is_superuser && user.is_subscribed && (
+        
         <div className="flex gap-2">
+          
           {book.can_do_summary}
+          
+          
           <span>{currentShowSummary?.state} </span>
-          <span>{currentShowSummary?.progress}</span>
+          
+          <span>{currentShowSummary?.progress.toFixed(2)}</span>
+          <span>{currentShowSummary?.status_message} </span>
+
+
+
         </div>
       )}
-
+      
       <div className="w-[90%] lg:w-[80%] flex flex-col gap-2 ">
         {user && (user.is_staff || user.is_superuser) ? (
           <SummaryList summaryList={summaryList ?? []} />
         ) : (
           <SummaryComp currentShowSummary={currentShowSummary} />
         )}
+        
+        
       </div>
     </div>
   );

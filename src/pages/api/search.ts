@@ -27,6 +27,7 @@ async function fn(req: NextApiRequest, res: NextApiResponse, userAuth: UserAuthT
           res.status(401).json({ message: "Unauthorized" });
         }
       } catch (error) {
+        
         res.status(500).json({ error });
       }
       break;
