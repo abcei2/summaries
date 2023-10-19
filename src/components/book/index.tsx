@@ -119,17 +119,10 @@ const MainBookComponent = ({ bookId }: { bookId: string }) => {
       {user && !user.is_staff && !user.is_superuser && user.is_subscribed && (
         
         <div className="flex gap-2">
-          
           {book.can_do_summary}
-          
-          
           <span>{currentShowSummary?.state} </span>
-          
-          <span>{currentShowSummary?.progress.toFixed(2)}</span>
+          <span>{currentShowSummary?.progress?.toFixed(2)}</span>
           <span>{currentShowSummary?.status_message} </span>
-
-
-
         </div>
       )}
       
