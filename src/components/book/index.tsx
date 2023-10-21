@@ -32,7 +32,8 @@ const MainBookComponent = ({ bookId }: { bookId: string }) => {
     ].includes(book.status) 
 
   const subscribeToSummary = (state: string) =>
-    [SUMMARY_BACKEND_STATUS.QUEUE, SUMMARY_BACKEND_STATUS.RUNNING].includes(
+    [SUMMARY_BACKEND_STATUS.QUEUE, SUMMARY_BACKEND_STATUS.RUNNING, SUMMARY_BACKEND_STATUS.DONE
+    ].includes(
       state
     );
 
@@ -115,21 +116,20 @@ const MainBookComponent = ({ bookId }: { bookId: string }) => {
           }}
         />
       </div>
+      
       {book.status === BOOK_BACKEND_STATUS.DOWNLOADING && (
-      <div className="flex gap-2">
-        <span>Downloading: </span>
-        <span>{book.progress}%</span>
-      </div>
+      <LoadingSpin text={`Downloading. ${book.progress}%`} />
+      
     )}
+    
       
       
-      {user && !user.is_staff && !user.is_superuser && user.is_subscribed && (
-        
+      {user && !user.is_staff && !user.is_superuser && user.is_subscribed && currentShowSummary?.state == "running" && (        
         <div className="flex gap-2">
           {book.can_do_summary}
-          <span>{currentShowSummary?.state} </span>
-          <span>{currentShowSummary?.progress?.toFixed(2)}</span>
-          <span>{currentShowSummary?.status_message} </span>
+          
+              {<LoadingSpin text=
+              {`Generating summary. ${(Number(currentShowSummary?.progress) * 100).toFixed(1)} %`} />}
         </div>
       )}
       
