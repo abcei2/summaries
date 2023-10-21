@@ -114,8 +114,8 @@ const SummaryComp = ({
       ?.map((match) => match.replace(/Title:|Summary:/g, "").trim());
     const summaries = text
       ?.match(summaryRegex)
-      ?.map((match) => match.replace(/Summary:|Title:/g, "").trim());
-    if (summaries && titles && summaries?.length == titles?.length) {
+      ?.map((match) => match.replace(/Summary:|Title:/g, "").trim().replace(/§/g, ""));
+    if (summaries && titles && summaries?.length === titles?.length) {
       setContent(
         summaries.map((summary, index) => ({
           title: titles[index] || "No title",
@@ -123,7 +123,7 @@ const SummaryComp = ({
         }))
       );
     } else {
-      setContent([{ title: "", summary: summary.text ?? "" }]);
+      setContent([{ title: "", summary: summary.text?.replace(/§/g, "") ?? "" }]);
     }
   }, [summary]);
 
@@ -154,7 +154,7 @@ const SummaryComp = ({
   }, [summaryId]);
 
   const highlightText = (text: string) => {
-    let newText = text.replace(/\n\n/g, "\n").split("\n").join("<br/>");
+    let newText = text.replace(/\n\n\n/g, "\n").split("\n").join("<br/>");
 
     highlightedTexts.forEach((ht) => {
       //console.log(ht);

@@ -81,7 +81,7 @@ const Login = () => {
           <p className="my-16">
             New to MegaSummary?{" "}
             <a href="/signup" className="text-link font-bold ">
-              Sing up now
+              Sign up now
             </a>
           </p>
         </div>
