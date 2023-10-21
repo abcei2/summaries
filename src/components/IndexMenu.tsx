@@ -28,7 +28,7 @@ const IndexMenu = ({
 };
 
 const MenuItems = ({ handleClose }: { handleClose: () => void }) => {
-  const { signOut } = useContext(UserContext);
+  const { user,signOut } = useContext(UserContext);
   const router = useRouter();
   return (
     <OutsideAlerter
@@ -38,6 +38,11 @@ const MenuItems = ({ handleClose }: { handleClose: () => void }) => {
       className="absolute z-10 rounded-lg right-[20%] top-[110%] overflow-hidden border border-2 bg-white"
     >
       <div className="w-full w-full bg-white">
+        {user && (
+          <div className="w-full flex justify-center items-center p-2">
+            <span>{user.email}</span>
+          </div>
+        )}
         {MENU_SETTINGS.map((item: any, key: any) => (
           <IndexMenu key={key} {...item} />
         ))}

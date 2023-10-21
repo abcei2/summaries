@@ -115,6 +115,13 @@ const MainBookComponent = ({ bookId }: { bookId: string }) => {
           }}
         />
       </div>
+      {book.status === BOOK_BACKEND_STATUS.DOWNLOADING && (
+      <div className="flex gap-2">
+        <span>Downloading: </span>
+        <span>{book.progress}%</span>
+      </div>
+    )}
+      
       
       {user && !user.is_staff && !user.is_superuser && user.is_subscribed && (
         
