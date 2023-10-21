@@ -3,20 +3,19 @@ import { USER_TABS } from "@/constants";
 import { usePathname } from "next/navigation";
 import { ReactNode } from "react";
 
-const BottonMenuItem = ({ pathname, label, icon }:{
-  pathname:string,
-  label:string,
-  icon:ReactNode
+const BottonMenuItem = ({ pathname, label, icon }: {
+  pathname: string,
+  label: string,
+  icon: ReactNode
 }) => {
   return (
-    <div className="flex flex-col  justify-center items-center w-24">
-      <div className=" w-[20px]">{icon}</div>
-      <a href={pathname} className="text-[14px]">
-        {label}
-      </a>
-    </div>
+    <a href={pathname} className="flex flex-col justify-center items-center w-24">
+      <div className="w-[20px]">{icon}</div>
+      <div className="text-[14px]">{label}</div>
+    </a>
   );
 };
+
 
 const BottonMenu = () => {
   const currentPath = usePathname();

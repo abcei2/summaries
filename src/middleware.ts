@@ -20,6 +20,8 @@ export function middleware(req: NextRequest) {
     "/mylibrary",
     "/books/details",
     "/myhighlights",
+    
+    
   ];
   const adminPaths = [
     ...subscribedPaths,
@@ -43,7 +45,10 @@ export function middleware(req: NextRequest) {
     } catch (error) {
       console.log(error);
     }
+    
     if (!userAuth) {
+      
+      
       if (!isValidPath(req.nextUrl.pathname, noUserPaths, true)) {
         return NextResponse.redirect(new URL("/login", req.nextUrl));
       }

@@ -76,8 +76,11 @@ const SummaryComp = ({
   }, []);
 
   const handleHighlightClick = async () => {
+    console.log("Selected text:", selectedText);
+    console.log("Summary id:", summaryId);
     if (selectedText.length <20) alert("Please select more than 20 characters");
     else {
+      
     const response = await fetch("/api/highlight/", {
       method: "POST",
       headers: {

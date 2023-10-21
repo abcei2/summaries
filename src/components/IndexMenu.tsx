@@ -12,20 +12,17 @@ const IndexMenu = ({
   onClick,
 }: {
   label: string;
-  icon: ReactNode;
+  icon: React.ReactNode;
   onClick?: () => void;
 }) => {
   return (
-    <div className="w-full flex justify-center items-center p-2 space-x-4  hover:bg-gray-100">
+    <div className="w-full flex justify-center items-center p-2 space-x-4 hover:bg-gray-100" onClick={onClick}>
       <div className="w-[20px]">{icon}</div>
-      <div className="w-[70px]">
-        <a onClick={onClick} className="text-[16px]">
-          {label}
-        </a>
-      </div>
+      <div className="w-[70px] text-[16px]">{label}</div>
     </div>
   );
 };
+
 
 const MenuItems = ({ handleClose }: { handleClose: () => void }) => {
   const { user,signOut } = useContext(UserContext);
