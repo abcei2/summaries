@@ -76,6 +76,8 @@ const SummaryComp = ({
   }, []);
 
   const handleHighlightClick = async () => {
+    if (selectedText.length <20) alert("Please select more than 20 characters");
+    else {
     const response = await fetch("/api/highlight/", {
       method: "POST",
       headers: {
@@ -88,6 +90,7 @@ const SummaryComp = ({
     });
     // Handle response
     fetchHighlightedText();
+  }
   };
 
   useEffect(() => {

@@ -34,6 +34,9 @@ async function highlight(req: NextApiRequest, res: NextApiResponse, userAuth: Us
     default: //Method Not Allowed
       res.status(405).end();
       break;
+
+      
+
   }
 }
 
