@@ -7,7 +7,6 @@ import { useContext } from "react";
 import { UserContext } from "@/context/UserContext";
 import { CgHeadset, CgSoftwareDownload } from "react-icons/cg";
 import RetryDownloadModal from "@/components/mylibrary/RetryDownloadModal";
-import { bookStatus } from "@/utils/books";
 import { BOOK_BACKEND_STATUS, SUMMARY_BACKEND_STATUS } from "@/constants";
 import SubscribedSummaryRequest from "@/components/summary/SubscribedSummaryRequest";
 import { DEFAULT_SUMMARY_PARAMS } from "@/constants/model";
