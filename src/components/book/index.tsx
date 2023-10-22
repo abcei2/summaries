@@ -19,46 +19,51 @@ const MainBookComponent = ({ bookId }: { bookId: string }) => {
   );
 
   const lastSummary = summaryList?.sort(
-    (a, b) => new Date(b.created_at).getTime() - new Date(a.created_at).getTime()
+    (a, b) =>
+      new Date(b.created_at).getTime() - new Date(a.created_at).getTime()
   )[0];
 
-  const subscribeToBook =
-    book &&
-    book.status &&
+  const subscribeToSummary = (state: string) =>
+    [SUMMARY_BACKEND_STATUS.QUEUE, SUMMARY_BACKEND_STATUS.RUNNING].includes(
+      state
+    );
+  // Subscribe to summary each time [TODO change to only subscribe to the summary if is != "done" summary]
+  useModelObserver({
+    roomName: bookId,
+    updateData: (data) => {
+      console.log("data", data);
+      if (!summaryList) return;
+      const index = summaryList.findIndex(
+        (item) => Number(item.id) == Number(data.summary_id)
+      );
+      if (index == -1) return;
+      summaryList[index] = {
+        ...summaryList[index],
+        state: data.state,
+        progress: data.progress,
+      };
+      setSummaryList([...summaryList]);
+    },
+    connectToWS: summaryList?.some((summary) =>
+      subscribeToSummary(summary.state ?? "")
+    ),
+  });
+
+  const subscribeToBook = (status: string) =>
     [
       BOOK_BACKEND_STATUS.QUEUE,
       BOOK_BACKEND_STATUS.DOWNLOADING,
       BOOK_BACKEND_STATUS.DOWNLOADED,
-    ].includes(book.status) 
+    ].includes(status);
 
-  const subscribeToSummary = (state: string) =>
-    [SUMMARY_BACKEND_STATUS.QUEUE, SUMMARY_BACKEND_STATUS.RUNNING, SUMMARY_BACKEND_STATUS.DONE
-    ].includes(
-      state
-    );
-
-  // Subscribe to book model if book is in queue, downloading or downloaded, to get the progress
   useModelObserver({
-    handleData: (data) => {
-      setBook(data[0]);
+    updateData: (data) => {
+      if (!book) return undefined;
+      if (Number(book.global_id) != Number(data.book_id)) return;
+      setBook({ ...book, status: data.status, progress: data.progress });
     },
-    subscribedData: subscribeToBook ? [book] : [],
-    noSubscribeData: !subscribeToBook ? [book] : [],
-    modelName: "book",
-  });
-
-  // Subscribe to summary each time [TODO change to only subscribe to the summary if is != "done" summary]
-  useModelObserver({
-    handleData: (data) => {
-      setSummaryList(data);
-    },
-    subscribedData: summaryList?.filter((summary) =>
-      subscribeToSummary(summary.state ?? "")
-    ),
-    noSubscribeData: summaryList?.filter(
-      (summary) => !subscribeToSummary(summary.state ?? "")
-    ),
-    modelName: "summary",
+    roomName: "global_library",
+    connectToWS: book && book.status && subscribeToBook(book.status),
   });
 
   useEffect(() => {
@@ -68,7 +73,7 @@ const MainBookComponent = ({ bookId }: { bookId: string }) => {
 
   useEffect(() => {
     if (!book) return;
-    
+
     if (
       book.status == BOOK_BACKEND_STATUS.EXTRACTED &&
       !book.can_do_summary &&
@@ -116,31 +121,35 @@ const MainBookComponent = ({ bookId }: { bookId: string }) => {
           }}
         />
       </div>
-      
+
       {book.status === BOOK_BACKEND_STATUS.DOWNLOADING && (
-      <LoadingSpin text={`Downloading. ${book.progress}%`} />
-      
-    )}
-    
-      
-      
-      {user && !user.is_staff && !user.is_superuser && user.is_subscribed && currentShowSummary?.state == "running" && (        
-        <div className="flex gap-2">
-          {book.can_do_summary}
-          
-              {<LoadingSpin text=
-              {`Generating summary. ${(Number(currentShowSummary?.progress) * 100).toFixed(1)} %`} />}
-        </div>
+        <LoadingSpin text={`Downloading. ${book.progress}%`} />
       )}
-      
+
+      {user &&
+        !user.is_staff &&
+        !user.is_superuser &&
+        user.is_subscribed &&
+        currentShowSummary?.state == "running" && (
+          <div className="flex gap-2">
+            {book.can_do_summary}
+
+            {
+              <LoadingSpin
+                text={`Generating summary. ${(
+                  Number(currentShowSummary?.progress) * 100
+                ).toFixed(1)} %`}
+              />
+            }
+          </div>
+        )}
+
       <div className="w-[90%] lg:w-[80%] flex flex-col gap-2 ">
         {user && (user.is_staff || user.is_superuser) ? (
           <SummaryList summaryList={summaryList ?? []} />
         ) : (
           <SummaryComp currentShowSummary={currentShowSummary} />
         )}
-        
-        
       </div>
     </div>
   );

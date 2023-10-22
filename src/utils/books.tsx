@@ -1,7 +1,7 @@
 import { BOOK_BACKEND_STATUS } from "@/constants";
 import { Book } from "@/types";
 
-export const bookStatus = (book: Book) => {
+export const BookStatus = ({book}:{book: Book}) => {  
   switch (book.status) {
     case BOOK_BACKEND_STATUS.DOWNLOADING:
       return (

@@ -1,13 +1,11 @@
 import { useRouter } from "next/router";
 import { Book } from "../../types";
-import { useState } from "react";
+import { use, useEffect, useState } from "react";
 import { CustomModal2 } from "../utils/custommodals";
 import { CgHeadset, CgSoftwareDownload } from "react-icons/cg";
 import DeleteModal from "./DeleteModal";
 import RetryDownloadModal from "./RetryDownloadModal";
-import { bookStatus } from "@/utils/books";
-import { useContext } from "react";
-import { UserContext } from "@/context/UserContext";
+import { BookStatus } from "@/utils/books";
 
 const MyBook = ({
   updateBook,
@@ -17,7 +15,6 @@ const MyBook = ({
   updateBook: (book: Book) => void;
 }) => {
   const router = useRouter();
-  const { user } = useContext(UserContext);
   const [showDeleteModal, setShowDeleteModal] = useState(false);
   const [showRetryDownloadModal, setShowRetryDownloadModal] = useState(false);
   const bookCover = book?.cover_img_path
@@ -122,7 +119,7 @@ const MyBook = ({
 
           <div className="p-1 text-center overflow-auto">
             <div className="flex flex-col ">
-              {bookStatus(book)}
+              <BookStatus book={book} />
 
               <span className="font-bold text-gray-600 mb-2">
                 {book?.title_2 ? book?.title_2.slice(0, 50) : ""}

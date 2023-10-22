@@ -5,11 +5,10 @@ import { HiCog } from "react-icons/hi";
 import MyBook from "./MyBook";
 import useModelObserver from "@/hooks/useModelObserver";
 import { BOOK_BACKEND_STATUS } from "@/constants";
-import { HiUpload } from 'react-icons/hi';
+import { HiUpload } from "react-icons/hi";
 const MyLibrary = () => {
   const [myBooks, setMyBooks] = useState<Book[]>();
   const [loading, setLoading] = useState(false);
-
   const subscribeToBook = (status?: string) =>
     status &&
     [
@@ -19,16 +18,21 @@ const MyLibrary = () => {
     ].includes(status);
 
   useModelObserver({
-    handleData: (data) => {
-      setMyBooks(data);
+    updateData: (data) => {
+      if (!myBooks) return undefined;
+      const index = myBooks.findIndex(
+        (item) => Number(item.global_id) == Number(data.book_id)
+      );
+      if (index == -1) return;
+      myBooks[index] = {
+        ...myBooks[index],
+        status: data.status,
+        progress: data.progress,
+      };
+      setMyBooks([...myBooks]);
     },
-    subscribedData: myBooks?.filter(
-      (book) => book?.status && subscribeToBook(book.status)
-    ),
-    noSubscribeData: myBooks?.filter(
-      (book) => !book?.status || !subscribeToBook(book.status)
-    ),
-    modelName: "book",
+    roomName: "global_library",
+    connectToWS: myBooks?.some((book) => subscribeToBook(book.status)),
   });
 
   useEffect(() => {
@@ -42,19 +46,20 @@ const MyLibrary = () => {
       .finally(() => setLoading(false));
   }, []);
 
-
-  const handleDocumentUpload = async (e: React.ChangeEvent<HTMLInputElement>) => {
+  const handleDocumentUpload = async (
+    e: React.ChangeEvent<HTMLInputElement>
+  ) => {
     const file = e.target.files?.[0];
     if (!file) return;
     const formData = new FormData();
     formData.append("document", file);
-  
+
     try {
       const response = await fetch("api/upload_doc", {
         method: "POST",
         body: formData,
       });
-  
+
       if (response.ok) {
         // Refresh the page when the file is successfully uploaded
         window.location.reload();
@@ -77,47 +82,42 @@ const MyLibrary = () => {
 
       <br></br>
       <div className="w-full flex justify-start items-center">
-        <label className="flex items-center bg-primary rounded cursor-pointer w-40 justify-center"> 
+        <label className="flex items-center bg-primary rounded cursor-pointer w-40 justify-center">
           <span className="mr-2 text-sm text-white">Upload Document</span>
-            <input 
-              type="file"
-              className="hidden"
-              onChange={handleDocumentUpload}
-            />
+          <input
+            type="file"
+            className="hidden"
+            onChange={handleDocumentUpload}
+          />
           <HiUpload className="hover:scale-125 duration-300 hover:animate-pulse text-white" />
         </label>
       </div>
       <br></br>
 
-
-        <span className="w-[80%] text-3xl font-semibold text-gray-600 w-full ">
-          Reading Now
-        </span>
-        <br></br>
-        
-
-      
+      <span className="w-[80%] text-3xl font-semibold text-gray-600 w-full ">
+        Reading Now
+      </span>
+      <br></br>
 
       <div className="w-full h-full flex justify-center ">
         {!loading ? (
           <div className="w-fit grid grid-cols-2 md:grid-cols-4 lg:grid-cols-5 xl:grid-cols-6 gap-4">
-            {myBooks &&
-              myBooks.map((book, key) => (
-                <MyBook
-                  book={book}
-                  updateBook={(book) => {
-                    setMyBooks(
-                      myBooks.map((b) => {
-                        if (b.global_id == book.global_id) {
-                          return book;
-                        }
-                        return b;
-                      })
-                    );
-                  }}
-                  key={key}
-                />
-              ))}
+            {myBooks?.map((book, key) => (
+              <MyBook
+                book={book}
+                updateBook={(book) => {
+                  setMyBooks(
+                    myBooks.map((b) => {
+                      if (b.global_id == book.global_id) {
+                        return book;
+                      }
+                      return b;
+                    })
+                  );
+                }}
+                key={key}
+              />
+            ))}
           </div>
         ) : (
           <div className="flex flex-col items-center justify-center text-center text-gray-500 mt-10">
