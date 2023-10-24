@@ -16,14 +16,16 @@ const BookDetailsCard = ({
   handleUpdateBook,
   reloadSummaries,
   lastSummary,
+  loading,
 }: {
   book: Book;
   handleUpdateBook: (book: Book) => void;
   reloadSummaries: () => void;
   lastSummary?: SummaryType;
+  loading?: boolean;
 }) => {
   const { user } = useContext(UserContext);
-  const [loading, setLoading] = useState(false);
+  const [loadingAskForSummary, setLoadingAskForSummary] = useState(false);
   const [showSummaryModal, setShowSummaryModal] = useState(false);
   const [showRetryDownloadModal, setShowRetryDownloadModal] = useState(false);
 
@@ -59,11 +61,11 @@ const BookDetailsCard = ({
   };
 
   const onAskForSummary = () => {
-    if (loading) return console.log("Loading...");
+    if (loadingAskForSummary) return console.log("Loading...");
     if (!book.can_do_summary)
       return alert("The Summary is being " + book.status);
 
-    setLoading(true);
+    setLoadingAskForSummary(true);
     setShowSummaryModal(true);
 
     fetch("/api/books/" + book.global_id, {
@@ -78,13 +80,13 @@ const BookDetailsCard = ({
         handleUpdateBook(data.data);
         if (!data.data.can_do_summary) setShowSummaryModal(false);
       })
-      .finally(() => setLoading(false));
+      .finally(() => setLoadingAskForSummary(false));
   };
 
   const createResume = (creationParams: SumaryCreateParams) => {
-    if (loading) return console.log("Loading...");
+    if (loadingAskForSummary) return console.log("Loading...");
     if (!creationParams) return console.log("No creation params");
-    setLoading(true);
+    setLoadingAskForSummary(true);
     fetch("/api/summaries", {
       method: "POST",
       headers: {
@@ -108,13 +110,13 @@ const BookDetailsCard = ({
         reloadSummaries();
       })
       .finally(() => {
-        setLoading(false);
+        setLoadingAskForSummary(false);
         setShowSummaryModal(false);
       });
   };
 
   const summaryModalChildren = () => {
-    if (loading)
+    if (loadingAskForSummary)
       return (
         <div
           className={`rounded-lg bg-gray-200 animate-pulse ${
@@ -232,7 +234,7 @@ const BookDetailsCard = ({
 
           
 
-          {book.status == BOOK_BACKEND_STATUS.EXTRACTED &&
+          {book.status == BOOK_BACKEND_STATUS.EXTRACTED && !loading &&
             (user?.is_superuser ||
               (!user?.is_superuser && user?.is_subscribed && !lastSummary)) && (
                 
