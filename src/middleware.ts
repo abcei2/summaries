@@ -22,6 +22,7 @@ export function middleware(req: NextRequest) {
     "/myhighlights",
     
     
+    
   ];
   const adminPaths = [
     ...subscribedPaths,

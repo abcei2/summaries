@@ -10,10 +10,12 @@ async function fn(req: NextApiRequest, res: NextApiResponse, userAuth: UserAuthT
         model,
         method,
       }: SumaryCreateParams = req.body;
-
+      
+      
       if (!bookId) {
         return res.status(400).send("bookId not provided");
       }
+      
       try {
         const response = await fetch(
           process.env.DJANGO_HOST +

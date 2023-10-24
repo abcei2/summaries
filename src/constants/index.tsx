@@ -39,18 +39,18 @@ export const MENU_SETTINGS = [
   //     label:"Highlights",
   //     icon:HighlightsIcon
   // },
-  {
-    label: "My account",
-    icon: UserIcon,
-  },
-   {
-    label:"Support",
-    icon:SupportIcon,
-   },
-  {
-    label:"User experience survey",
-    icon:ArticleIcon,
-  },
+  //{
+  //  label: "My account",
+  //  icon: UserIcon,
+  //},
+  // {
+  //  label:"Support",
+  //  icon:SupportIcon,
+  // },
+  //{
+  //  label:"User experience survey",
+  //  icon:ArticleIcon,
+  //},
 ];
 // Used to manage the book's status comming from the backend
 export const BOOK_BACKEND_STATUS = {

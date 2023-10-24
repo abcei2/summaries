@@ -7,8 +7,30 @@ import useModelObserver from "@/hooks/useModelObserver";
 import { BOOK_BACKEND_STATUS } from "@/constants";
 import { HiUpload } from "react-icons/hi";
 const MyLibrary = () => {
+
   const [myBooks, setMyBooks] = useState<Book[]>();
   const [loading, setLoading] = useState(false);
+  const [url, setUrl] = useState<string>("");
+
+  const handleUrlFetch = async () => {
+    try {
+      const response = await fetch("api/fetch_url", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ url })
+      });
+
+      if (response.ok) {
+        window.location.reload();
+      } else {
+        const errorData = await response.json();
+        window.alert(`Error: ${errorData.message}`);
+      }
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
   const subscribeToBook = (status?: string) =>
     status &&
     [
@@ -82,8 +104,10 @@ const MyLibrary = () => {
 
       <br></br>
       <div className="w-full flex justify-start items-center">
-        <label className="flex items-center bg-primary rounded cursor-pointer w-40 justify-center">
-          <span className="mr-2 text-sm text-white">Upload Document</span>
+        <label className="ml-4 flex items-center bg-primary rounded cursor-pointer w-40 justify-center">
+          
+          <span className="mr-2 p-2 text-sm text-white ju
+          ">Upload Document</span>
           <input
             type="file"
             className="hidden"
@@ -92,7 +116,31 @@ const MyLibrary = () => {
           <HiUpload className="hover:scale-125 duration-300 hover:animate-pulse text-white" />
         </label>
       </div>
-      <br></br>
+      
+      
+      <div className="w-full flex justify-start items-center">
+        <span className="ml-4 font-semibold text-gray-600 w-full ">
+          Or
+        </span>
+        <br></br>
+        
+        </div>
+      <div className="w-full flex justify-start items-center">
+        
+        <input
+          type="text"
+          placeholder="Paste URL"
+          className="ml-4 p-2 rounded border"
+          value={url}
+          onChange={(e) => setUrl(e.target.value)}
+        />
+        <button
+          onClick={handleUrlFetch}
+          className="ml-2 bg-primary text-white p-2 rounded"
+        >
+          Get Article
+        </button>
+      </div>
 
       <span className="w-[80%] text-3xl font-semibold text-gray-600 w-full ">
         Reading Now

@@ -36,10 +36,20 @@ const MenuItems = ({ handleClose }: { handleClose: () => void }) => {
     >
       <div className="w-full w-full bg-white">
         {user && (
-          <div className="w-full flex justify-center items-center p-2">
+        <div className="w-full flex flex-col justify-left items-center p-2">
+          <div>
             <span>{user.email}</span>
           </div>
-        )}
+          
+          <div>
+            <span className="ml-2 ">Available tokens:</span>
+          </div>
+          <div>
+          <span className="ml-2">{user.available_tokens.toLocaleString()}</span>
+            </div>
+        </div>
+      )}
+
         {MENU_SETTINGS.map((item: any, key: any) => (
           <IndexMenu key={key} {...item} />
         ))}

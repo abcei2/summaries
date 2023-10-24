@@ -1,32 +1,23 @@
 import { NextApiRequest, NextApiResponse } from "next";
 import { withAuth } from "@/utils/validator";
-import { SumaryCreateParams, UserAuthType } from "../../../types";
+import { UserAuthType } from "@/types";
 
-async function fn(req: NextApiRequest, res: NextApiResponse, userAuth: UserAuthType) {
+async function fetch_url(req: NextApiRequest, res: NextApiResponse, userAuth: UserAuthType) {
   switch (req.method) {
     case "POST":
-      const {
-        bookId,
-        model,
-        method,
-        prompt,
-        length,
-      }: SumaryCreateParams = req.body;
-
-      if (!bookId) {
-        return res.status(400).send("bookId not provided");
-      }
-
+  
       try {
         
         const response = await fetch(
-          process.env.DJANGO_HOST +
-            `/summarise-book/?book_id=${bookId}&m1=${model}&m2=${model}&method=${method}&p1=${prompt}&p2=${prompt}&length=${length}&temp=${0.5}`,
+          process.env.DJANGO_HOST +`/fetch_url/`,
           {
-            method: "GET",
+            method: "POST",
             headers: {
               Authorization: `token ${userAuth.token}`,
+              "Content-Type": "application/json",
+
             },
+            body: JSON.stringify(req.body),
           }
         );
 
@@ -34,8 +25,6 @@ async function fn(req: NextApiRequest, res: NextApiResponse, userAuth: UserAuthT
           const data = await response.json();
           res.status(200).json(data);
         } else {
-          const data = await response.json();
-          
           
           res.status(401).json({ message: "Unauthorized" });
         }
@@ -46,7 +35,10 @@ async function fn(req: NextApiRequest, res: NextApiResponse, userAuth: UserAuthT
     default: //Method Not Allowed
       res.status(405).end();
       break;
+
+      
+
   }
 }
 
-export default withAuth(fn);
+export default withAuth(fetch_url);

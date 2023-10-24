@@ -159,6 +159,7 @@ const BookDetailsCard = ({
           handleConfirm={() => createResume(DEFAULT_SUMMARY_PARAMS)}
           title={bookModalTitle}
           bookCover={bookCover}
+          bookId={book.global_id}
         />
       );
     }

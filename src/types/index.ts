@@ -23,6 +23,7 @@ export type Book = {
 };
 
 export type UserAuthType = {
+  available_tokens: number
   email: string;
   is_staff: boolean;
   is_superuser: boolean;
