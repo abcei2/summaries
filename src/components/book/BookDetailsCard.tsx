@@ -77,6 +77,7 @@ const BookDetailsCard = ({
         }
       })
       .then((data) => {
+        console.log("ask for summary", data);
         handleUpdateBook(data.data);
         if (!data.data.can_do_summary) setShowSummaryModal(false);
       })
@@ -215,8 +216,12 @@ const BookDetailsCard = ({
               <b>Language:</b> {book.language}
             </p>
             <p className="text-[#505258] text-base">
-              <b>File extension:</b> .{book.extension}
+              <b>Extension:</b> .{book.extension}
             </p>
+            <p className="text-[#505258] text-base">
+              <b>Total tokens:</b> {book.total_tokens}
+            </p>
+
             {Number(book.pages) > 0 && (
               <p className="text-[#505258] text-base capitalize">
                 {book.pages} pages

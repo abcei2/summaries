@@ -16,7 +16,7 @@ const SummaryList = ({ summaryList }: { summaryList: SummaryType[] }) => {
           >
             <div className="flex flex-col">
               <span className="text-base font-semibold">Status: </span>
-              {summary.state}{": "}{summary.status_message}
+              {summary.state}{" "}{summary.status_message}
               {summary.state == "running" && " "+
                 (Number(summary.progress) * 100).toFixed(1) + "%"}
             </div>

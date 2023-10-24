@@ -19,7 +19,8 @@ export type Book = {
   progress?: string;
   cover_url?: string;
   cover_img_path?: string;
-  link_a?: string;  
+  link_a?: string; 
+  total_tokens?: number;
 };
 
 export type UserAuthType = {
