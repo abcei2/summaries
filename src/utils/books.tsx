@@ -6,7 +6,7 @@ export const BookStatus = ({book}:{book: Book}) => {
     case BOOK_BACKEND_STATUS.DOWNLOADING:
       return (
         <span className="font-bold text-gray-600 mb-2">
-          Downloading {book?.progress + "%"}
+          Downloading {book?.progress&&"0" + "%"}
         </span>
       );
     case BOOK_BACKEND_STATUS.DOWNLOADED:

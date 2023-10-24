@@ -13,6 +13,9 @@ const MainBookComponent = ({ bookId }: { bookId: string }) => {
   const [book, setBook] = useState<Book>();
   const [summaryList, setSummaryList] = useState<SummaryType[]>();
   const { user } = useContext(UserContext);
+  const [loadingBook, setLoadingBook] = useState(false);
+  const [loadingSummaries, setLoadingSummaries] = useState(false);
+  const loading = loadingBook || loadingSummaries;
 
   const currentShowSummary = summaryList?.find(
     (summary) => summary?.method != "dummy" //&& summary?.state != "error"
@@ -31,16 +34,21 @@ const MainBookComponent = ({ bookId }: { bookId: string }) => {
   useModelObserver({
     roomName: bookId,
     updateData: (data) => {
-      console.log("data", data);
-      if (!summaryList) return;
+      const { summary_id, ...rest } = data;
+      if (!summaryList)
+        return [
+          {
+            id: summary_id,
+            ...rest,
+          },
+        ];
       const index = summaryList.findIndex(
-        (item) => Number(item.id) == Number(data.summary_id)
+        (item) => Number(item.id) == Number(summary_id)
       );
       if (index == -1) return;
       summaryList[index] = {
         ...summaryList[index],
-        state: data.state,
-        progress: data.progress,
+        ...rest,
       };
       setSummaryList([...summaryList]);
     },
@@ -73,10 +81,9 @@ const MainBookComponent = ({ bookId }: { bookId: string }) => {
 
   useEffect(() => {
     if (!book) return;
-
     if (
       book.status == BOOK_BACKEND_STATUS.EXTRACTED &&
-      !book.can_do_summary &&
+      book.can_do_summary &&
       !currentShowSummary &&
       !user?.is_superuser &&
       user?.is_subscribed
@@ -87,21 +94,24 @@ const MainBookComponent = ({ bookId }: { bookId: string }) => {
 
   const reloadBook = () => {
     if (!bookId) return console.log("No bookId");
-
+    setLoadingBook(true);
     fetch("/api/books/" + bookId)
       .then((res) => res.json())
       .then((data) => {
         setBook(data.data);
-      });
+      })
+      .finally(() => setLoadingBook(false));
   };
 
   const reloadSummaries = () => {
     if (!bookId) return console.log("No bookId");
+    setLoadingSummaries(true);
     fetch("/api/books/summaries/" + bookId)
       .then((res) => res.json())
       .then((data) => {
         setSummaryList(data.data);
-      });
+      })
+      .finally(() => setLoadingSummaries(false));
   };
 
   if (!book || !bookId) return <LoadingSpin text="Loading book details" />;
@@ -112,6 +122,7 @@ const MainBookComponent = ({ bookId }: { bookId: string }) => {
         <BookDetailsCard
           book={book}
           lastSummary={lastSummary}
+          loading={loading}
           reloadSummaries={reloadSummaries}
           handleUpdateBook={(newBook) => {
             setBook({
@@ -123,22 +134,30 @@ const MainBookComponent = ({ bookId }: { bookId: string }) => {
       </div>
 
       {book.status === BOOK_BACKEND_STATUS.DOWNLOADING && (
-        <LoadingSpin text={`Downloading. ${book.progress}%`} />
+        <LoadingSpin
+          text={`Downloading. ${
+            !loading && book?.progress ? book?.progress + "%" : ""
+          }`}
+        />
       )}
 
       {user &&
         !user.is_staff &&
         !user.is_superuser &&
         user.is_subscribed &&
-        currentShowSummary?.state == "running" && (
+        lastSummary &&
+        lastSummary?.state != SUMMARY_BACKEND_STATUS.DONE &&
+        lastSummary?.state != SUMMARY_BACKEND_STATUS.ERROR && (
           <div className="flex gap-2">
-            {book.can_do_summary}
-
             {
               <LoadingSpin
-                text={`Generating summary. ${(
-                  Number(currentShowSummary?.progress) * 100
-                ).toFixed(1)} %`}
+                text={
+                  lastSummary?.state == SUMMARY_BACKEND_STATUS.RUNNING
+                    ? `Generating summary. ${(
+                        Number(lastSummary?.progress) * 100
+                      ).toFixed(1)} %`
+                    : ""
+                }
               />
             }
           </div>
