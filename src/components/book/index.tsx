@@ -18,7 +18,7 @@ const MainBookComponent = ({ bookId }: { bookId: string }) => {
   const loading = loadingBook || loadingSummaries;
 
   const currentShowSummary = summaryList?.find(
-    (summary) => summary?.method != "dummy" //&& summary?.state != "error"
+    (summary) => summary?.method != "dummy" && summary?.state != "error"
   );
 
   const lastSummary = summaryList?.sort(
@@ -32,7 +32,7 @@ const MainBookComponent = ({ bookId }: { bookId: string }) => {
     );
   // Subscribe to summary each time [TODO change to only subscribe to the summary if is != "done" summary]
   useModelObserver({
-    roomName: bookId,
+    roomName: book?.id ?? "",
     updateData: (data) => {
       const { summary_id, ...rest } = data;
       if (!summaryList)
@@ -52,9 +52,9 @@ const MainBookComponent = ({ bookId }: { bookId: string }) => {
       };
       setSummaryList([...summaryList]);
     },
-    connectToWS: summaryList?.some((summary) =>
-      subscribeToSummary(summary.state ?? "")
-    ),
+    connectToWS:
+      summaryList?.some((summary) => subscribeToSummary(summary.state ?? "")) &&
+      book?.id != undefined,
   });
 
   const subscribeToBook = (status: string) =>
@@ -67,7 +67,7 @@ const MainBookComponent = ({ bookId }: { bookId: string }) => {
   useModelObserver({
     updateData: (data) => {
       if (!book) return undefined;
-      if (Number(book.global_id) != Number(data.book_id)) return;
+      if (Number(book.id) != Number(data.pk)) return;
       setBook({ ...book, status: data.status, progress: data.progress });
     },
     roomName: "global_library",

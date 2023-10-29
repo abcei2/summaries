@@ -42,7 +42,7 @@ const BookDetailsCard = ({
   const onRetryDowload = () => {
     if (!book) return console.log("No book");
 
-    fetch(`/api/books/download/${book.global_id}$`, {
+    fetch(`/api/books/download/${book.global_id}`, {
       method: "GET",
     })
       .then(async (resp) => {
@@ -229,7 +229,7 @@ const BookDetailsCard = ({
             )}
           </div>
 
-          {book?.status == "error" ? (
+          {["error", "extract text error"].includes(book?.status??"") ? (
             <CgSoftwareDownload
               className="w-6 h-6"
               onClick={() => setShowRetryDownloadModal(true)}
