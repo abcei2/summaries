@@ -102,8 +102,28 @@ const MyLibrary = () => {
         </span>
       </div>
 
-      <br></br>
+     <br></br>
       <div className="w-full flex justify-start items-center">
+        
+        <input
+          type="text"
+          placeholder="Paste a URL (youtube, file, or web page)"
+          className="ml-4 p-2 rounded border w-1/3"
+          value={url}
+          onChange={(e) => setUrl(e.target.value)}
+        />
+        <button
+          onClick={handleUrlFetch}
+          className="ml-2 bg-primary text-white p-2 rounded"
+        >
+          Get Article
+        </button>
+      </div>
+
+      
+      <div className="ml-4 p-2 w-full flex justify-start items-center">
+      <span>Or</span>
+
         <label className="ml-4 flex items-center bg-primary rounded cursor-pointer w-40 justify-center">
           
           <span className="mr-2 p-2 text-sm text-white ju
@@ -116,31 +136,7 @@ const MyLibrary = () => {
           <HiUpload className="hover:scale-125 duration-300 hover:animate-pulse text-white" />
         </label>
       </div>
-      
-      
-      <div className="w-full flex justify-start items-center">
-        <span className="ml-4 font-semibold text-gray-600 w-full ">
-          Or
-        </span>
-        <br></br>
-        
-        </div>
-      <div className="w-full flex justify-start items-center">
-        
-        <input
-          type="text"
-          placeholder="Paste URL"
-          className="ml-4 p-2 rounded border"
-          value={url}
-          onChange={(e) => setUrl(e.target.value)}
-        />
-        <button
-          onClick={handleUrlFetch}
-          className="ml-2 bg-primary text-white p-2 rounded"
-        >
-          Get Article
-        </button>
-      </div>
+
 
       <span className="w-[80%] text-3xl font-semibold text-gray-600 w-full ">
         Reading Now
