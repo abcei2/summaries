@@ -6,7 +6,7 @@ const useModelObserver = ({
   connectToWS,
 }: {
   updateData: (data: any) => void;
-  roomName: string;
+  roomName: string;//"global_library" or "book_pk" of book model
   connectToWS?: boolean;
 }) => {
   useEffect(() => {

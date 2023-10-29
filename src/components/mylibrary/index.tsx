@@ -42,8 +42,9 @@ const MyLibrary = () => {
   useModelObserver({
     updateData: (data) => {
       if (!myBooks) return undefined;
+      console.log(data)
       const index = myBooks.findIndex(
-        (item) => Number(item.global_id) == Number(data.book_id)
+        (item) => Number(item.id) == Number(data.pk)
       );
       if (index == -1) return;
       myBooks[index] = {

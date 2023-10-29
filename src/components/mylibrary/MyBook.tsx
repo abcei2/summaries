@@ -36,12 +36,9 @@ const MyBook = ({
   };
 
   const onRetryDowload = () => {
-    fetch(
-      `/api/books/download/${book.global_id}`,
-      {
-        method: "GET",
-      }
-    )
+    fetch(`/api/books/download/${book.global_id}`, {
+      method: "GET",
+    })
       .then(async (resp) => {
         if (resp.status == 200) {
           updateBook({
@@ -92,7 +89,7 @@ const MyBook = ({
           </div>
         )}
         <div className="absolute w-fit left-[2px] z-10 cursor-pointer hover:scale-105 top-1">
-          {book?.status == "error" ? (
+          {["error", "extract text error"].includes(book?.status??"") ? (
             <CgSoftwareDownload
               className="w-6 h-6"
               onClick={() => setShowRetryDownloadModal(true)}
