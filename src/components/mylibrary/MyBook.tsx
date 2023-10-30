@@ -119,8 +119,8 @@ const MyBook = ({
               <BookStatus book={book} />
 
               <span className="font-bold text-gray-600 mb-2">
-                {book?.title_2 ? book?.title_2.slice(0, 50) : ""}
-                {book?.title_2?.length > 50 ? "..." : ""}
+                {book?.title_2 ? book?.title_2 : ""}
+                
               </span>
 
               {book?.year.toString() != "N/A" && <span>{book?.year}</span>}
