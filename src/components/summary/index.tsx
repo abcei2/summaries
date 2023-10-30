@@ -76,8 +76,8 @@ const SummaryComp = ({
   }, []);
 
   const handleHighlightClick = async () => {
-    console.log("Selected text:", selectedText);
-    console.log("Summary id:", summaryId);
+    
+    
     if (selectedText.length <20) alert("Please select more than 20 characters");
     else {
       
@@ -173,6 +173,7 @@ const SummaryComp = ({
   if (!summary) return null;
 
   return (
+    
     <div className="w-full flex justify-center items-center">
       <div className="w-[90%] lg:w-[90%] flex flex-col gap-2 mt-10">
         {showDetails && (
@@ -205,14 +206,16 @@ const SummaryComp = ({
               <div className="font-bold text-2xl">Prompt1</div>
               <div>{summary.prompt1}</div>
             </div>
-            <div className="flex flex-col gap-2">
-              <div className="font-bold text-2xl">Id</div>
-              <div>{summary.id}</div>
-            </div>
+            
           </div>
         )}
-
+        
+        <div>
+          Summary Id: {summary.id}
+        </div>
+          
         <div className="flex flex-col gap-2">
+          
           {content && content.length > 0
             ? content.map((item, index) => (
                 <div key={index} className="flex flex-col gap-2">

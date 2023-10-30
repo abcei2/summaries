@@ -40,6 +40,12 @@ const Login = () => {
     }
   };
 
+  const handleKeyDown = (e: React.KeyboardEvent) => {
+    if (e.key === 'Enter') {
+      onSignIn();
+    }
+  };
+
   return (
     <>
       <div className="w-full ">
@@ -52,9 +58,9 @@ const Login = () => {
             <input
               value={formValues.email}
               type="email"
-              onChange={(e) =>
-                onChange({ name: "email", value: e.target.value })
-              }
+              onChange={(e) => onChange({ name: "email", value: e.target.value })}
+              onKeyDown={handleKeyDown}
+              
               className="border border-1  rounded-full w-full  h-9 px-2"
             ></input>
           </div>
@@ -63,9 +69,9 @@ const Login = () => {
             <input
               value={formValues.password}
               type="password"
-              onChange={(e) =>
-                onChange({ name: "password", value: e.target.value })
-              }
+              onChange={(e) => onChange({ name: "password", value: e.target.value })}
+              onKeyDown={handleKeyDown}
+              
               className="border border-1 rounded-full h-9 px-2"
             ></input>
           </div>

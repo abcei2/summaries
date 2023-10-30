@@ -20,7 +20,7 @@ export const USER_TABS = [
   },
   {
     pathname: "/search",
-    label: "Search",
+    label: "Search/Upload",
     icon: SearchIcon,
   },
   {
