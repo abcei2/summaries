@@ -18,13 +18,16 @@ async function validate(
           },
         });
         if (resp.status == 403 || resp.status == 401) {
+          console.log(resp.status)
           removeAuthCookie(res);
           res.status(401).json({ isAuth: false });
         } else {
           const data = await resp.json();
+          console.log(data)
           res.status(200).json(data);
         }
       } catch (error) {
+        console.log(error);
         res.status(500).end();
       }
       break;

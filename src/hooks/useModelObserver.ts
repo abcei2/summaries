@@ -14,12 +14,13 @@ const useModelObserver = ({
     const ws = new WebSocket(
       `${process.env.NEXT_PUBLIC_DJANGO_WS ?? ""}consumer/${roomName}/`
     );
+    console.log(`${process.env.NEXT_PUBLIC_DJANGO_WS ?? ""}consumer/${roomName}/`)
     ws.onopen = () => {
       console.log("Connected to ws");
     };
     ws.onmessage = (e: any) => {
       const eData = JSON.parse(e.data);
-      if (eData.type == "downloading_book" || eData.type == "summarizing") {
+      if (eData.type == "downloading_book" || eData.type == "summarizing" || "searching") {
         updateData(eData.data);
       } 
     };
