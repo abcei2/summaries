@@ -133,6 +133,7 @@ function BookSearch() {
     <div className="w-full flex flex-col gap-6 items-center">
       <div className="w-full h-16 flex justify-center items-center ">
         <input
+          value={searchTerm}
           onChange={(e) => setSearchTerm(e.target.value)}
           onKeyDown={(e) => {
             if (e.key == "Enter") {
