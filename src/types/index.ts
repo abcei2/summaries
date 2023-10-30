@@ -24,12 +24,16 @@ export type Book = {
 };
 
 export type UserAuthType = {
+  id: string;
   available_tokens: number
   email: string;
   is_staff: boolean;
   is_superuser: boolean;
   token: string;
   is_subscribed: boolean;
+  search_status: string;
+  seeking_books: boolean;
+  current_search_task_id: string;
 };
 
 export type SignupFormType = {
