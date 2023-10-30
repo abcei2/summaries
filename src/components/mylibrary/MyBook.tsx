@@ -119,7 +119,7 @@ const MyBook = ({
               <BookStatus book={book} />
 
               <span className="font-bold text-gray-600 mb-2">
-                {book?.title_2 ? book?.title_2 : ""}
+                {book?.title_2}
                 
               </span>
 
