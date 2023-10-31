@@ -10,7 +10,8 @@ const UserMenu = () => {
       <div className="relative">
         <div
           onClick={() => setShow(!show)}
-          className="bg-white flex p-3 hover:bg-primary rounded-full border border-2  w-12 h-12 relative z-20" 
+          className="bg-white flex p-3 hover:bg-primary rounded-full border border-2  w-12 h-12 relative z-20"
+          style={{ cursor: 'pointer' }}  // Add this line
         >
         {UserIcon}
         </div>
@@ -23,3 +24,4 @@ const UserMenu = () => {
 };
 
 export default UserMenu;
+

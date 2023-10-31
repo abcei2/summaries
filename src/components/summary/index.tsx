@@ -80,7 +80,7 @@ const SummaryComp = ({
     
     if (selectedText.length <20) alert("Please select more than 20 characters");
     else {
-      
+      console.log(summaryId);
     const response = await fetch("/api/highlight/", {
       method: "POST",
       headers: {
@@ -88,7 +88,7 @@ const SummaryComp = ({
       },
       body: JSON.stringify({
         highlighted_text: selectedText,
-        summary_id: summaryId,
+        summary_id: summaryId || summary?.id,
       }),
     });
     // Handle response
@@ -135,11 +135,11 @@ const SummaryComp = ({
 
   // Fetching the highlighted text when summaryId is available.
   const fetchHighlightedText = async () => {
-    if (!summaryId) return;
+    if (!(summaryId || summary?.id)) return;
 
     try {
       const response = await fetch(
-        `/api/get-highlighted-text/?summary_id=${summaryId}`
+        `/api/get-highlighted-text/?summary_id=${summaryId || summary?.id}`
       );
       const data = await response.json();
 

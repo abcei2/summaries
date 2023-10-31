@@ -20,6 +20,7 @@ export function middleware(req: NextRequest) {
     "/mylibrary",
     "/books/details",
     "/myhighlights",
+    "/surveys",
     
     
     
@@ -45,6 +46,8 @@ export function middleware(req: NextRequest) {
       userAuth = cookieValue ? JSON.parse(cookieValue) : null;
     } catch (error) {
       console.log(error);
+      return NextResponse.redirect(new URL("/login", req.nextUrl)); // Redirect to login on error
+
     }
     
     if (!userAuth) {
@@ -54,6 +57,8 @@ export function middleware(req: NextRequest) {
         return NextResponse.redirect(new URL("/login", req.nextUrl));
       }
     } else {
+      console.log("Path Validation for Subscribed Paths: ", isValidPath(req.nextUrl.pathname, subscribedPaths));
+
       if (!userAuth.is_superuser && !userAuth.is_subscribed)
         return nextSlashUrl;
 

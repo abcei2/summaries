@@ -1,6 +1,6 @@
 import { MENU_SETTINGS } from "@/constants";
 import { UserContext } from "@/context/UserContext";
-import { LogOutIcon } from "@/customIcons";
+import { LogOutIcon, ArticleIcon } from "@/customIcons";
 import { ReactNode } from "react";
 import { useContext } from "react";
 import { useRouter } from "next/router";
@@ -16,7 +16,7 @@ const IndexMenu = ({
   onClick?: () => void;
 }) => {
   return (
-    <div className="w-full flex justify-center items-center p-2 space-x-4 hover:bg-gray-100" onClick={onClick}>
+    <div className="w-full flex justify-center items-center p-2 space-x-4 hover:bg-gray-100 hover-hand" onClick={onClick}>
       <div className="w-[20px]">{icon}</div>
       <div className="w-[70px] text-[16px]">{label}</div>
     </div>
@@ -37,16 +37,11 @@ const MenuItems = ({ handleClose }: { handleClose: () => void }) => {
       <div className="w-full w-full bg-white">
         {user && (
         <div className="w-full flex flex-col justify-left items-center p-2">
-          <div>
-            <span>{user.email}</span>
-          </div>
+          <div><span>{user.email}</span></div>
           
-          <div>
-            <span className="ml-2 ">Available tokens:</span>
-          </div>
-          <div>
-          <span className="ml-2">{user.available_tokens.toLocaleString()}</span>
-            </div>
+          <div><span className="ml-2 ">Available tokens:</span></div>
+      
+          <div><span className="ml-2">{user.available_tokens.toLocaleString()}</span></div>
         </div>
       )}
 
@@ -55,12 +50,23 @@ const MenuItems = ({ handleClose }: { handleClose: () => void }) => {
         ))}
 
         <IndexMenu
+          label="Take our Surveys"
+          icon={ArticleIcon}
+          onClick={() => {
+            router.push("/surveys");
+          }}
+        />
+
+        <IndexMenu
           label="Logout"
           icon={LogOutIcon}
           onClick={() => {
             signOut && signOut().then(() => router.reload());
           }}
+          
+
         />
+        
       </div>
     </OutsideAlerter>
   );

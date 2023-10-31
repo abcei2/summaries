@@ -77,7 +77,7 @@ const MyBook = ({
       )}
       <div className="relative w-fit h-fit flex justify-center">
         <div
-          className="absolute w-fit right-[2px] z-10 cursor-pointer hover:scale-105 top-1"
+          className="absolute w-fit right-[2px] z-9 cursor-pointer hover:scale-105 top-1 "
           onClick={() => setShowDeleteModal(true)}
         >
           ❌

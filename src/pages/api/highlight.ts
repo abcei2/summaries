@@ -25,6 +25,7 @@ async function highlight(req: NextApiRequest, res: NextApiResponse, userAuth: Us
           const data = await response.json();
           res.status(200).json(data);
         } else {
+          console.log(response.status)
           res.status(401).json({ message: "Unauthorized" });
         }
       } catch (error) {
