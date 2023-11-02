@@ -12,7 +12,7 @@ export default function App({ Component, pageProps }: AppProps) {
       <div className="h-screen xl:overflow-auto overflow-hidden flex flex-col">
         <TabMenu />
         <div className="h-[80%] sm:h-full max-w-full overflow-auto">
-          <Component {...pageProps} />
+          <Component {...pageProps} />        
         </div>
         <BottonMenu />
       </div>

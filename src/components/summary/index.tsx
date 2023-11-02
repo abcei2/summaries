@@ -3,6 +3,7 @@ import { HighlightsIcon } from "@/customIcons";
 import { SummaryType } from "@/types";
 import { useRouter } from "next/router";
 import React, { useEffect, useState, useRef } from "react";
+import HelpUs from "../HelpUs";
 
 const SummaryComp = ({
   summaryId,
@@ -244,7 +245,9 @@ const SummaryComp = ({
             <button onClick={handleHighlightClick}>{HighlightsIcon}</button>
           </div>
         )}
+        <HelpUs />
       </div>
+      
     </div>
   );
 };
