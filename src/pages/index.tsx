@@ -39,6 +39,18 @@ const page = () => {
     <div className="flex h-full w-full justify-center md:pt-5 ">
       {!user || user?.is_superuser || user?.is_subscribed ? (
         <div className="flex flex-col gap-10 w-full sm:w-[90%] p-5 sm:p-10 text-2xl font-[000] h-full">
+          {!user && (
+            <div className="flex justify-end w-full h-20 relative text-lg underline">
+              <a href="/login" className="cursor-pointer">
+                Login{" "}
+              </a>
+              <span className="mx-2">|</span>
+              <a href="/signup" className="cursor-pointer">
+                {" "}
+                Sign Up
+              </a>
+            </div>
+          )}
           <div className="w-full h-12 flex items-center font-bold text-3xl md:text-4xl">
             Struggling with information overload?
           </div>
