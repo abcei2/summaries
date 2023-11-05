@@ -55,12 +55,12 @@ const Card = ({ book, className }: { book: Book; className?: string }) => {
       } w-[150px] sm:w-[200px] rounded-lg shadow-lg border border-2 flex flex-col justify-between`}
     >
       <div className="relative flex flex-col">
-        <div className="absolute rounded-full w-fit  bg-white p-2 m-1 border shadow-md">
+        <div className="absolute rounded-full w-fit p-2 m-1 border shadow-md">
           {HeadsetIcon}
         </div>
 
         {Number(book.pages) > 0 && (
-          <div className="absolute rounded-full w-fit  bg-white p-0.5 m-1 border shadow-md right-[0px] text-sm">
+          <div className="absolute rounded-full w-fit p-0.5 m-1 border shadow-md right-[0px] text-sm">
             <span className="  text-gray-600 "> Pags. {book.pages} </span>
           </div>
         )}

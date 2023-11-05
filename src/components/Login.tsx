@@ -75,18 +75,18 @@ const Login = () => {
               className="border border-1 rounded-full h-9 px-2"
             ></input>
           </div>
-          <a href="" className="text-xs text-link m-2 pl-40 lg:pl-60 font-bold">
+          <a href="" className="text-xs text-primary m-2 pl-40 lg:pl-60 font-bold">
             Forgot your Password?
           </a>
           <button
             onClick={() => onSignIn()}
-            className="bg-bgc rounded-full w-28 h-10 mt-4"
+            className="bg-primary rounded-full w-28 h-10 mt-4"
           >
             Log In
           </button>
           <p className="my-16">
             New to MegaSummary?{" "}
-            <a href="/signup" className="text-link font-bold ">
+            <a href="/signup" className="text-primary font-bold ">
               Sign up now
             </a>
           </p>

@@ -61,7 +61,7 @@ const SignUp = () => {
           </div>
           <button
             onClick={() => onSubmit()}
-            className="bg-bgc rounded-full w-40 h-10 mt-4"
+            className="bg-primary rounded-full w-40 h-10 mt-4"
           >
             Create Account
           </button>
@@ -70,7 +70,7 @@ const SignUp = () => {
             <b>Privacy Policy.</b>
           </p>
           <p>
-            Already have an account? <a href="/login" className="text-link font-bold">Log in</a>
+            Already have an account? <a href="/login" className="text-primary font-bold">Log in</a>
           </p>
         </div>
       </div>
