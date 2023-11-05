@@ -37,9 +37,7 @@ const page = () => {
 
   return (
     <div className="flex h-full w-full justify-center md:pt-5 ">
-      {loading ? (
-        <span> Loading...</span>
-      ) : !user || user?.is_superuser || user?.is_subscribed ? (
+      {!user || user?.is_superuser || user?.is_subscribed ? (
         <div className="flex flex-col gap-10 w-full sm:w-[90%] p-5 sm:p-10 text-2xl font-[000] h-full">
           <div className="w-full h-12 flex items-center font-bold text-3xl md:text-4xl">
             Struggling with information overload?
@@ -50,9 +48,12 @@ const page = () => {
               <span key={key}>{item}</span>
             ))}
           </div>
-          <span className="text-3xl font-bold underline w-full text-center">
+          <a
+            href={!user ? "/login" : "/search"}
+            className="text-3xl font-bold underline w-full text-center"
+          >
             Meet MegaSummary! 🚀
-          </span>
+          </a>
           {HOME_CONTENT.cards.map((card, key) => (
             <div
               key={key}
@@ -68,7 +69,7 @@ const page = () => {
               <span>{HOME_CONTENT.bottom}</span>
             </div>
             <div className="flex justify-center items-center">
-              <a href="/signup">
+              <a href={!user ? "/signup" : "/search"}>
                 <button className="bg-primary text-white p-4 rounded-lg">
                   Get Started
                 </button>

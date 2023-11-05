@@ -39,7 +39,6 @@ export function middleware(req: NextRequest) {
     try {
       userAuth = cookieValue ? JSON.parse(cookieValue) : null;
     } catch (error) {
-      console.log(error);
       return NextResponse.redirect(new URL("/", req.nextUrl)); // Redirect to login on error
     }
 

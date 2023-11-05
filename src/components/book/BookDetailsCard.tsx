@@ -169,7 +169,7 @@ const BookDetailsCard = ({
   };
 
   return (
-    <div className="bg-white rounded-lg overflow-hidden h-full w-full">
+    <div className="rounded-lg overflow-hidden h-full w-full">
       {showRetryDownloadModal && (
         <CustomModal2 handleClose={() => setShowRetryDownloadModal(false)}>
           <RetryDownloadModal
