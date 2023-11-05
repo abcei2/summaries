@@ -107,7 +107,7 @@ const MyHighlights = () => {
   return (
     <div className="w-full flex flex-col items-center">
       <div className="w-full bg-[#F8F8F8] h-20 flex items-center justify-center">
-        <span className="w-[80%] text-4xl font-bold text-gray-600">
+        <span className="text-4xl font-bold text-gray-600">
           My Highlights
         </span>
       </div>

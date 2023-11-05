@@ -4,7 +4,7 @@ import { LogOutIcon, ArticleIcon } from "@/customIcons";
 import { ReactNode } from "react";
 import { useContext } from "react";
 import { useRouter } from "next/router";
-import OutsideAlerter from "./utils/OutsideAlerter";
+import OutsideAlerter from "../utils/OutsideAlerter";
 
 const IndexMenu = ({
   label,
@@ -16,34 +16,36 @@ const IndexMenu = ({
   onClick?: () => void;
 }) => {
   return (
-    <div className="w-full flex justify-center items-center p-2 space-x-4 hover:bg-gray-100 hover-hand" onClick={onClick}>
-      <div className="w-[20px]">{icon}</div>
-      <div className="w-[70px] text-[16px]">{label}</div>
+    <div
+      className="min-w-[180px] flex gap-2 hover:bg-gray-100 text-[16px]"
+      onClick={onClick}
+    >
+      <div className="h-[20px] pl-2">{icon}</div>
+      <div className="">{label}</div>
     </div>
   );
 };
 
-
 const MenuItems = ({ handleClose }: { handleClose: () => void }) => {
-  const { user,signOut } = useContext(UserContext);
+  const { user, signOut } = useContext(UserContext);
   const router = useRouter();
   return (
     <OutsideAlerter
       onClick={() => {
-        //handleClose();
+       // handleClose();
       }}
-      className="absolute z-10 rounded-lg right-[20%] top-[110%] overflow-hidden border border-2 bg-white"
+      className="absolute z-10 rounded-lg right-[20%] top-[110%] overflow-hidden border border-2 bg-white max-w-[300px]"
     >
       <div className="w-full w-full bg-white">
         {user && (
-        <div className="w-full flex flex-col justify-left items-center p-2">
-          <div><span>{user.email}</span></div>
-          
-          <div><span className="ml-2 ">Available tokens:</span></div>
-      
-          <div><span className="ml-2">{user.available_tokens.toLocaleString()}</span></div>
-        </div>
-      )}
+          <div className="w-full flex flex-col justify-left  p-2">
+            <div>{user.email}</div>
+
+            <div>Available tokens:</div>
+
+            <div>{user.available_tokens.toLocaleString()}</div>
+          </div>
+        )}
 
         {MENU_SETTINGS.map((item: any, key: any) => (
           <IndexMenu key={key} {...item} />
@@ -63,10 +65,7 @@ const MenuItems = ({ handleClose }: { handleClose: () => void }) => {
           onClick={() => {
             signOut && signOut().then(() => router.reload());
           }}
-          
-
         />
-        
       </div>
     </OutsideAlerter>
   );

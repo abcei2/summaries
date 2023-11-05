@@ -2,6 +2,8 @@
 import { USER_TABS } from "@/constants";
 import { usePathname } from "next/navigation";
 import { ReactNode } from "react";
+import { useContext } from "react";
+import { UserContext } from "@/context/UserContext";
 
 const BottonMenuItem = ({ pathname, label, icon }: {
   pathname: string,
@@ -19,10 +21,16 @@ const BottonMenuItem = ({ pathname, label, icon }: {
 
 const BottonMenu = () => {
   const currentPath = usePathname();
-  if (!currentPath || currentPath.startsWith("/login") || currentPath.startsWith("/signup"))
+  const { user } = useContext(UserContext);
+  if (
+    !currentPath ||
+    !user ||
+    currentPath.startsWith("/login") ||
+    currentPath.startsWith("/signup")
+  )
     return null;
   return (
-    <div className="bg-white  flex justify-around h-20 w-full hover:border-b-4 lg:hidden">
+    <div className="bg-white  z-20 flex justify-around h-20 w-full hover:border-b-4 lg:hidden fixed bottom-0 border">
 
         {USER_TABS.map((item, key) => (
           <BottonMenuItem key={key} {...item} />

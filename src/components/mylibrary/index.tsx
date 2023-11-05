@@ -7,7 +7,6 @@ import useModelObserver from "@/hooks/useModelObserver";
 import { BOOK_BACKEND_STATUS } from "@/constants";
 import { HiUpload } from "react-icons/hi";
 const MyLibrary = () => {
-
   const [myBooks, setMyBooks] = useState<Book[]>();
   const [loading, setLoading] = useState(false);
   const [url, setUrl] = useState<string>("");
@@ -17,7 +16,7 @@ const MyLibrary = () => {
       const response = await fetch("api/fetch_url", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ url })
+        body: JSON.stringify({ url }),
       });
 
       if (response.ok) {
@@ -97,14 +96,12 @@ const MyLibrary = () => {
   return (
     <div className="w-full flex flex-col items-center">
       <div className="w-full bg-[#F8F8F8] h-20 flex items-center justify-center">
-        <span className="w-[80%] text-4xl font-bold text-gray-600 w-full ">
+        <span className="text-3xl md:text-4xl font-bold text-gray-600 ">
           My Library
         </span>
       </div>
 
-
-
-      <span className="w-[80%] text-3xl font-semibold text-gray-600 w-full ">
+      <span className="text-2xl md:text-3xl font-semibold text-gray-600 ">
         Reading Now
       </span>
       <br></br>

@@ -49,7 +49,7 @@ const Login = () => {
   return (
     <>
       <div className="w-full ">
-        <div className="rounded-lg overflow-hidden bg-white w-full flex flex-col items-center">
+        <div className="rounded-lg overflow-hidden w-full flex flex-col items-center">
           <h1 className="text-[18px] lg:text-[28.5px] font-semibold pt-20 m-4 ">
             Log In
           </h1>

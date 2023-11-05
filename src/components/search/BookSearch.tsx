@@ -130,8 +130,9 @@ function BookSearch() {
   };
 
   return (
-    <div className="w-full flex flex-col gap-6 items-center">
+    <div className="w-full flex flex-col gap-6 items-center pt-5">
       <div className="w-full h-16 flex justify-center items-center ">
+      
         <input
           value={searchTerm}
           onChange={(e) => setSearchTerm(e.target.value)}
@@ -165,7 +166,7 @@ function BookSearch() {
           onClick={handleUrlFetch}
           className="ml-2 bg-primary text-white p-2 rounded"
         >
-          Get Article
+          Get Summary
         </button>
       </div>
       <div className="w-full flex justify-center items-center">

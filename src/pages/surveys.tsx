@@ -3,7 +3,7 @@ import React from 'react';
 
 const Surveys: React.FC = () => {
   return (
-    <div className="bg-gray-100 p-8">
+    <div className="p-8">
       <h1 className="text-gray-700 text-3xl mb-6">
         Subject: Request for Your Valuable Feedback to Enhance MegaSummary User Experience
       </h1>

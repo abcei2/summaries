@@ -12,7 +12,7 @@ const isValidPath = (path: string, paths: string[], equals = false) => {
 };
 
 export function middleware(req: NextRequest) {
-  const noUserPaths = ["/login", "/signup"];
+  const noUserPaths = ["/", "/login", "/signup"];
   const subscribedPaths = [
     "/",
     "/profile",
@@ -21,15 +21,9 @@ export function middleware(req: NextRequest) {
     "/books/details",
     "/myhighlights",
     "/surveys",
-    
-    
-    
   ];
-  const adminPaths = [
-    ...subscribedPaths,
-    "/summary",
-  ];
-  const fileFormats = [".pdf", ".docx", ".jpg", ".png", ".jpeg",".svg"];
+  const adminPaths = [...subscribedPaths, "/summary"];
+  const fileFormats = [".pdf", ".docx", ".jpg", ".png", ".jpeg", ".svg"];
 
   const nextSlashUrl =
     req.nextUrl.pathname != "/"
@@ -46,18 +40,18 @@ export function middleware(req: NextRequest) {
       userAuth = cookieValue ? JSON.parse(cookieValue) : null;
     } catch (error) {
       console.log(error);
-      return NextResponse.redirect(new URL("/login", req.nextUrl)); // Redirect to login on error
-
+      return NextResponse.redirect(new URL("/", req.nextUrl)); // Redirect to login on error
     }
-    
+
     if (!userAuth) {
-      
-      
       if (!isValidPath(req.nextUrl.pathname, noUserPaths, true)) {
-        return NextResponse.redirect(new URL("/login", req.nextUrl));
+        return NextResponse.redirect(new URL("/", req.nextUrl));
       }
     } else {
-      console.log("Path Validation for Subscribed Paths: ", isValidPath(req.nextUrl.pathname, subscribedPaths));
+      console.log(
+        "Path Validation for Subscribed Paths: ",
+        isValidPath(req.nextUrl.pathname, subscribedPaths)
+      );
 
       if (!userAuth.is_superuser && !userAuth.is_subscribed)
         return nextSlashUrl;
@@ -69,14 +63,15 @@ export function middleware(req: NextRequest) {
         return nextSlashUrl;
 
       if (
-        !userAuth.is_superuser && userAuth.is_subscribed &&
+        !userAuth.is_superuser &&
+        userAuth.is_subscribed &&
         !isValidPath(req.nextUrl.pathname, subscribedPaths)
       )
         return nextSlashUrl;
     }
   } else {
     if (!isValidPath(req.nextUrl.pathname, noUserPaths, true))
-      return NextResponse.redirect(new URL("/login", req.nextUrl));
+      return NextResponse.redirect(new URL("/", req.nextUrl));
   }
 
   return NextResponse.next();
