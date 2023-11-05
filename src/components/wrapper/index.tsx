@@ -6,7 +6,9 @@ import { UserContext } from "@/context/UserContext";
 import TabMenu from "./TabMenu";
 import BottonMenu from "./BottonMenu";
 
-function MainWrapper({ children }) {
+function MainWrapper({ children }:{
+    children: React.ReactNode
+}) {
   const currentPath = usePathname();
   const { user } = useContext(UserContext);
   console.log(user);
