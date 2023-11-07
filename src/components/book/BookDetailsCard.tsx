@@ -39,6 +39,17 @@ const BookDetailsCard = ({
       : book?.title_2
     : "";
 
+  const showAskForSummaryButton =
+    book.status == BOOK_BACKEND_STATUS.EXTRACTED &&
+    !loading &&
+    (user?.is_superuser ||
+      (!user?.is_superuser && user?.is_subscribed && !lastSummary));
+
+  const showLoadingAnimation =
+    lastSummary &&
+    lastSummary.state != SUMMARY_BACKEND_STATUS.DONE &&
+    lastSummary.state != SUMMARY_BACKEND_STATUS.ERROR;
+
   const onRetryDowload = () => {
     if (!book) return console.log("No book");
 
@@ -117,19 +128,6 @@ const BookDetailsCard = ({
   };
 
   const summaryModalChildren = () => {
-    if (loadingAskForSummary)
-      return (
-        <div
-          className={`rounded-lg bg-gray-200 animate-pulse ${
-            user?.is_superuser
-              ? "h-[400px] w-[300px]"
-              : !user?.is_superuser && user?.is_subscribed
-              ? "h-[300px] w-[600px]"
-              : ""
-          } 
-        }`}
-        ></div>
-      );
     if (!book.can_do_summary)
       return (
         <div className="flex flex-col gap-4 bg-white h-fit rounded-lg p-2 w-full">
@@ -155,7 +153,7 @@ const BookDetailsCard = ({
           bookId={book.global_id}
         />
       );
-    } else if (!user?.is_superuser && user?.is_subscribed) {
+    } else if (user?.is_subscribed) {
       return (
         <SubscribedSummaryRequest
           handleClose={() => setShowSummaryModal(false)}
@@ -229,7 +227,7 @@ const BookDetailsCard = ({
             )}
           </div>
 
-          {["error", "extract text error"].includes(book?.status??"") ? (
+          {["error", "extract text error"].includes(book?.status ?? "") ? (
             <CgSoftwareDownload
               className="w-6 h-6"
               onClick={() => setShowRetryDownloadModal(true)}
@@ -238,30 +236,21 @@ const BookDetailsCard = ({
             <CgHeadset className="w-6 h-6" />
           )}
 
-          
-
-          {book.status == BOOK_BACKEND_STATUS.EXTRACTED && !loading &&
-            (user?.is_superuser ||
-              (!user?.is_superuser && user?.is_subscribed && !lastSummary)) && (
-                
-              <button
-                onClick={() => onAskForSummary()}
-                className="flex items-center bg-blue-500 hover:bg-blue-700 text-white font-bold py-1 px-4 rounded w-fit self-center lg:self-start "
-              >
-                
-                {lastSummary &&
-                (lastSummary.state != SUMMARY_BACKEND_STATUS.DONE &&
-                lastSummary.state != SUMMARY_BACKEND_STATUS.ERROR) ? (
-                  <div className="flex items-center justify-center">
-                    Loading{" "}
-                    
-                    <HiCog className="text-gray-500 animate-spin duration-[1000] h-10 w-10" />
-                  </div>
-                ) : (
-                  <span>Generate summary</span>
-                )}
-              </button>
-            )}
+          {showAskForSummaryButton && (
+            <button
+              onClick={() => onAskForSummary()}
+              className="flex items-center bg-blue-500 hover:bg-blue-700 text-white font-bold py-1 px-4 rounded w-fit self-center lg:self-start "
+            >
+              {showLoadingAnimation ? (
+                <div className="flex items-center justify-center">
+                  Loading{" "}
+                  <HiCog className="text-gray-500 animate-spin duration-[1000] h-10 w-10" />
+                </div>
+              ) : (
+                <span>Generate summary</span>
+              )}
+            </button>
+          )}
         </div>
 
         <span className="border opacity-50 lg:block hidden" />

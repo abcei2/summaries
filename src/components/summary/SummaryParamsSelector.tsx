@@ -22,7 +22,7 @@ const SummaryParamsSelector = ({
   });
 
   const [currentCost, setCurrentCost] = useState<string>("");
-  const [loading, setLoading] = useState(false);
+  const [loadingCost, setLoadingCost] = useState(false);
   const { user} = useContext(UserContext);
 
   const {
@@ -62,8 +62,8 @@ const SummaryParamsSelector = ({
   };
 
   const calculateCost = (data: SumaryCreateParams) => {
-    if (loading) return;
-    setLoading(true);
+    if (loadingCost) return;
+    setLoadingCost(true);
     fetch("/api/summaries/cost", {
       method: "POST",
       headers: {
@@ -85,7 +85,7 @@ const SummaryParamsSelector = ({
         if (!dataJson) return console.log("No data");
         setCurrentCost(dataJson);
       })
-      .finally(() => setLoading(false));
+      .finally(() => setLoadingCost(false));
   };
 
   return (
@@ -100,7 +100,7 @@ const SummaryParamsSelector = ({
         </span>
         
       <span className="text-gray-500 text-center italic text-red-400">
-        {loading ? "Loading cost..." : currentCost}
+        {loadingCost ? "Loading cost..." : currentCost}
       </span>
       <div className="mb-2 text-center">
         <span className="text-gray-500 text-center italic">
