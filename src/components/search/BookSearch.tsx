@@ -5,7 +5,13 @@ import { Book } from "../../types";
 import useModelObserver from "@/hooks/useModelObserver";
 import { UserContext } from "@/context/UserContext";
 
+
+
 function BookSearch() {
+  const [isLoading, setIsLoading] = useState(false); 
+  const [uploadCompleted, setUploadCompleted] = useState(false); 
+
+  
   const { user } = useContext(UserContext);
   const [books, setBooks] = useState<Book[]>();
   const [searchTerm, setSearchTerm] = useState("");
@@ -85,6 +91,7 @@ function BookSearch() {
   };
 
   const handleUrlFetch = async () => {
+    setIsLoading(true); // Start loading
     try {
       const response = await fetch("api/fetch_url", {
         method: "POST",
@@ -93,21 +100,22 @@ function BookSearch() {
       });
 
       if (response.ok) {
-        window.location.reload();
+        setUploadCompleted(true); // Set upload completed to true
       } else {
         const errorData = await response.json();
         window.alert(`Error: ${errorData.message}`);
       }
     } catch (error) {
       console.log(error);
+    } finally {
+      setIsLoading(false); // Stop loading
     }
   };
 
-  const handleDocumentUpload = async (
-    e: React.ChangeEvent<HTMLInputElement>
-  ) => {
+  const handleDocumentUpload = async (e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0];
     if (!file) return;
+    setIsLoading(true); // Start loading
     const formData = new FormData();
     formData.append("document", file);
 
@@ -118,19 +126,22 @@ function BookSearch() {
       });
 
       if (response.ok) {
-        // Refresh the page when the file is successfully uploaded
-        window.location.reload();
+        setUploadCompleted(true); // Set upload completed to true
       } else {
         const errorData = await response.json();
         window.alert(`Error: ${errorData.message}`);
       }
     } catch (error) {
       console.log(error);
+    } finally {
+      setIsLoading(false); // Stop loading
     }
   };
 
   return (
     <div className="w-full flex flex-col gap-6 items-center pt-5">
+
+      
       <div className="w-full h-16 flex justify-center items-center ">
       
         <input
@@ -186,6 +197,30 @@ function BookSearch() {
           <HiUpload className="hover:scale-125 duration-300 hover:animate-pulse text-white" />
         </label>
       </div>
+
+      {isLoading && (
+        <div className="w-full h-full text-center text-2xl text-gray-500 flex flex-col items-center gap-2">
+          <span>Loading...</span>
+          <HiCog className="animate-spin duration-500 h-12 w-12" />
+        </div>
+      )}
+
+      {uploadCompleted && !isLoading && (
+       
+        
+        <div className="w-full h-full flex justify-center items-center">
+            
+            Upload Completed!
+          
+          
+          <button
+            className="bg-primary text-white p-2 rounded"
+            onClick={() => (window.location.href = '/mylibrary')} // Replace '/my-library' with the actual path to your library
+          >
+            Go to My Library
+          </button>
+        </div>
+      )}
 
       {books && books.length > 0 ? (
         <div className="w-full xl:w-[90%] grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 overflow-auto">
