@@ -1,5 +1,5 @@
 import { NextApiRequest, NextApiResponse } from "next";
-import { removeAuthCookie } from "@/utils/auth-cookies";
+import { removeAuthCookie, setAuthCookie } from "@/utils/auth-cookies";
 import { withAuth } from "@/utils/validator";
 import { UserAuthType } from "@/types";
 
@@ -18,12 +18,14 @@ async function validate(
           },
         });
         if (resp.status == 403 || resp.status == 401) {
-          console.log(resp.status)
           removeAuthCookie(res);
           res.status(401).json({ isAuth: false });
         } else {
           const data = await resp.json();
-          console.log(data)
+          setAuthCookie(res, {
+            ...userAuth,
+            ...data,
+          });
           res.status(200).json(data);
         }
       } catch (error) {

@@ -44,4 +44,8 @@
   .hover-hand:hover {
     cursor: pointer;
   }
+
+  .primary-btn {
+    @apply bg-primary text-white rounded-md px-4 py-2;
+  }
 }
