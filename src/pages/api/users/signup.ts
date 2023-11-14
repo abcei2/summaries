@@ -1,5 +1,8 @@
 import { removeAuthCookie, setAuthCookie } from "@/utils/auth-cookies";
+import { sendVerificationEmail } from "@/utils/email";
 import { NextApiRequest, NextApiResponse } from "next";
+import jwt from "jsonwebtoken";
+
 export default async function login(req: NextApiRequest, res: NextApiResponse) {
   const { email, password } = req.body;
 
@@ -19,6 +22,10 @@ export default async function login(req: NextApiRequest, res: NextApiResponse) {
           if (resAuth.status == 200) {
             const data = await resAuth.json();
             setAuthCookie(res, data);
+            sendVerificationEmail({
+              email: data.email,
+              req             
+            });
             return {
               success: true,
               message: "Login success",

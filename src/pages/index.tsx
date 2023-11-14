@@ -79,7 +79,7 @@ const page = () => {
           </div>
         </div>
       ) : (
-        <div className="flex flex-col items-center">
+        <div className="flex flex-col items-center justify-center h-full">
           <div className="text-2xl font-bold">
             You are not allowed to access this page
           </div>

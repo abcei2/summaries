@@ -10,6 +10,7 @@ module.exports = {
       
       colors:{
         primary:"#3383f5",
+        "primary-dark":"#2b6cb0",
         link:"#FFB600",
         bgc: "#FCC906"
       }

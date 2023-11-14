@@ -29,6 +29,7 @@ export type UserAuthType = {
   email: string;
   is_staff: boolean;
   is_superuser: boolean;
+  email_confirmed: boolean;
   token: string;
   is_subscribed: boolean;
   search_status: string;

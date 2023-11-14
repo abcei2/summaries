@@ -13,6 +13,7 @@ const isValidPath = (path: string, paths: string[], equals = false) => {
 
 export function middleware(req: NextRequest) {
   const noUserPaths = ["/", "/login", "/signup"];
+  const userNotVerifiedPaths = ["/verify-email"];
   const subscribedPaths = [
     "/",
     "/profile",
@@ -47,26 +48,30 @@ export function middleware(req: NextRequest) {
         return NextResponse.redirect(new URL("/", req.nextUrl));
       }
     } else {
-      console.log(
-        "Path Validation for Subscribed Paths: ",
-        isValidPath(req.nextUrl.pathname, subscribedPaths)
-      );
+      // If user is not verified, redirect to verify-email page
+      if (!userAuth.email_confirmed) {
+        if (!isValidPath(req.nextUrl.pathname, userNotVerifiedPaths))
+          return NextResponse.redirect(new URL("/verify-email", req.nextUrl));
+      } else {
+        // If user is not subscribed, redirect to home page
+        if (!userAuth.is_superuser && !userAuth.is_subscribed)
+          return nextSlashUrl;
 
-      if (!userAuth.is_superuser && !userAuth.is_subscribed)
-        return nextSlashUrl;
+        // If user is superuser, redirect to home page
+        if (
+          userAuth.is_superuser &&
+          !isValidPath(req.nextUrl.pathname, adminPaths)
+        )
+          return nextSlashUrl;
 
-      if (
-        userAuth.is_superuser &&
-        !isValidPath(req.nextUrl.pathname, adminPaths)
-      )
-        return nextSlashUrl;
-
-      if (
-        !userAuth.is_superuser &&
-        userAuth.is_subscribed &&
-        !isValidPath(req.nextUrl.pathname, subscribedPaths)
-      )
-        return nextSlashUrl;
+        // If user is not superuser and is subscribed, redirect to home page
+        if (
+          !userAuth.is_superuser &&
+          userAuth.is_subscribed &&
+          !isValidPath(req.nextUrl.pathname, subscribedPaths)
+        )
+          return nextSlashUrl;
+      }
     }
   } else {
     if (!isValidPath(req.nextUrl.pathname, noUserPaths, true))
