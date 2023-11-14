@@ -18,7 +18,7 @@ function MainWrapper({ children }: { children: React.ReactNode }) {
     currentPath.startsWith("/verify-email");
   return loading ? (
     <div className="h-screen w-screen flex flex-col gap-5 justify-center items-center">
-      <div className="text-3xl italic">Mega Summary</div>
+      <div className="text-3xl italic">MegaSummary</div>
       <div className="animate-spin rounded-full h-32 w-32 border-t-2 border-b-2 border-gray-900"></div>
     </div>
   ) : (
