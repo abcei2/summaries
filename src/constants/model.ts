@@ -9,6 +9,11 @@ const MODELS = [
     value: "gpt-4",
     label: "gpt-4  (slow)",
   },
+  {
+    value: "gpt-4-1106-preview",
+    label: "gpt-4-1106-preview",
+
+  }
 ];
 
 const METHODS = [
@@ -76,7 +81,7 @@ export const PARAMS: SumaryCreateParamFormType[] = [
     name: "model",
     type: "select",
     values: MODELS,
-    defaultValue: "gpt-3.5-turbo-16k",
+    defaultValue: "gpt-4-1106-preview",
     costeable: true,
   },
   {

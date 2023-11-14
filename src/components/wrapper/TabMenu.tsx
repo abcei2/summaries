@@ -45,7 +45,7 @@ const TabMenu = () => {
         </div>
 
         <div className=" flex justify-center items-center gap-4 absolute left-[10px] z-10 text-3xl italic">
-          <a href="/">Mega Summary</a>
+          <a href="/">MegaSummary</a>
         </div>
         <div className="flex justify-end items-center gap-4 absolute right-[0px] z-10">
           <UserMenu />
