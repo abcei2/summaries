@@ -8,6 +8,7 @@ import { BOOK_BACKEND_STATUS, SUMMARY_BACKEND_STATUS } from "@/constants";
 import { useContext } from "react";
 import { UserContext } from "@/context/UserContext";
 import SummaryList from "./SummaryList";
+import { BookStatus } from "@/utils/books";
 
 const MainBookComponent = ({ bookId }: { bookId: string }) => {
   const [book, setBook] = useState<Book>();
@@ -98,6 +99,7 @@ const MainBookComponent = ({ bookId }: { bookId: string }) => {
     fetch("/api/books/" + bookId)
       .then((res) => res.json())
       .then((data) => {
+        console.log(data);
         setBook(data.data);
       })
       .finally(() => setLoadingBook(false));
@@ -136,13 +138,30 @@ const MainBookComponent = ({ bookId }: { bookId: string }) => {
           }
         });
       }
-    }, 60000); // 10000 milliseconds = 10 seconds
+    }, 30000); // 10000 milliseconds = 10 seconds
   
     return () => clearInterval(intervalId); // Clear the interval on component unmount
   }, [summaryList]);
   
 
   if (!book || !bookId) return <LoadingSpin text="Loading book details" />;
+
+  const getStatusText = (book: Book) => {
+    switch (book.status) {
+      case BOOK_BACKEND_STATUS.DOWNLOADING:
+        return `Downloading ${book?.progress ? book?.progress + "%" : ""}`;
+      case BOOK_BACKEND_STATUS.DOWNLOADED:
+        return "Retrieving text";
+      case BOOK_BACKEND_STATUS.EXTRACTED:
+        return "";
+      case BOOK_BACKEND_STATUS.QUEUE:
+        return "Waiting in queue";
+      case BOOK_BACKEND_STATUS.ERROR:
+        return "Download error";
+      default:
+        return book?.status;
+    }
+  };
 
   return (
     <div className="w-full flex flex-col justify-center items-center">
@@ -161,13 +180,11 @@ const MainBookComponent = ({ bookId }: { bookId: string }) => {
         />
       </div>
 
-      {book.status === BOOK_BACKEND_STATUS.DOWNLOADING && (
-        <LoadingSpin
-          text={`Downloading. ${
-            !loading && book?.progress ? book?.progress + "%" : ""
-          }`}
-        />
-      )}
+      {book.status !== BOOK_BACKEND_STATUS.EXTRACTED && (
+      <LoadingSpin
+        text={getStatusText(book)}
+      />
+    )}
 
       {user &&
         !user.is_staff &&

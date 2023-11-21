@@ -3,11 +3,12 @@ import { Book } from "@/types";
 
 export const BookStatus = ({ book }: { book: Book }) => {
   const getStatus = () => {
+    
     switch (book.status) {
       case BOOK_BACKEND_STATUS.DOWNLOADING:
         return (
           <span className="font-bold text-gray-600 mb-2">
-            Downloading {book?.progress && "0" + "%"}
+            Downloading {book?.progress ? book?.progress + "%" : ""}
           </span>
         );
       case BOOK_BACKEND_STATUS.DOWNLOADED:
@@ -24,6 +25,7 @@ export const BookStatus = ({ book }: { book: Book }) => {
         return (
           <span className="font-bold text-gray-600 mb-2">Download error</span>
         );
+      
       default:
         return (
           <span className="font-bold text-gray-600 mb-2">{book?.status}</span>

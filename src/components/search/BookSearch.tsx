@@ -29,7 +29,7 @@ function BookSearch() {
   const [url, setUrl] = useState<string>("");
 
 
-  const handleLibraryButtonClick = (event) => {
+  const handleLibraryButtonClick = (event:any) => {
     const libraryUrl = '/mylibrary'; // Replace with the actual URL to your library
     if (event.button === 1) { // Middle mouse button
       window.open(libraryUrl, '_blank'); // Open in new tab without switching

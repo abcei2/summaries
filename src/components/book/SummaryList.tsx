@@ -1,7 +1,7 @@
 import { SummaryType } from "@/types";
 
 const SummaryList = ({ summaryList }: { summaryList: SummaryType[] }) => {
-  const handleClick = (event, summary) => {
+  const handleClick = (event:any, summary: SummaryType) => {
     if (event.button === 1) { // Middle mouse button
       window.open("/summary/" + summary.id, '_blank'); // Open in new tab without switching
       event.preventDefault();

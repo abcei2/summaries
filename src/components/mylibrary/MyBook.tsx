@@ -7,6 +7,8 @@ import DeleteModal from "./DeleteModal";
 import RetryDownloadModal from "./RetryDownloadModal";
 import { BookStatus } from "@/utils/books";
 
+
+
 const MyBook = ({
   updateBook,
   book,
@@ -54,7 +56,7 @@ const MyBook = ({
       });
   };
 
-  const handleMouseDown = (event) => {
+  const handleMouseDown = (event:any) => {
     const bookDetailsUrl = `/books/details/${book.global_id}`;
     if (event.button === 0) { // Left click
       router.push(bookDetailsUrl);

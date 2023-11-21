@@ -10,6 +10,7 @@ import RetryDownloadModal from "@/components/mylibrary/RetryDownloadModal";
 import { BOOK_BACKEND_STATUS, SUMMARY_BACKEND_STATUS } from "@/constants";
 import SubscribedSummaryRequest from "@/components/summary/SubscribedSummaryRequest";
 import { DEFAULT_SUMMARY_PARAMS } from "@/constants/model";
+import useModelObserver from "@/hooks/useModelObserver";
 
 const BookDetailsCard = ({
   book,
@@ -27,6 +28,7 @@ const BookDetailsCard = ({
   const { user } = useContext(UserContext);
   const [loadingAskForSummary, setLoadingAskForSummary] = useState(false);
   const [showSummaryModal, setShowSummaryModal] = useState(false);
+  const [totalTokens, setTotalTokens] = useState(book.total_tokens);
   const [showRetryDownloadModal, setShowRetryDownloadModal] = useState(false);
 
   const bookCover = book?.cover_img_path
@@ -166,6 +168,27 @@ const BookDetailsCard = ({
     }
   };
 
+
+  const subscribeToBook = (status: string) =>
+    [
+      BOOK_BACKEND_STATUS.QUEUE,
+      BOOK_BACKEND_STATUS.DOWNLOADING,
+      BOOK_BACKEND_STATUS.DOWNLOADED,
+    ].includes(status);
+
+
+  useModelObserver({
+    updateData: (data) => {
+      if (data?.total_tokens) {
+        setTotalTokens(data.total_tokens);
+      }
+    },
+    roomName: "global_library",
+    connectToWS: book && book.status && subscribeToBook(book.status)
+  });
+    
+  
+
   return (
     <div className="rounded-lg overflow-hidden h-full w-full">
       {showRetryDownloadModal && (
@@ -216,9 +239,11 @@ const BookDetailsCard = ({
             <p className="text-[#505258] text-base">
               <b>Extension:</b> .{book.extension}
             </p>
+            {book.status === BOOK_BACKEND_STATUS.EXTRACTED && (
             <p className="text-[#505258] text-base">
-              <b>Total tokens:</b> {book.total_tokens}
+              <b>Total tokens:</b> {totalTokens}
             </p>
+          )}
 
             {Number(book.pages) > 0 && (
               <p className="text-[#505258] text-base capitalize">
