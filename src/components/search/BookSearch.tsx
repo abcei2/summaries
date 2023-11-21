@@ -17,7 +17,9 @@ function BookSearch() {
   const [searchTerm, setSearchTerm] = useState("");
   const [hasSearched, setHasSearched] = useState(false);
   const [search_response, setSearchResponse] = useState("");
+  const [searchHistory, setSearchHistory] = useState<string[]>([]);
   const [currentStatus, setCurrentStatus] = useState<{
+    
     status: string;
     seeking_books: boolean;
     current_search_task_id?: string;
@@ -25,6 +27,17 @@ function BookSearch() {
     current_book_list?: Book[];
   }>();
   const [url, setUrl] = useState<string>("");
+
+
+  const handleLibraryButtonClick = (event) => {
+    const libraryUrl = '/mylibrary'; // Replace with the actual URL to your library
+    if (event.button === 1) { // Middle mouse button
+      window.open(libraryUrl, '_blank'); // Open in new tab without switching
+      event.preventDefault();
+    } else if (event.button === 0) { // Left mouse button
+      window.location.href = libraryUrl; // Open in the same tab
+    }
+  };
 
   useModelObserver({
     roomName: user?.id ? `user_${user?.id}` : "",
@@ -39,6 +52,13 @@ function BookSearch() {
       setBooks(data.current_book_list);
     },
   });
+
+  useEffect(() => {
+    const history = localStorage.getItem('searchHistory');
+    if (history) {
+      setSearchHistory(JSON.parse(history));
+    }
+  }, []);
 
   useEffect(() => {
     fetch(`/api/search/status`).then(async (res) => {
@@ -69,8 +89,23 @@ function BookSearch() {
       return;
     }
 
+    setIsLoading(true); // Set loading to true at the start of the search
+    setHasSearched(false);
+    setBooks([]);
+
+    
+    
+
+    const updatedHistory = Array.from(new Set([searchTerm, ...searchHistory]));
+    setSearchHistory(updatedHistory);
+    localStorage.setItem('searchHistory', JSON.stringify(updatedHistory));
+
+    
+
     try {
-      setBooks([]);
+
+      
+      
       const res = await fetch(`/api/search?word=${searchTerm}`);
 
       if (!res.ok) {
@@ -82,10 +117,12 @@ function BookSearch() {
         seeking_books: data.seeking_books,
         current_search_task_id: data.current_search_task_id,
       });
+      setBooks(data.current_book_list);
       console.log(data);
     } catch (error: any) {
       setSearchResponse(`${error.message}`);
     } finally {
+      setIsLoading(false); 
       setHasSearched(true);
     }
   };
@@ -144,17 +181,25 @@ function BookSearch() {
       
       <div className="w-full h-16 flex justify-center items-center ">
       
-        <input
-          value={searchTerm}
+      <input
+          list="search-history"
+          //value={searchTerm}
           onChange={(e) => setSearchTerm(e.target.value)}
           onKeyDown={(e) => {
-            if (e.key == "Enter") {
+            if (e.key === "Enter") {
               onSearch();
             }
           }}
           className="w-3/4 sm:w-1/2 h-10 border-y-2 border-l-2 border-gray-300 rounded-l-md p-2 "
           placeholder="Search for a book"
         />
+        <datalist id="search-history">
+          {searchHistory.map((term, index) => (
+            <option key={index} value={term} />
+          ))}
+        </datalist>
+        
+      
         <button
           onClick={onSearch}
           className="w-10 h-10 bg-primary rounded-r-md flex justify-center items-center "
@@ -169,13 +214,13 @@ function BookSearch() {
         <input
           type="text"
           placeholder="Paste a URL (youtube, file, or web page)"
-          className="ml-4 p-2 rounded border w-1/3"
+          className="ml-4 p-2 rounded border w-1/3 border-2 border-gray-300 h-10"
           value={url}
           onChange={(e) => setUrl(e.target.value)}
         />
         <button
           onClick={handleUrlFetch}
-          className="ml-2 bg-primary text-white p-2 rounded"
+          className="ml-2 bg-primary text-white p-2 rounded h-10"
         >
           Get Summary
         </button>
@@ -184,8 +229,7 @@ function BookSearch() {
         <span>Or</span>
         <label className="ml-4 flex items-center bg-primary rounded cursor-pointer w-40 justify-center">
           <span
-            className="mr-2 p-2 text-sm text-white ju
-            "
+            className="ml-2 p-2 text-sm text-white"
           >
             Upload Document
           </span>
@@ -206,21 +250,16 @@ function BookSearch() {
       )}
 
       {uploadCompleted && !isLoading && (
-       
-        
-        <div className="w-full h-full flex justify-center items-center">
-            
-            Upload Completed!
-          
-          
-          <button
-            className="bg-primary text-white p-2 rounded"
-            onClick={() => (window.location.href = '/mylibrary')} // Replace '/my-library' with the actual path to your library
-          >
-            Go to My Library
-          </button>
-        </div>
-      )}
+            <div className="w-full h-full flex justify-center items-center">
+              Upload Completed!
+              <button
+                className="bg-primary text-white p-2 rounded"
+                onMouseDown={handleLibraryButtonClick} // Use onMouseDown instead of onClick for more consistent behavior across browsers
+              >
+                Go to My Library
+              </button>
+            </div>
+          )}
 
       {books && books.length > 0 ? (
         <div className="w-full xl:w-[90%] grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 overflow-auto">

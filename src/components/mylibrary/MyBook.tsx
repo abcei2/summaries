@@ -54,6 +54,18 @@ const MyBook = ({
       });
   };
 
+  const handleMouseDown = (event) => {
+    const bookDetailsUrl = `/books/details/${book.global_id}`;
+    if (event.button === 0) { // Left click
+      router.push(bookDetailsUrl);
+    } else if (event.button === 1) { // Middle click
+      
+      window.open(bookDetailsUrl, '_blank'); // Open in a new tab without switching to it
+      event.preventDefault(); // Prevent the default behavior
+    }
+  };
+  
+
   return (
     <div>
       {showDeleteModal && (
@@ -99,11 +111,9 @@ const MyBook = ({
           )}
         </div>
         <div
-          onClick={() => {
-            router.push(`/books/details/${book.global_id}`);
-          }}
+          onMouseDown={handleMouseDown}
           className={`w-[150px] sm:w-[200px] rounded-lg shadow-lg border border-2 flex flex-col 
-        justify-between h-[300px] duration-500  bg-white`}
+          justify-between h-[300px] duration-500  bg-white`}
         >
           <div className="flex justify-center mb-2">
             <img className="ounded-lg mt-8 h-20 sm:h-32" src={bookCover} />

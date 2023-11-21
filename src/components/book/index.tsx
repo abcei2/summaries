@@ -114,6 +114,34 @@ const MainBookComponent = ({ bookId }: { bookId: string }) => {
       .finally(() => setLoadingSummaries(false));
   };
 
+  useEffect(() => {
+    const intervalId = setInterval(() => {
+      if (summaryList) {
+        summaryList.forEach((summary) => {
+          if (summary.state !== SUMMARY_BACKEND_STATUS.DONE && summary.state !== SUMMARY_BACKEND_STATUS.ERROR) {
+            console.log('Fetching summary progress for summary:', summary.id);
+            fetch(`/api/summaries/${summary.id}`)
+              .then((res) => res.json())
+              .then((data) => {
+                // Update the progress of the summary in summaryList
+                const updatedSummaries = summaryList.map((item) => {
+                  if (item.id === summary.id) {
+                    return { ...item, progress: data.progress };
+                  }
+                  return item;
+                });
+                setSummaryList(updatedSummaries);
+              })
+              .catch((error) => console.error('Error fetching summary progress:', error));
+          }
+        });
+      }
+    }, 60000); // 10000 milliseconds = 10 seconds
+  
+    return () => clearInterval(intervalId); // Clear the interval on component unmount
+  }, [summaryList]);
+  
+
   if (!book || !bookId) return <LoadingSpin text="Loading book details" />;
 
   return (

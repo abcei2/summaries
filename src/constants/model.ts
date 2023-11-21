@@ -3,15 +3,15 @@ import { SumaryCreateParamFormType, SumaryCreateParams } from "../types";
 const MODELS = [
   {
     value: "gpt-3.5-turbo-16k",
-    label: "gpt-3.5 (fast)",
+    label: "gpt-3.5-turbo",
   },
   {
     value: "gpt-4",
-    label: "gpt-4  (slow)",
+    label: "gpt-4",
   },
   {
     value: "gpt-4-1106-preview",
-    label: "gpt-4-1106-preview",
+    label: "gpt-4-turbo",
 
   }
 ];
@@ -88,7 +88,7 @@ export const PARAMS: SumaryCreateParamFormType[] = [
     name: "length",
     type: "select",
     values: LENGTHS,
-    defaultValue: "medium",
+    defaultValue: "long",
     costeable: false,
   },
   {
@@ -103,7 +103,7 @@ export const PARAMS: SumaryCreateParamFormType[] = [
 
 export const DEFAULT_SUMMARY_PARAMS:SumaryCreateParams = {
   method: "sections_refine",
-  model: "gpt-4",
+  model: "gpt-4-1106-preview",//"gpt-4",
   length: "long",
   prompt: "prompt1",
 };
