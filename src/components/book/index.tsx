@@ -125,10 +125,11 @@ const MainBookComponent = ({ bookId }: { bookId: string }) => {
             fetch(`/api/summaries/${summary.id}`)
               .then((res) => res.json())
               .then((data) => {
+                console.log('Summary progress:', data.data.progress);
                 // Update the progress of the summary in summaryList
                 const updatedSummaries = summaryList.map((item) => {
                   if (item.id === summary.id) {
-                    return { ...item, progress: data.progress };
+                    return { ...item, progress: data.data.progress };
                   }
                   return item;
                 });
