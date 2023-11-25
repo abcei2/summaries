@@ -143,6 +143,7 @@ function BookSearch() {
         window.alert(`Error: ${errorData.message}`);
       }
     } catch (error) {
+      window.alert(`Error: ${error}`);
       console.log(error);
     } finally {
       setIsLoading(false); // Stop loading

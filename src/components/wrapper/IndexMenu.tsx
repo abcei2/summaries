@@ -1,10 +1,11 @@
 import { MENU_SETTINGS } from "@/constants";
 import { UserContext } from "@/context/UserContext";
-import { LogOutIcon, ArticleIcon } from "@/customIcons";
+import { LogOutIcon, ArticleIcon, BillingIcon } from "@/customIcons";
 import { ReactNode } from "react";
 import { useContext } from "react";
 import { useRouter } from "next/router";
 import OutsideAlerter from "../utils/OutsideAlerter";
+import Billing from "@/pages/billing";
 
 const IndexMenu = ({
   label,
@@ -52,12 +53,21 @@ const MenuItems = ({ handleClose }: { handleClose: () => void }) => {
         ))}
 
         <IndexMenu
+          label="Buy tokens"
+          icon={BillingIcon}
+          onClick={() => {
+            router.push("/billing");
+          }}
+        />  
+
+        <IndexMenu
           label="Take our Surveys"
           icon={ArticleIcon}
           onClick={() => {
             router.push("/surveys");
           }}
         />
+        
 
         <IndexMenu
           label="Logout"

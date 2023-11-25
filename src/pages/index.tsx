@@ -53,7 +53,7 @@ const page = () => {
             href={!user ? "/login" : "/search"}
             className="text-3xl font-bold underline w-full text-center"
           >
-            Meet MegaSummary! 🚀
+            Meet MegaSummary!  Login 🚀
           </a>
           {HOME_CONTENT.cards.map((card, key) => (
             <div
@@ -72,7 +72,7 @@ const page = () => {
             <div className="flex justify-center items-center">
               <a href={!user ? "/signup" : "/search"}>
                 <button className="bg-primary text-white p-4 rounded-lg">
-                  Get Started
+                  Get Started. Create an account.
                 </button>
               </a>
             </div>

@@ -22,6 +22,7 @@ export function middleware(req: NextRequest) {
     "/books/details",
     "/myhighlights",
     "/surveys",
+    "/billing",
   ];
   const adminPaths = [...subscribedPaths, "/summary"];
   const fileFormats = [".pdf", ".docx", ".jpg", ".png", ".jpeg", ".svg"];
