@@ -30,27 +30,35 @@ const Billing: React.FC = () => {
 
     }
 
-    const onApprove = (data: any) => {
-      try{
-        return fetch('/api/paypal-transaction-complete', {
-            method: 'post',
-            headers: {
-                'Content-Type': 'application/json'
-            },
-            body: JSON.stringify({
-                orderID: data.orderID
-            })
-        }).then(function(res) {
-            return res.json();
-        }).then(function(details) {
-            alert('Transaction funds captured from ' + details.payer_given_name);
+    const onApprove = (data: any): Promise<void> => {
+        return new Promise<void>((resolve, reject) => {
+            try {
+                fetch('/api/paypal-transaction-complete', {
+                    method: 'post',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify({
+                        orderID: data.orderID
+                    })
+                })
+                .then(function(res) {
+                    return res.json();
+                })
+                .then(function(details) {
+                    alert('Transaction funds captured from ' + details.payer_given_name);
+                    resolve();
+                })
+                .catch(err => {
+                    console.log(err);
+                    reject(err); // Reject the promise if there is an error in the fetch call
+                });
+            }
+            catch(err) {
+                console.log(err);
+                resolve(); // Resolve the promise even in case of an error to fulfill the type requirement
+            }
         });
-
-      }
-      catch(err){
-        console.log(err);
-      }
-
     }
 
     const selectAmount = (amount: string) => {
