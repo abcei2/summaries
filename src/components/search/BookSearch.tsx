@@ -64,7 +64,6 @@ function BookSearch() {
     fetch(`/api/search/status`).then(async (res) => {
       if (res.status == 200) {
         const data = await res.json();
-        console.log(data);
         setCurrentStatus({
           status: data.status,
           seeking_books: data.seeking_books,

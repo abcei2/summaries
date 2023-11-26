@@ -1,4 +1,8 @@
-import { removeAuthCookie, setAuthCookie } from "@/utils/auth-cookies";
+import {
+  getAuthCookie,
+  removeAuthCookie,
+  setAuthCookie,
+} from "@/utils/auth-cookies";
 import { NextApiRequest, NextApiResponse } from "next";
 import jwt, { JwtPayload } from "jsonwebtoken";
 import { withAuth } from "@/utils/validator";
@@ -18,14 +22,17 @@ async function verifyEmail(req: NextApiRequest, res: NextApiResponse) {
       }
     );
 
+    const userAuth = getAuthCookie(req);
     if (backResponse.status == 200) {
       const data = await backResponse.json();
+      if (userAuth) {
+        setAuthCookie(res, { ...userAuth, ...data });
+      }
     } else {
       console.log("Error verifying email");
     }
-
     // Redirect the user to the homepage
-    res.writeHead(302, { Location: "/search" });
+    res.writeHead(302, { Location: userAuth ? "/search" : "/login" });
     res.end();
   } catch (err) {
     console.log("invalid token");

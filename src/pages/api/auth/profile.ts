@@ -26,7 +26,21 @@ async function validate(
             ...userAuth,
             ...data,
           });
-          res.status(200).json(data);
+          res.status(200).json({
+            isAuth: true,
+            ...data,
+            reload: JSON.stringify({
+              is_staff: userAuth.is_staff,
+              is_superuser: userAuth.is_superuser,
+              is_subscribed: userAuth.is_subscribed,
+              email_confirmed: userAuth.email_confirmed,
+            }) != JSON.stringify({
+              is_staff: data.is_staff,
+              is_superuser: data.is_superuser,
+              is_subscribed: data.is_subscribed,
+              email_confirmed: data.email_confirmed,
+            }),
+          });
         }
       } catch (error) {
         console.log(error);
