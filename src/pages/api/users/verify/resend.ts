@@ -12,7 +12,6 @@ async function resend(
 ) {
   switch (req.method) {
     case "GET":
-      console.log(req.headers.origin)
       await sendVerificationEmail({
         email: userAuth.email,
         req,
