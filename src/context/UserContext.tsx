@@ -28,7 +28,13 @@ const UserContextProvider = ({ children }: { children: ReactNode }) => {
       const res = await fetch("/api/auth/profile");
       setLoading(false);
       if (res.status == 200) {
-        const user = await res.json();
+        const {
+          reload,
+          ...user
+        } = await res.json();
+        if (reload) {
+          router.reload();
+        }
         setUser(user);
       } else {
         setUser(undefined);

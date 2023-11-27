@@ -7,6 +7,7 @@ import MainWrapper from "@/components/wrapper";
 export default function App({ Component, pageProps }: AppProps) {
   return (
     <UserContextProvider>
+      <meta httpEquiv="Content-Security-Policy" content="font-src 'self' data:; img-src 'self' data:; default-src 'self' http://121.0.0:3000/"/>
       <MainWrapper>
         <Component {...pageProps} />
       </MainWrapper>
