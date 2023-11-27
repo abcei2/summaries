@@ -73,7 +73,7 @@ function BookSearch() {
           current_book_list: data.current_book_list,
         });
         setBooks(data.current_book_list);
-        setSearchTerm(data.last_searched_book);
+        //setSearchTerm(data.last_searched_book);
       }
     });
   }, []);
@@ -140,11 +140,13 @@ function BookSearch() {
         setUploadCompleted(true); // Set upload completed to true
       } else {
         const errorData = await response.json();
+        
         window.alert(`Error: ${errorData.message}`);
       }
     } catch (error) {
+      
       window.alert(`Error: ${error}`);
-      console.log(error);
+      
     } finally {
       setIsLoading(false); // Stop loading
     }

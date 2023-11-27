@@ -25,8 +25,8 @@ async function fetch_url(req: NextApiRequest, res: NextApiResponse, userAuth: Us
           const data = await response.json();
           res.status(200).json(data);
         } else {
-          
-          res.status(401).json({ message: "Unauthorized" });
+          const data = await response.json();
+          res.status(401).json({ message: data.message });
         }
       } catch (error) {
         res.status(500).json({ error });
