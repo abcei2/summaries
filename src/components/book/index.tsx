@@ -148,13 +148,14 @@ const MainBookComponent = ({ bookId }: { bookId: string }) => {
   if (!book || !bookId) return <LoadingSpin text="Loading book details" />;
 
   const getStatusText = (book: Book) => {
+    console.log(book);
     switch (book.status) {
       case BOOK_BACKEND_STATUS.DOWNLOADING:
         return `Downloading ${book?.progress ? book?.progress + "%" : ""}`;
       case BOOK_BACKEND_STATUS.DOWNLOADED:
         return "Retrieving text";
       case BOOK_BACKEND_STATUS.EXTRACTED:
-        return "";
+        return "Loading...";
       case BOOK_BACKEND_STATUS.QUEUE:
         return "Waiting in queue";
       case BOOK_BACKEND_STATUS.ERROR:
@@ -181,11 +182,7 @@ const MainBookComponent = ({ bookId }: { bookId: string }) => {
         />
       </div>
 
-      {book.status !== BOOK_BACKEND_STATUS.EXTRACTED && (
-      <LoadingSpin
-        text={getStatusText(book)}
-      />
-    )}
+      
 
       {user &&
         !user.is_staff &&
@@ -202,7 +199,7 @@ const MainBookComponent = ({ bookId }: { bookId: string }) => {
                     ? `Generating summary. ${(
                         Number(lastSummary?.progress) * 100
                       ).toFixed(1)} %`
-                    : ""
+                    : getStatusText(book)
                 }
               />
             }
