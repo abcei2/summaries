@@ -30,6 +30,8 @@ const BookDetailsCard = ({
   const [showSummaryModal, setShowSummaryModal] = useState(false);
   const [totalTokens, setTotalTokens] = useState(book.total_tokens);
   const [showRetryDownloadModal, setShowRetryDownloadModal] = useState(false);
+  const [summaryRequestLoading, setSummaryRequestLoading] = useState(false);
+
 
   const bookCover = book?.cover_img_path
     ? `${process.env.NEXT_PUBLIC_DJANGO_MEDIA}/${book?.cover_img_path}`
@@ -159,10 +161,14 @@ const BookDetailsCard = ({
       return (
         <SubscribedSummaryRequest
           handleClose={() => setShowSummaryModal(false)}
-          handleConfirm={() => createResume(DEFAULT_SUMMARY_PARAMS)}
+          
           title={bookModalTitle}
           bookCover={bookCover}
           bookId={book.global_id}
+          handleConfirm={() => {
+            setSummaryRequestLoading(true);
+            createResume(DEFAULT_SUMMARY_PARAMS)
+          }}
         />
       );
     }

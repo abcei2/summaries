@@ -17,6 +17,7 @@ const MainBookComponent = ({ bookId }: { bookId: string }) => {
   const [loadingBook, setLoadingBook] = useState(false);
   const [loadingSummaries, setLoadingSummaries] = useState(false);
   const loading = loadingBook || loadingSummaries;
+  
 
   const currentShowSummary = summaryList?.find(
     (summary) => summary?.method != "dummy" && summary?.state != "error"

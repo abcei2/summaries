@@ -97,7 +97,10 @@ const SubscribedSummaryRequest = ({
             ? "bg-green-500"
             : "bg-green-200"
         } text-white rounded-lg px-4 py-2 mr-2`}
-        onClick={handleConfirm}
+        onClick={() => {
+          handleConfirm();
+          handleClose(); // Close the modal immediately after confirm
+        }}
         disabled={user && user.available_tokens - parseFloat(currentCost) < 0}
       >
         Confirm
