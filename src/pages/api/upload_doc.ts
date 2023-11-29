@@ -50,7 +50,9 @@ async function uploadDoc(
         let blob = new Blob([buffer]);
 
         const fileName = document?.originalFilename ?? "noname.noext";
-        const extension = fileName.split(".")?.pop();
+        const safeFileName = fileName.replace(/–/g, '-');
+
+        const extension = safeFileName.split(".")?.pop();
 
         if (!SUPPORTED_FORMATS.includes(extension ?? "")) {
           return res.status(400).json({ message: "Unsupported file format." });
@@ -58,13 +60,13 @@ async function uploadDoc(
 
         const formData = new FormData();
 
-        formData.append("file", blob, fileName);
+        formData.append("file", blob, safeFileName);
 
         try {
           const headers = {
             Authorization: `token ${userAuth.token}`,
             "Content-Type": document.mimetype as any,
-            "Content-Disposition": `form-data; name="file"; filename="${fileName}"`,
+            "Content-Disposition": `form-data; name="file"; filename="${safeFileName}"`,
           };
 
           const response = await fetch(
@@ -80,7 +82,9 @@ async function uploadDoc(
             const data = await response.json();
             res.status(200).json(data);
           } else {
-            res.status(response.status).json({ message: "Failed to upload" });
+            const data = await response.json();
+            console.log(data);
+            res.status(response.status).json({ message: data.message });
           }
           res.status(500).end();
         } catch (error) {

@@ -29,22 +29,30 @@ function createOrder(selectedAmount: string, data: any, actions: any) {
             headers: {
               "Content-Type": "application/json",
             },
-            body: JSON.stringify({
-              orderID: data.orderID
-            })
+            body: JSON.stringify({data})
           })
           .then((response) => response.json())
           .then((orderData) => {
-                const name = orderData.payer.name.given_name;
-                alert(`Transaction completed by ${name}`);})
+                const first_name = orderData.first_name;
+    
+                alert(`Thank you ${first_name}! Your payment was successful!`);}
+                )
             .catch(err => {
                 console.error("Error in onApprove: ", err);
             });
 
         }
+
+
         const selectAmount = (amount: string) => {
             setSelectedAmount(amount);
         }
+
+        const initialOptions = {
+            clientId: "Aau0pIvhFQHZQoIVl5JMjU_O0ONSNxeC8ViCcuLZlw8Ya2dscHEddQcEKozULdo_wEIMUM8PrtB_KLko",
+            currency: "USD",
+            intent: "capture",
+        };
     
         return (
             <div>
@@ -69,7 +77,7 @@ function createOrder(selectedAmount: string, data: any, actions: any) {
                     ))}
                 </div>
                 <div style={{ justifyContent: 'center', display: 'flex' }}>
-                <PayPalScriptProvider options={{ "clientId": "Ac1oTxr7mKqjrstIK0CfSSrm1thx9hsHCKblUilxmjjp-TtsOfbHiXWA5icJT-CZabLI9P6e2jlNDonB" }}>
+                <PayPalScriptProvider options={initialOptions}>
                     <div style={{ width: '100%', maxWidth: '500px' }}> {/* Adjust the maxWidth as needed */}
                         <PayPalButtons
                             //style={{ layout: 'horizontal' }} // This can help in some cases
