@@ -92,7 +92,7 @@ const BookDetailsCard = ({
         }
       })
       .then((data) => {
-        console.log("ask for summary", data);
+        //console.log("ask for summary", data);
         handleUpdateBook(data.data);
         if (!data.data.can_do_summary) setShowSummaryModal(false);
       })
