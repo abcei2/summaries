@@ -100,7 +100,7 @@ const MainBookComponent = ({ bookId }: { bookId: string }) => {
     fetch("/api/books/" + bookId)
       .then((res) => res.json())
       .then((data) => {
-        console.log(data);
+        //console.log(data);
         setBook(data.data);
       })
       .finally(() => setLoadingBook(false));

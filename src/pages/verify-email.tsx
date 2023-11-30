@@ -23,8 +23,12 @@ const page = () => {
     <div className="flex flex-col items-center justify-center h-screen gap-5">
       <span className=" text-4xl font-bold">Please Verify Your Email</span>
       <div className="w-1/2 text-center flex flex-col gap-2 items-center">
+        
+          
         <p>Check your inbox for a verification email.</p>
+        We sent an email to: <span className="font-bold">{user?.email}</span>
         {emailSent && (
+          
           <p>A new verification email has been sent to your inbox.</p>
         )}
 
