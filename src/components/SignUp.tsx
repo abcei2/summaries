@@ -10,6 +10,8 @@ const SignUp = () => {
     email: "",
     password: "",
   });
+
+
   const onChange = ({
     name,
     value,
@@ -23,13 +25,43 @@ const SignUp = () => {
     });
   };
 
-  const onSubmit = async () => {
-    if (!formValues.email || !formValues.password)
-      return alert("Please fill all the fields");
-    if (!signUp) return alert("Error, please try again");
-    const res = await signUp(formValues);
-    if (res.status == 200) router.push("/");
-  };
+  
+const onSubmit = async () => {
+  if (!formValues.email || !formValues.password)
+    return alert("Please fill all the fields");
+
+  try {
+    // Call the Django password validator endpoint
+    const validatorResponse = await fetch('api/auth/email_and_password_validator', {
+      method: 'POST',
+      body: JSON.stringify({ password: formValues.password, email: formValues.email }),
+    });
+
+    // Check if the password is valid
+    const validatorData = await validatorResponse.json();
+    console.log(validatorData);
+    if (validatorResponse.ok) {
+      
+      
+        if(validatorData.data.isValid){
+
+          if (!signUp) return alert("Error, please try again");
+
+          const signUpResponse = await signUp(formValues);
+
+          if (signUpResponse.status == 200) router.push("/");
+        }
+        else{
+            
+            alert(validatorData.data.errors.join('\n'));
+      }
+  }
+  } catch (error) {
+    // Handle any errors
+    console.error('Error validating password:', error);
+    alert('Error validating password. Please try again.');
+  }
+};
 
   return (
     <>

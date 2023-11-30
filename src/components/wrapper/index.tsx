@@ -9,7 +9,7 @@ import BottonMenu from "./BottonMenu";
 function MainWrapper({ children }: { children: React.ReactNode }) {
   const currentPath = usePathname();
   const { user, loading } = useContext(UserContext);
-  console.log(user);
+  //console.log(user);
   const notShowMenu =
     !currentPath ||
     !user ||
