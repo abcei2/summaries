@@ -72,7 +72,7 @@ const SubscribedSummaryRequest = ({
       </div>
       <div className="text-xl mb-2 text-center w-[80%]">
         <span className="text-gray-500 text-center italic">
-          You will pay:
+          You will spend:
         </span>
       </div>
       <span className="text-gray-500 text-center italic text-red-400">

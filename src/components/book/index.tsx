@@ -9,6 +9,7 @@ import { useContext } from "react";
 import { UserContext } from "@/context/UserContext";
 import SummaryList from "./SummaryList";
 import { BookStatus } from "@/utils/books";
+import { get } from "http";
 
 const MainBookComponent = ({ bookId }: { bookId: string }) => {
   const [book, setBook] = useState<Book>();
@@ -149,14 +150,14 @@ const MainBookComponent = ({ bookId }: { bookId: string }) => {
   if (!book || !bookId) return <LoadingSpin text="Loading book details" />;
 
   const getStatusText = (book: Book) => {
-    console.log(book);
+    //console.log(book);
     switch (book.status) {
       case BOOK_BACKEND_STATUS.DOWNLOADING:
         return `Downloading ${book?.progress ? book?.progress + "%" : ""}`;
       case BOOK_BACKEND_STATUS.DOWNLOADED:
         return "Retrieving text";
       case BOOK_BACKEND_STATUS.EXTRACTED:
-        return "Loading...";
+        return "Extracted";
       case BOOK_BACKEND_STATUS.QUEUE:
         return "Waiting in queue";
       case BOOK_BACKEND_STATUS.ERROR:
@@ -186,12 +187,12 @@ const MainBookComponent = ({ bookId }: { bookId: string }) => {
       
 
       {user &&
-        !user.is_staff &&
-        !user.is_superuser &&
-        user.is_subscribed &&
-        lastSummary &&
-        lastSummary?.state != SUMMARY_BACKEND_STATUS.DONE &&
-        lastSummary?.state != SUMMARY_BACKEND_STATUS.ERROR && (
+        
+          //check if the book is not extracted or if the summary is running
+          (book.status != BOOK_BACKEND_STATUS.EXTRACTED ||
+            lastSummary?.state == SUMMARY_BACKEND_STATUS.RUNNING || 
+            lastSummary?.state == SUMMARY_BACKEND_STATUS.QUEUE
+            ) && (
           <div className="flex gap-2">
             {
               <LoadingSpin
@@ -200,12 +201,13 @@ const MainBookComponent = ({ bookId }: { bookId: string }) => {
                     ? `Generating summary. ${(
                         Number(lastSummary?.progress) * 100
                       ).toFixed(1)} %`
-                    : getStatusText(book)
+                    : lastSummary?.state == SUMMARY_BACKEND_STATUS.QUEUE? "Waiting in queue" : getStatusText(book)
                 }
               />
             }
           </div>
-        )}
+        )
+        }
 
       <div className="w-[90%] lg:w-[80%] flex flex-col gap-2 ">
         {user && (user.is_staff || user.is_superuser) ? (

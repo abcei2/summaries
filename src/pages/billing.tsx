@@ -1,18 +1,21 @@
 import React, { useState } from 'react';
 import { PayPalScriptProvider, PayPalButtons } from "@paypal/react-paypal-js";
+import { Router } from 'next/router';
 
 
 export default function Billing() {
 
 const [selectedAmount, setSelectedAmount] = useState<string>("10.00");
+const [selectedTokens, setSelectedTokens] = useState<string>("100,000");
 
-function createOrder(selectedAmount: string, data: any, actions: any) {
+
+function createOrder(selectedAmount: string,selectedTokens:string, data: any, actions: any) {
     return fetch("/api/create-paypal-transaction", {
             method: "POST",
             headers: {
                 "Content-Type": "application/json",
             },
-            body: JSON.stringify({ selectedAmount})
+            body: JSON.stringify({ selectedAmount,selectedTokens})
             
         })
             .then((response) => response.json())
@@ -35,8 +38,15 @@ function createOrder(selectedAmount: string, data: any, actions: any) {
           .then((orderData) => {
                 const first_name = orderData.first_name;
     
-                alert(`Thank you ${first_name}! Your payment was successful!`);}
+                alert(`Thank you ${first_name}! Your payment was successful!`);
+                window.location.reload();
+                
+            
+            
+            }
                 )
+                
+                
             .catch(err => {
                 console.error("Error in onApprove: ", err);
             });
@@ -44,8 +54,11 @@ function createOrder(selectedAmount: string, data: any, actions: any) {
         }
 
 
-        const selectAmount = (amount: string) => {
+        const selectAmount = (amount: string,tokens:string) => {
             setSelectedAmount(amount);
+            setSelectedTokens(tokens);
+
+
         }
 
         const initialOptions = {
@@ -70,7 +83,7 @@ function createOrder(selectedAmount: string, data: any, actions: any) {
                       { amount: "80.00", tokens: "1,000,000" }
                     ].map(({ amount, tokens }) => (
                         <div key={amount} 
-                             onClick={() => selectAmount(amount)} 
+                             onClick={() => selectAmount(amount, tokens)} 
                              style={{ padding: '10px', border: selectedAmount === amount ? '2px solid blue' : '1px solid grey', cursor: 'pointer' }}>
                             Buy {tokens} Tokens for {amount} USD
                         </div>
@@ -81,7 +94,7 @@ function createOrder(selectedAmount: string, data: any, actions: any) {
                     <div style={{ width: '100%', maxWidth: '500px' }}> {/* Adjust the maxWidth as needed */}
                         <PayPalButtons
                             //style={{ layout: 'horizontal' }} // This can help in some cases
-                            createOrder={(data, actions) => createOrder(selectedAmount, data, actions)}
+                            createOrder={(data, actions) => createOrder(selectedAmount,selectedTokens, data, actions)}
                             onApprove={onApprove}
                 />
                 </div>
