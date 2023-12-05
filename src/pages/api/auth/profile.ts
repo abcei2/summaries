@@ -30,15 +30,15 @@ async function validate(
             isAuth: true,
             ...data,
             reload: JSON.stringify({
-              is_staff: userAuth.is_staff,
-              is_superuser: userAuth.is_superuser,
-              is_subscribed: userAuth.is_subscribed,
-              email_confirmed: userAuth.email_confirmed,
+              is_staff: userAuth?.is_staff || false,
+              is_superuser: userAuth?.is_superuser || false,
+              is_subscribed: userAuth?.is_subscribed || false,
+              email_confirmed: userAuth?.email_confirmed || false,
             }) != JSON.stringify({
-              is_staff: data.is_staff,
-              is_superuser: data.is_superuser,
-              is_subscribed: data.is_subscribed,
-              email_confirmed: data.email_confirmed,
+              is_staff: data?.is_staff || false,
+              is_superuser: data?.is_superuser || false,
+              is_subscribed: data?.is_subscribed  || false,
+              email_confirmed: data?.email_confirmed  || false,
             }),
           });
         }
