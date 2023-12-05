@@ -13,7 +13,7 @@ export function setAuthCookie(
     maxAge: TOKEN_MAX_AGE,
     path: "/",
     sameSite: "lax",
-    secure: process.env.NODE_ENV === "production",
+    secure: process.env.NEXT_PUBLIC_NODE_ENV === "production",
   });
 
   res.setHeader("Set-Cookie", cookie);
