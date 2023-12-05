@@ -8,7 +8,7 @@ import BottonMenu from "./BottonMenu";
 
 function MainWrapper({ children }: { children: React.ReactNode }) {
   const currentPath = usePathname();
-  const { user, loading } = useContext(UserContext);
+  const { user, dataLoaded } = useContext(UserContext);
   //console.log(user);
   const notShowMenu =
     !currentPath ||
@@ -16,7 +16,7 @@ function MainWrapper({ children }: { children: React.ReactNode }) {
     currentPath.startsWith("/login") ||
     currentPath.startsWith("/signup") ||
     currentPath.startsWith("/verify-email");
-  return loading ? (
+  return !dataLoaded ? (
     <div className="h-screen w-screen flex flex-col gap-5 justify-center items-center">
       <div className="text-3xl italic">MegaSummary</div>
       <div className="animate-spin rounded-full h-32 w-32 border-t-2 border-b-2 border-gray-900"></div>
