@@ -1,5 +1,7 @@
 import { useEffect } from "react";
 
+
+
 const useModelObserver = ({
   roomName,
   updateData,
@@ -10,6 +12,9 @@ const useModelObserver = ({
   connectToWS?: boolean;
 }) => {
   useEffect(() => {
+    window.addEventListener('online', () => console.log('Network status: online'));
+window.addEventListener('offline', () => console.log('Network status: offline'));
+
     if (!roomName || !connectToWS) {
       console.log("Room name or connectToWS flag is not set");
       return;
@@ -21,6 +26,7 @@ const useModelObserver = ({
     let immediateReconnect = true;
 
     const connectWebSocket = () => {
+      console.log(`Connection attempt #${attempts + 1}`);
       if (attempts >= 4) {
         console.log("Maximum reconnect attempts reached.");
         return;
@@ -29,8 +35,14 @@ const useModelObserver = ({
       console.log(`Attempting to connect to WebSocket at: ${wsUrl}`);
       ws = new WebSocket(wsUrl);
 
+      let heartbeatInterval;
+
       ws.onopen = () => {
         console.log("Connected to WebSocket");
+        // Start a heartbeat interval
+          heartbeatInterval = setInterval(() => {
+            ws.send(JSON.stringify({ type: "heartbeat" }));
+          }, 30000); // Send heartbeat every 30 seconds
         attempts = 0; // Reset reconnect attempts on successful connection
         immediateReconnect = true; // Reset immediate reconnect flag
       };
@@ -38,6 +50,7 @@ const useModelObserver = ({
       ws.onmessage = (e: any) => {
         try {
           const eData = JSON.parse(e.data);
+          console.log(eData);
           if (eData.type === "downloading_book" || eData.type === "summarizing" || eData.type === "searching") {
             updateData(eData.data);
           } else {
@@ -49,11 +62,12 @@ const useModelObserver = ({
       };
 
       ws.onerror = (error) => {
-        console.error("WebSocket error:", error);
+        console.error("WebSocket error occurred:", error);
       };
 
-      ws.onclose = () => {
-        console.log("WebSocket disconnected");
+      ws.onclose = (event) => {
+        clearInterval(heartbeatInterval);
+        console.log(`WebSocket disconnected with code: ${event.code}, reason: ${event.reason}`);
         attempts++;
         if (immediateReconnect) {
           console.log("Attempting to reconnect immediately...");

@@ -53,6 +53,10 @@ const MainBookComponent = ({ bookId }: { bookId: string }) => {
         ...summaryList[index],
         ...rest,
       };
+      console.log(data)
+      if (data.data?.text) {
+        summaryList[index].text = data.data.text;
+      }
       setSummaryList([...summaryList]);
     },
     connectToWS:
@@ -131,7 +135,12 @@ const MainBookComponent = ({ bookId }: { bookId: string }) => {
                 // Update the progress of the summary in summaryList
                 const updatedSummaries = summaryList.map((item) => {
                   if (item.id === summary.id) {
-                    return { ...item, progress: data.data.progress };
+                    return { ...item,
+                       progress: data.data.progress,
+                       text: data.data.text ? data.data.text : item.text,
+                       state: data.data.state ? data.data.state : item.state
+
+                       };
                   }
                   return item;
                 });
@@ -141,7 +150,7 @@ const MainBookComponent = ({ bookId }: { bookId: string }) => {
           }
         });
       }
-    }, 30000); // 10000 milliseconds = 10 seconds
+    }, 20000); 
   
     return () => clearInterval(intervalId); // Clear the interval on component unmount
   }, [summaryList]);
