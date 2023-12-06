@@ -35,7 +35,7 @@ window.addEventListener('offline', () => console.log('Network status: offline'))
       console.log(`Attempting to connect to WebSocket at: ${wsUrl}`);
       ws = new WebSocket(wsUrl);
 
-      let heartbeatInterval;
+      let heartbeatInterval: NodeJS.Timeout;
 
       ws.onopen = () => {
         console.log("Connected to WebSocket");
