@@ -42,7 +42,7 @@ window.addEventListener('offline', () => console.log('Network status: offline'))
         // Start a heartbeat interval
           heartbeatInterval = setInterval(() => {
             ws.send(JSON.stringify({ type: "heartbeat" }));
-          }, 30000); // Send heartbeat every 30 seconds
+          }, 1000); // Send heartbeat every 30 seconds
         attempts = 0; // Reset reconnect attempts on successful connection
         immediateReconnect = true; // Reset immediate reconnect flag
       };
