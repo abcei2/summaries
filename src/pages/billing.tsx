@@ -9,7 +9,8 @@ const [selectedAmount, setSelectedAmount] = useState<string>("10.00");
 const [selectedTokens, setSelectedTokens] = useState<string>("100,000");
 
 
-function createOrder(selectedAmount: string,selectedTokens:string, data: any, actions: any) {
+function createOrder(selectedAmount_arg: string,selectedTokens_arg:string, data: any, actions: any) {
+    
     return fetch("/api/create-paypal-transaction", {
             method: "POST",
             headers: {
@@ -36,12 +37,16 @@ function createOrder(selectedAmount: string,selectedTokens:string, data: any, ac
           })
           .then((response) => response.json())
           .then((orderData) => {
+            console.log(orderData);
                 const first_name = orderData.first_name;
-    
-                alert(`Thank you ${first_name}! Your payment was successful!`);
-                window.location.reload();
-                
-            
+                //window.location.reload();
+
+
+    //window.location.reload();
+    //window.alert("Thank you for your purchase.");
+    //wait for reload and then alert
+    window.location.reload();
+
             
             }
                 )
@@ -55,6 +60,7 @@ function createOrder(selectedAmount: string,selectedTokens:string, data: any, ac
 
 
         const selectAmount = (amount: string,tokens:string) => {
+            
             setSelectedAmount(amount);
             setSelectedTokens(tokens);
 
@@ -62,7 +68,7 @@ function createOrder(selectedAmount: string,selectedTokens:string, data: any, ac
         }
 
         const initialOptions = {
-            clientId: "Aau0pIvhFQHZQoIVl5JMjU_O0ONSNxeC8ViCcuLZlw8Ya2dscHEddQcEKozULdo_wEIMUM8PrtB_KLko",
+            clientId: "AYJn0-KAgy-K1tkx0nq2DrkZ8JVYjkomP6e-rVRFVoGnGutlSm9qker3JbYThAStnmkxULcbNxJwq_YO",
             currency: "USD",
             intent: "capture",
         };
@@ -93,6 +99,7 @@ function createOrder(selectedAmount: string,selectedTokens:string, data: any, ac
                 <PayPalScriptProvider options={initialOptions}>
                     <div style={{ width: '100%', maxWidth: '500px' }}> {/* Adjust the maxWidth as needed */}
                         <PayPalButtons
+                            key={`${selectedAmount}-${selectedTokens}`}
                             //style={{ layout: 'horizontal' }} // This can help in some cases
                             createOrder={(data, actions) => createOrder(selectedAmount,selectedTokens, data, actions)}
                             onApprove={onApprove}
