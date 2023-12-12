@@ -35,6 +35,10 @@ const HOME_CONTENT = {
 const page = () => {
   const { user } = useContext(UserContext);
 
+  const videoUrl_1 = `${process.env.NEXT_PUBLIC_DJANGO_MEDIA}/videos/1.mp4`;
+  const videoUrl_2 = `${process.env.NEXT_PUBLIC_DJANGO_MEDIA}/videos/2.mp4`;
+
+
   return (
     <div className="flex h-full w-full justify-center md:pt-5 ">
       {!user || user?.is_superuser || user?.is_subscribed ? (
@@ -49,12 +53,42 @@ const page = () => {
               <span key={key}>{item}</span>
             ))}
           </div>
+
+          <div className="flex justify-center items-center">
+              <a href={!user ? "/signup" : "/search"}>
+                <button className="text-3xl font-bold underline w-full text-center">
+                  Create an account.
+                </button>
+              </a>
+            </div>
+            
           <a
             href={!user ? "/login" : "/search"}
             className="text-3xl font-bold underline w-full text-center"
           >
             Meet MegaSummary!  Login 🚀
           </a>
+
+
+          {/* Video element */}
+          <div className="video-container">
+            <video width="100%" height="auto" controls>
+              <source src={videoUrl_1} type="video/mp4" />
+              Your browser does not support the video tag.
+            </video>
+          </div>
+
+          {/* Video element */}
+          <div className="video-container">
+            <video width="100%" height="auto" controls>
+              <source src={videoUrl_2} type="video/mp4" />
+              Your browser does not support the video tag.
+            </video>
+          </div>
+
+          
+
+
           {HOME_CONTENT.cards.map((card, key) => (
             <div
               key={key}
@@ -69,13 +103,7 @@ const page = () => {
             <div className="w-full h-12 flex justify-center font-bold text-3xl md:text-4xl text-center">
               <span>{HOME_CONTENT.bottom}</span>
             </div>
-            <div className="flex justify-center items-center">
-              <a href={!user ? "/signup" : "/search"}>
-                <button className="bg-primary text-white p-4 rounded-lg">
-                  Get Started. Create an account.
-                </button>
-              </a>
-            </div>
+           
           </div>
         </div>
       ) : (
