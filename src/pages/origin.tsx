@@ -12,16 +12,16 @@ const OriginPage: React.FC = () => {
     if (!id) return; // Exit if id is not present
     
     
-    fetch(`http://127.0.0.1:8000/origin/${id}`)
+    fetch(`http://45.77.98.98:8000/origin/${id}`)
       //.then(response => response.json())
       .then(data => {
         //console.log("Request counted", data);
         // Redirect to the home page after counting the request
-        router.push('/');
+        router.replace('/');
       })
       .catch(error => {
         console.error("Error counting the request:", error);
-        router.push('/');
+        router.replace('/');
       });
   }, [id, router]);
 
