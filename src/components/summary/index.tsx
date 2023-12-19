@@ -114,15 +114,41 @@ const SummaryComp = ({
   useEffect(() => {
     if (!summary) return console.log("No summary");
     const text = summary.text + "Title:";
+
     const titleRegex = /Title:(.*?)Summary:/gs;
     const summaryRegex = /Summary:(.*?)Title:/gs;
+
+    const RecapRegex = /Recap:(.*?)Bulletpoints:/gs;
+    const bulletPointsRegex = /Bulletpoints:(.*?)Title:/gs;
+
     const titles = text
       ?.match(titleRegex)
       ?.map((match) => match.replace(/Title:|Summary:/g, "").trim());
     const summaries = text
       ?.match(summaryRegex)
       ?.map((match) => match.replace(/Summary:|Title:/g, "").trim().replace(/§/g, ""));
+
+    const Recap = text
+      ?.match(RecapRegex)
+      ?.map((match) => match.replace(/Recap:|Bulletpoints:/g, "").trim());
+
+    const bulletPoints = text
+      ?.match(bulletPointsRegex)
+      ?.map((match) => match.replace(/Bulletpoints:|Title:/g, "").trim());
+
+    console.log(summaries?.length,titles?.length,Recap?.length,bulletPoints?.length);
+
     if (summaries && titles && summaries?.length === titles?.length) {
+      
+      if (Recap && bulletPoints) {
+        
+        summaries.unshift(bulletPoints[0].replace(/§/g, ""));
+        summaries.unshift(Recap[0]);
+        titles.unshift("Bullet points");
+        titles.unshift("Short summary");
+        
+
+            }
       setContent(
         summaries.map((summary, index) => ({
           title: titles[index] || "No title",

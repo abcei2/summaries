@@ -12,7 +12,7 @@ const isValidPath = (path: string, paths: string[], equals = false) => {
 };
 
 export function middleware(req: NextRequest) {
-  const noUserPaths = ["/", "/login", "/signup"];
+  const noUserPaths = ["/", "/login", "/signup","/origin"];
   const userNotVerifiedPaths = ["/verify-email"];
   const subscribedPaths = [
     "/",
@@ -23,6 +23,7 @@ export function middleware(req: NextRequest) {
     "/myhighlights",
     "/surveys",
     "/billing",
+    "/origin",
   ];
   const adminPaths = [...subscribedPaths, "/summary"];
   const fileFormats = [".pdf", ".docx", ".jpg", ".png", ".jpeg", ".svg"];

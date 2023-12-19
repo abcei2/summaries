@@ -68,7 +68,7 @@ function createOrder(selectedAmount_arg: string,selectedTokens_arg:string, data:
         }
 
         const initialOptions = {
-            clientId: "AYJn0-KAgy-K1tkx0nq2DrkZ8JVYjkomP6e-rVRFVoGnGutlSm9qker3JbYThAStnmkxULcbNxJwq_YO",
+            clientId: "AQKRqebXT8kjewSTwUaTGt3pMjptoFVMuPVZTiRPL6fgT0_-MqJGamaN6_zw-FJHKgxlDvkbjJ5uaqwl",
             currency: "USD",
             intent: "capture",
         };
