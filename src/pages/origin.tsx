@@ -10,13 +10,21 @@ const OriginPage: React.FC = () => {
   useEffect(() => {
     
     if (!id) return; // Exit if id is not present
+
+    fetch("/api/request_count", {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json",
+            },
+            body: JSON.stringify({id})
+          })
     
     
-    fetch(`http://127.0.0.1:8000/origin/${id}`)
+    //fetch(`http://127.0.0.1:8000/origin/${id}`)
       //.then(response => response.json())
       .then(data => {
         //console.log("Request counted", data);
-        // Redirect to the home page after counting the request
+        
         router.replace ('/');
       })
       .catch(error => {
