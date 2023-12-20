@@ -10,7 +10,7 @@ const OriginPage: React.FC = () => {
   useEffect(() => {
     
     if (!id) return; // Exit if id is not present
-    /*
+    
     fetch("/api/request_count", {
             method: "POST",
             headers: {
@@ -18,10 +18,10 @@ const OriginPage: React.FC = () => {
             },
             body: JSON.stringify({id})
           })
-          */
+          
     
-    console.log("d", process.env.DJANGO_HOST);
-    fetch(`https://45.77.98.98:8000/origin/${id}`)
+    
+    //fetch(`https://45.77.98.98:8000/origin/${id}`)
       //.then(response => response.json())
       .then(data => {
         console.log("Request counted", data);
