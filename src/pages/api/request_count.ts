@@ -9,7 +9,7 @@ async function request_count(req: NextApiRequest, res: NextApiResponse) {
       try {
         
         const response = await fetch(
-          process.env.DJANGO_HOST +`/origin/${req.body.id}`,
+          process.env.DJANGO_HOST +`/origin/${req.body.id}/`,
           
         );
 
