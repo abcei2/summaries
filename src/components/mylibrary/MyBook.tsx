@@ -135,7 +135,7 @@ const MyBook = ({
                 
               </span>
 
-              {book?.year.toString() != "N/A" && <span>{book?.year}</span>}
+              {book?.year?.toString() != "N/A" && <span>{book?.year}</span>}
             </div>
             <div className="p-1">
               <span className="text-gray-600 mb-2">

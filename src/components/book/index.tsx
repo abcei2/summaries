@@ -10,6 +10,8 @@ import { UserContext } from "@/context/UserContext";
 import SummaryList from "./SummaryList";
 import { BookStatus } from "@/utils/books";
 import { get } from "http";
+import ChatBot from "./ChatBot";
+
 
 const MainBookComponent = ({ bookId }: { bookId: string }) => {
   const [book, setBook] = useState<Book>();
@@ -178,6 +180,7 @@ const MainBookComponent = ({ bookId }: { bookId: string }) => {
 
   return (
     <div className="w-full flex flex-col justify-center items-center">
+      
       <div className="w-[90%] lg:w-[80%] flex flex-col gap-2 ">
         <BookDetailsCard
           book={book}
@@ -220,11 +223,22 @@ const MainBookComponent = ({ bookId }: { bookId: string }) => {
 
       <div className="w-[90%] lg:w-[80%] flex flex-col gap-2 ">
         {user && (user.is_staff || user.is_superuser) ? (
-          <SummaryList summaryList={summaryList ?? []} />
+          <div className="flex flex-col gap-2">
+            
+            <SummaryComp currentShowSummary={currentShowSummary} bookId={bookId} />
+            <SummaryList summaryList={summaryList ?? []} />
+          </div>
+          
         ) : (
-          <SummaryComp currentShowSummary={currentShowSummary} />
+          <SummaryComp currentShowSummary={currentShowSummary} bookId={bookId} />
         )}
+        
       </div>
+      
+      <ChatBot book_id={bookId} embeddings_state={book.embeddings_state}/>
+      
+      
+      
     </div>
   );
 };

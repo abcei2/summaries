@@ -1,7 +1,5 @@
 import { useEffect } from "react";
 
-
-
 const useModelObserver = ({
   roomName,
   updateData,
@@ -51,7 +49,10 @@ window.addEventListener('offline', () => console.log('Network status: offline'))
         try {
           const eData = JSON.parse(e.data);
           console.log(eData);
-          if (eData.type === "downloading_book" || eData.type === "summarizing" || eData.type === "searching") {
+          if (eData.type === "downloading_book" || eData.type === "summarizing" || eData.type === "searching" || eData.type === "vectorizing") {
+            
+            eData.data["type"] = eData.type;
+            
             updateData(eData.data);
           } else {
             console.log("Received unexpected message type:", eData.type);

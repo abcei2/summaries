@@ -229,6 +229,7 @@ const BookDetailsCard = ({
         </div>
 
         <div className="lg:p-4 flex flex-col justify-center gap-2 w-full h-full ">
+          
           <div>
             <h2 className="text-2xl md:text-4xl pb-2 font-bold capitalize w-fit flex items-center">
               {book.title_2}
@@ -278,7 +279,8 @@ const BookDetailsCard = ({
                   <HiCog className="text-gray-500 animate-spin duration-[1000] h-10 w-10" />
                 </div>
               ) : (
-                <span>Generate summary</span>
+                <span>Generate summary and start chat</span>
+                
               )}
             </button>
           )}

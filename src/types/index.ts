@@ -21,6 +21,7 @@ export type Book = {
   cover_img_path?: string;
   link_a?: string; 
   total_tokens?: number;
+  embeddings_state?: string;
 };
 
 export type UserAuthType = {

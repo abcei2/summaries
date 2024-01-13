@@ -9,10 +9,12 @@ const SummaryComp = ({
   summaryId,
   currentShowSummary,
   showDetails,
+  bookId,
 }: {
   summaryId?: string;
   currentShowSummary?: SummaryType;
   showDetails?: boolean;
+  bookId?: string;
 }) => {
   const [summary, setSummary] = useState<SummaryType | undefined>(
     currentShowSummary
@@ -273,8 +275,9 @@ const SummaryComp = ({
         )}
         <HelpUs />
       </div>
-      
     </div>
+    
+    
   );
 };
 
