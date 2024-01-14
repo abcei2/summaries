@@ -44,6 +44,7 @@ const ChatBot = (
 
   const sendMessage = () => {
     if (!inputValue) return;
+    setIsChatbotVisible(true);
     setMessages([...messages, { type: 'question', text: inputValue },{ type: 'answer', text: "Loading..." }]);
 
     
