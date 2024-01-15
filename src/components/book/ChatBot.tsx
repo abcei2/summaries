@@ -17,7 +17,7 @@ const ChatBot = (
   const [isChatbotVisible, setIsChatbotVisible] = useState(false);
   const [EmbeddingsState, setEmbeddingsState] = useState<string|undefined>(embeddings_state);
   const [Progress, setProgress] = useState(0);
-  const messagesEndRef = useRef(null);
+  
 
   useModelObserver({
     
@@ -38,9 +38,11 @@ const ChatBot = (
 
   
 
-  const scrollToBottom = () => {
-    messagesEndRef.current?.scrollIntoView(false);
-  };
+  const messagesEndRef = useRef<HTMLDivElement>(null);
+
+const scrollToBottom = () => {
+  messagesEndRef.current?.scrollIntoView();
+};
 
   const sendMessage = () => {
     if (!inputValue) return;
@@ -111,16 +113,16 @@ const ChatBot = (
   , []);
 
 
-useEffect(() => {
-  if (EmbeddingsState=="pending"){
-
-    document.getElementById('chatbox').style.display = 'none';
-}
-else{
-  document.getElementById('chatbox').style.display = 'flex';
-}
-}
-, [EmbeddingsState]);
+  useEffect(() => {
+    const chatbox = document.getElementById('chatbox');
+    if (chatbox) {
+      if (EmbeddingsState == "pending") {
+        chatbox.style.display = 'none';
+      } else {
+        chatbox.style.display = 'flex';
+      }
+    }
+  }, [EmbeddingsState]);
   return (
     
    
