@@ -6,10 +6,29 @@ import useModelObserver from "@/hooks/useModelObserver";
 interface Message {
   type: string;
   text: string;
+  timestamp: string;
 }
 
 const ChatBot = (
-  {book_id,embeddings_state}: {book_id: string,embeddings_state: string|undefined}
+  {
+    book_id,
+    embeddings_state,
+    shouldFetchMessages,
+    resetShouldFetchMessages,
+    
+    
+  
+    
+  }: {
+    book_id: string,
+    embeddings_state: string|undefined
+    shouldFetchMessages: boolean;
+    resetShouldFetchMessages: () => void;
+  }
+    
+    
+    
+
 ) => {
   
   const [messages, setMessages] = useState<Message[]>([]);
@@ -17,7 +36,16 @@ const ChatBot = (
   const [isChatbotVisible, setIsChatbotVisible] = useState(false);
   const [EmbeddingsState, setEmbeddingsState] = useState<string|undefined>(embeddings_state);
   const [Progress, setProgress] = useState(0);
+
   
+  
+  useEffect(() => {
+    if (shouldFetchMessages) {
+      fetch_messages();
+      setIsChatbotVisible(true);
+      resetShouldFetchMessages();
+    }
+  }, [shouldFetchMessages]);
 
   useModelObserver({
     

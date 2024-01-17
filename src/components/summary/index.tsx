@@ -1,5 +1,5 @@
 import LoadingSpin from "@/components/utils/LoadingSpin";
-import { HighlightsIcon } from "@/customIcons";
+import { HighlightsIcon, SearchReferencesIcon  } from "@/customIcons"
 import { SummaryType } from "@/types";
 import { useRouter } from "next/router";
 import React, { useEffect, useState, useRef } from "react";
@@ -10,15 +10,20 @@ const SummaryComp = ({
   currentShowSummary,
   showDetails,
   bookId,
+  onSearchReferencesComplete
 }: {
   summaryId?: string;
   currentShowSummary?: SummaryType;
   showDetails?: boolean;
   bookId?: string;
+  onSearchReferencesComplete: () => void;
 }) => {
   const [summary, setSummary] = useState<SummaryType | undefined>(
     currentShowSummary
   );
+ 
+
+
 
   const [content, setContent] = useState<
     {
@@ -58,8 +63,12 @@ const SummaryComp = ({
   const updateFloatingButtonPosOnScroll = () => {
     if (floatingBtnRef.current) {
       const rect = floatingBtnRef.current.getBoundingClientRect();
-      var scrollPos = document.body.scrollTop;
-      console.log(scrollPos);
+      var scrollPos = window.pageYOffset || document.documentElement.scrollTop || document.body.scrollTop;
+
+      //console.log(window.pageYOffset);
+      //console.log(document.documentElement.scrollTop);
+      //console.log(document.body.scrollTop);
+      //console.log(window.scrollY);
 
       setFloatingButtonPos({
         top: rect.top + scrollPos,
@@ -201,6 +210,32 @@ const SummaryComp = ({
 
   if (!summary) return null;
 
+
+  const handleSearchreferences = async () => {
+    if (selectedText.length <20) alert("Please select more than 20 characters");
+    if (selectedText.length > 300) alert("Please select less than 300 characters");
+    
+    else {
+      console.log(bookId);
+      console.log(selectedText);
+      
+    const response = await fetch("/api/search-references/", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({
+        book_id: bookId,
+        input_text: selectedText,
+      }),
+    });
+    if (response.ok) { // or check response status as per your logic
+      // After the fetch call in handleSearchreferences completes successfully
+      onSearchReferencesComplete();
+    }
+    
+  }
+  }
   return (
     
     <div className="w-full flex justify-center items-center">
@@ -271,7 +306,10 @@ const SummaryComp = ({
             }}
           >
             <button onClick={handleHighlightClick}>{HighlightsIcon}</button>
+            
+            <button onClick={handleSearchreferences}> {SearchReferencesIcon }</button>
           </div>
+
         )}
         <HelpUs />
       </div>

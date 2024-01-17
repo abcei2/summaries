@@ -20,6 +20,9 @@ const MainBookComponent = ({ bookId }: { bookId: string }) => {
   const [loadingBook, setLoadingBook] = useState(false);
   const [loadingSummaries, setLoadingSummaries] = useState(false);
   const loading = loadingBook || loadingSummaries;
+
+  const [shouldFetchMessages, setShouldFetchMessages] = useState(false);
+
   
 
   const currentShowSummary = summaryList?.find(
@@ -225,17 +228,22 @@ const MainBookComponent = ({ bookId }: { bookId: string }) => {
         {user && (user.is_staff || user.is_superuser) ? (
           <div className="flex flex-col gap-2">
             
-            <SummaryComp currentShowSummary={currentShowSummary} bookId={bookId} />
+            <SummaryComp currentShowSummary={currentShowSummary} bookId={bookId} onSearchReferencesComplete={() => setShouldFetchMessages(true)} />
             <SummaryList summaryList={summaryList ?? []} />
           </div>
           
         ) : (
-          <SummaryComp currentShowSummary={currentShowSummary} bookId={bookId} />
+          <SummaryComp currentShowSummary={currentShowSummary} bookId={bookId} onSearchReferencesComplete={() => setShouldFetchMessages(true)} />
         )}
         
       </div>
       
-      <ChatBot book_id={bookId} embeddings_state={book.embeddings_state}/>
+      <ChatBot 
+      book_id={bookId} 
+      embeddings_state={book.embeddings_state}
+      shouldFetchMessages={shouldFetchMessages}
+      resetShouldFetchMessages={() => setShouldFetchMessages(false)}
+      />
       
       
       
