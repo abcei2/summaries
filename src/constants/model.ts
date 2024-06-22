@@ -13,7 +13,12 @@ const MODELS = [
     value: "gpt-4-1106-preview",
     label: "gpt-4-turbo",
 
-  }
+  },
+  {
+    value: "gpt-4o",
+    label: "gpt-4o",
+  },
+
 ];
 
 const METHODS = [
@@ -41,17 +46,26 @@ const METHODS = [
 
 const PROMPTS = [
   {
-    value: "prompt0",
-    label: "prompt 0",
+    value: "prompt0-english-",
+    label: "prompt 0 - english",
   },
   {
-    value: "prompt1",
-    label: "prompt 1",
+    value: "prompt0-spanish-",
+    label: "prompt 0 - spanish",
   },
   {
+    value: "prompt1-english-",
+    label: "prompt 1 - english",
+  },
+  {
+    value: "prompt1-spanish-",
+    label: "prompt 1 - spanish",
+  },
+  /*{
     value: "prompt2",
     label: "prompt 2",
-  },
+  },*/
+
 ];
 
 const LENGTHS = [
@@ -95,7 +109,7 @@ export const PARAMS: SumaryCreateParamFormType[] = [
     name: "prompt",
     type: "select",
     values: PROMPTS,
-    defaultValue: "prompt1",
+    defaultValue: "prompt1-english-",
     costeable: false,
     // defaultValue: "Summarize the text, extract relevant information, explaining themes, key concepts and ideas in a detailed and long summary (not bullet points or numbered).",
   },
@@ -105,5 +119,5 @@ export const DEFAULT_SUMMARY_PARAMS:SumaryCreateParams = {
   method: "sections_refine",
   model: "gpt-4-1106-preview",//"gpt-4",
   length: "long",
-  prompt: "prompt1",
+  prompt: "prompt1-english-",
 };

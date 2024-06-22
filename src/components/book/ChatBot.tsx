@@ -7,6 +7,7 @@ interface Message {
   type: string;
   text: string;
   timestamp: string;
+  expanded?: boolean; 
 }
 
 const ChatBot = (
@@ -36,6 +37,7 @@ const ChatBot = (
   const [isChatbotVisible, setIsChatbotVisible] = useState(false);
   const [EmbeddingsState, setEmbeddingsState] = useState<string|undefined>(embeddings_state);
   const [Progress, setProgress] = useState(0);
+
 
   
   
@@ -69,6 +71,9 @@ const ChatBot = (
   const messagesEndRef = useRef<HTMLDivElement>(null);
 
 const scrollToBottom = () => {
+  //print mesagges
+  console.log(messages);
+
   messagesEndRef.current?.scrollIntoView();
 };
 
@@ -120,10 +125,25 @@ const scrollToBottom = () => {
   } 
   };
 
-  useEffect(() => {
-    scrollToBottom(); 
-  }, [messages, isChatbotVisible]);
-  
+
+
+  const formatTimestamp_hour = (timestamp: string) => {
+    const seconds = parseInt(timestamp, 10);
+    const hours = Math.floor(seconds / 3600);
+    const minutes = Math.floor((seconds % 3600) / 60);
+    const secondsLeft = seconds % 60;
+    return `${hours.toString().padStart(2, '0')}:${minutes.toString().padStart(2, '0')}:${secondsLeft.toString().padStart(2, '0')}`;
+  };
+
+
+    //format timestamp in to minutes and seconds
+    const formatTimestamp = (timestamp: string) => {
+      const seconds = parseInt(timestamp, 10);
+      const minutes = Math.floor(seconds / 60);
+      const secondsLeft = seconds % 60;
+      return `${minutes.toString().padStart(2, '0')}:${secondsLeft.toString().padStart(2, '0')}`;
+    }
+
 
   const fetch_messages = () => {
     fetch('/api/books/get_messages_book_chat?bookId=' + book_id)
@@ -131,6 +151,12 @@ const scrollToBottom = () => {
       .then((res) => res.json())
       .then((data) => {
         //console.log(data);
+        //lopp through messages and format timestamp if it exists
+        data.data.forEach((message: any) => {
+          if (message.timestamp) {
+            message.timestamp = formatTimestamp(message.timestamp);
+          }
+        });
         setMessages(data.data);
       }
       );
@@ -151,6 +177,23 @@ const scrollToBottom = () => {
       }
     }
   }, [EmbeddingsState]);
+
+
+  useEffect(() => {
+    scrollToBottom(); 
+  }, [messages.length, isChatbotVisible]);
+  // Note: Changed the dependency from 'messages' to 'messages.length' 
+  // to trigger scrolling only when the number of messages changes.
+  
+  const toggleMessageExpand = (index: number) => {
+    setMessages(messages => messages.map((message, i) => {
+      if (i === index) {
+        return { ...message, expanded: !message.expanded };
+      }
+      return message;
+    }));
+  };
+
   return (
     
    
@@ -175,38 +218,41 @@ const scrollToBottom = () => {
           
         
         {isChatbotVisible && (
-          
-            <div style={{ flex: 1, overflowY: 'auto', borderRadius: '5px' , marginBottom: '10px',marginTop: '20px',display: 'flex' , flexDirection: 'column' }}>
+  <div style={{ flex: 1, overflowY: 'auto', borderRadius: '5px', marginBottom: '10px', marginTop: '20px', display: 'flex', flexDirection: 'column' }}>
+    {messages.map((message, index) => (
+      <div
+        key={index}
+        onClick={() => toggleMessageExpand(index)} // Added onClick event to toggle expand
+        style={{
+          margin: '10px 0',
+          maxWidth: '70%',
+          alignSelf: message.type === 'answer' ? 'flex-start' : 'flex-end',
+          backgroundColor: message.type === 'answer' ? '#007bff' : '#f0f0f0',
+          color: message.type === 'answer' ? 'white' : 'black',
+          padding: '8px 15px',
+          borderRadius: '20px',
+          textAlign: 'left',
+          wordBreak: 'break-word',
+          fontSize: '12px',
+          width: "fit-content",
+          height: message.expanded ? 'auto' : '100px',
+          textOverflow: message.expanded ? 'initial' : 'ellipsis',
+        }}
+      >
+        {message.text === "Loading..." ? <HiCog className="animate-spin h-6 w-6" /> : 
+         message.timestamp ? 
+         <a href={`https://www.youtube.com/watch?v=${book_id.split('-').pop()}&t=${message.timestamp}`} rel="noreferrer noopener" target="_blank" style={{ textDecoration: 'none', color: 'inherit' }}>
+
+           {message.timestamp + " \n" + message.text}
+         </a> : 
+         message.text}
+      </div>
+    ))}
+    <div ref={messagesEndRef} /> 
+  </div>
+)}
 
 
-            {messages.map((message, index) => (
-              <div 
-                key={index} 
-                style={{ 
-                  position: 'relative',
-                  margin: '10px 0',
-                  maxWidth: '70%',
-                  alignSelf: message.type === 'answer' ? 'flex-start' : 'flex-end',
-                  backgroundColor: message.type === 'answer' ? '#007bff' : '#f0f0f0',
-                  color: message.type === 'answer' ? 'white' : 'black',
-                  padding: '8px 15px',
-                  borderRadius: '20px',
-                  textAlign: 'left',
-                  wordBreak: 'break-word',
-                  fontSize: '12px',
-                  width: "fit-content",
-                  marginRight:"5px",
-                  
-                }}
-              >
-                {message.text == "Loading..." ? <HiCog className="animate-spin h-6 w-6" /> : message.text}
-                
-
-              </div>
-            ))}
-          <div ref={messagesEndRef} /> 
-        </div>
-        )}
         
         {EmbeddingsState !=="done" ? (
         <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'left' }}>

@@ -20,6 +20,8 @@ const SummaryComp = ({
 }) => {
   const [summary, setSummary] = useState<SummaryType | undefined>(
     currentShowSummary
+    
+    
   );
  
 
@@ -109,6 +111,7 @@ const SummaryComp = ({
   };
 
   useEffect(() => {
+    console.log("************", summaryId);
     if (!summaryId) return console.log("No summaryId", summaryId);
     fetch("/api/summaries/" + summaryId)
       .then((res) => res.json())
@@ -118,12 +121,15 @@ const SummaryComp = ({
   }, [summaryId]);
 
   useEffect(() => {
+    console.log("Current show summary XXXX:", currentShowSummary);
     if (!currentShowSummary) return;
     setSummary(currentShowSummary);
   }, [currentShowSummary]);
 
   useEffect(() => {
+    console.log("000000000");
     if (!summary) return console.log("No summary");
+    if (!currentShowSummary) return console.log("No currentShowSummary");
     const text = summary.text + "Title:";
 
     const titleRegex = /Title:(.*?)Summary:/gs;
@@ -169,7 +175,7 @@ const SummaryComp = ({
     } else {
       setContent([{ title: "", summary: summary.text?.replace(/§/g, "") ?? "" }]);
     }
-  }, [summary]);
+  }, [summary,currentShowSummary]);
 
   // Fetching the highlighted text when summaryId is available.
   const fetchHighlightedText = async () => {

@@ -18,12 +18,14 @@ const BookDetailsCard = ({
   reloadSummaries,
   lastSummary,
   loading,
+  onPromptChange,
 }: {
   book: Book;
   handleUpdateBook: (book: Book) => void;
   reloadSummaries: () => void;
   lastSummary?: SummaryType;
   loading?: boolean;
+  onPromptChange: (prompt: string) => void;
 }) => {
   const { user } = useContext(UserContext);
   const [loadingAskForSummary, setLoadingAskForSummary] = useState(false);
@@ -31,6 +33,10 @@ const BookDetailsCard = ({
   const [totalTokens, setTotalTokens] = useState(book.total_tokens);
   const [showRetryDownloadModal, setShowRetryDownloadModal] = useState(false);
   const [summaryRequestLoading, setSummaryRequestLoading] = useState(false);
+  const [selectedPrompt, setSelectedPrompt] = useState('prompt1-english-');
+  const [summaryAvailable, setSummaryAvailable] = useState(false);
+ 
+
 
 
   const bookCover = book?.cover_img_path
@@ -47,12 +53,30 @@ const BookDetailsCard = ({
     book.status == BOOK_BACKEND_STATUS.EXTRACTED &&
     !loading &&
     (user?.is_superuser ||
-      (!user?.is_superuser && user?.is_subscribed && !lastSummary));
+      (!user?.is_superuser && user?.is_subscribed && lastSummary?.prompt1 != selectedPrompt));
 
   const showLoadingAnimation =
     lastSummary &&
     lastSummary.state != SUMMARY_BACKEND_STATUS.DONE &&
     lastSummary.state != SUMMARY_BACKEND_STATUS.ERROR;
+
+  const handleSelectPrompt = (prompt: string) => {
+      console.log("prompt", prompt);
+      onPromptChange(prompt);
+      setSelectedPrompt(prompt);
+      reloadSummaries(); 
+      if (lastSummary?.prompt1 == prompt) {
+        setSummaryAvailable(true);
+        console.log("****true");
+      } else {
+        console.log("****false");
+        setSummaryAvailable(false);
+      }
+
+
+    };
+
+
 
   const onRetryDowload = () => {
     if (!book) return console.log("No book");
@@ -74,6 +98,8 @@ const BookDetailsCard = ({
         setShowRetryDownloadModal(false);
       });
   };
+
+ 
 
   const onAskForSummary = () => {
     if (loadingAskForSummary) return console.log("Loading...");
@@ -165,9 +191,18 @@ const BookDetailsCard = ({
           title={bookModalTitle}
           bookCover={bookCover}
           bookId={book.global_id}
-          handleConfirm={() => {
+          handleConfirm={(prompt: string) => {
             setSummaryRequestLoading(true);
-            createResume(DEFAULT_SUMMARY_PARAMS)
+            //createResume(DEFAULT_SUMMARY_PARAMS)
+            if (prompt) {
+              const newParams = DEFAULT_SUMMARY_PARAMS;
+              newParams.prompt = prompt;
+              createResume(newParams);
+            }
+            else {
+              createResume(DEFAULT_SUMMARY_PARAMS);
+            }
+
           }}
         />
       );
@@ -250,13 +285,30 @@ const BookDetailsCard = ({
             <p className="text-[#505258] text-base">
               <b>Total tokens:</b> {totalTokens}
             </p>
+
+
+
           )}
+          <p className="text-[#505258] text-base">
+            <b>Language: </b> 
+            <select
+              className="w-[20%] p-2 rounded-lg border border-gray-300"
+              id="language"
+              name="language"
+              value={selectedPrompt}
+              onChange={(e) => handleSelectPrompt(e.target.value)}
+            >
+              <option value="prompt1-english-">English</option>
+              <option value="prompt1-spanish-">Spanish</option>
+            </select>
+          </p>
 
             {Number(book.pages) > 0 && (
               <p className="text-[#505258] text-base capitalize">
                 {book.pages} pages
               </p>
             )}
+          
           </div>
 
           {["error", "extract text error"].includes(book?.status ?? "") ? (
@@ -268,7 +320,7 @@ const BookDetailsCard = ({
             <CgHeadset className="w-6 h-6" />
           )}
 
-          {showAskForSummaryButton && (
+          {showAskForSummaryButton && !summaryAvailable && (
             <button
               onClick={() => onAskForSummary()}
               className="flex items-center bg-blue-500 hover:bg-blue-700 text-white font-bold py-1 px-4 rounded w-fit self-center lg:self-start "
@@ -279,6 +331,7 @@ const BookDetailsCard = ({
                   <HiCog className="text-gray-500 animate-spin duration-[1000] h-10 w-10" />
                 </div>
               ) : (
+
                 <span>Generate summary and start chat</span>
                 
               )}

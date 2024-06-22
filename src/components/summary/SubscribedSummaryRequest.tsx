@@ -3,6 +3,7 @@ import { useState, useEffect } from 'react';
 import { DEFAULT_SUMMARY_PARAMS } from "@/constants/model";
 import { UserContext } from "@/context/UserContext";
 import { useContext } from "react";
+import { set } from 'react-hook-form';
 const SubscribedSummaryRequest = ({
   handleClose,
   handleConfirm,
@@ -11,20 +12,20 @@ const SubscribedSummaryRequest = ({
   bookId
 }: {
   handleClose: () => void;
-  handleConfirm: () => void;
+  handleConfirm: (prompt: string) => void;
   title: string;
   bookCover: string;
   bookId: number;
 }) => {
   const [currentCost, setCurrentCost] = useState<string>("");
   const [loading, setLoading] = useState(false);
-  
+  const [summaryParams, setSummaryParams] = useState(DEFAULT_SUMMARY_PARAMS);
   const { user} = useContext(UserContext);
+  
 
   useEffect(() => {
     calculateCost(DEFAULT_SUMMARY_PARAMS);
   }, []);
-
 
 
 
@@ -88,6 +89,19 @@ const SubscribedSummaryRequest = ({
       <span className="text-gray-500 text-center italic ">
         {user && user.available_tokens.toLocaleString()}
       </span>
+
+     
+      <div className="text-xl mb-2 text-center w-[80%]">
+        <span className="text-gray-500 text-center italic">
+          Select the language of the summary:
+        </span>
+      </div>
+      <select className="w-[40%] p-2 rounded-lg border border-gray-300" id="prompt" name="prompt">
+        <option value="prompt1-english-">English</option>
+        <option value="prompt1-spanish-">Spanish</option>
+        
+      </select>
+
       
       <div className="flex justify-center items-center">
         
@@ -98,7 +112,9 @@ const SubscribedSummaryRequest = ({
             : "bg-green-200"
         } text-white rounded-lg px-4 py-2 mr-2`}
         onClick={() => {
-          handleConfirm();
+          //get the value of the select
+          const selector = document.getElementById("prompt") as HTMLSelectElement;
+          handleConfirm(selector.value);
           handleClose(); // Close the modal immediately after confirm
         }}
         disabled={user && user.available_tokens - parseFloat(currentCost) < 0}
