@@ -20,13 +20,19 @@ module.exports = {
         "main-bg":"#F8F8F8",
         "custom-black":"#030304"
       },
+      
       animation: {
-        ltrTranslation25: "ltrTranslation 10s linear infinite",
+        rtlTranslation25: "rtlTranslation 25s linear infinite",
+        ltrTranslation25: "ltrTranslation 25s linear infinite",
       },
       keyframes: {
+        rtlTranslation: {
+          "0%": { transform: "translateX(0%)" },
+          "100%": { transform: "translateX(-100%)" },
+        },
         ltrTranslation: {
-          "0%": { transform: "translateX(-50%)" },
-          "100%": { transform: "translateX(120%)" },
+          "0%": { transform: "translateX(100%)" },
+          "100%": { transform: "translateX(0%)" },
         },
       },
     },
