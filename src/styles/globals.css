@@ -4,13 +4,13 @@
 
 @font-face {
   font-family: "Rokkitt";
-  src: url(./fonts/Rokkitt/Rokkitt-VariableFont_wght.ttf);
+  src: url(../assets/fonts/Rokkitt/Rokkitt-VariableFont_wght.ttf);
 }
 
 @font-face {
   font-family: "PT Sans";
   font-weight: 400;
-  src: url(./fonts/PT_Sans/PTSans-Regular.ttf);
+  src: url(../assets/fonts/PT_Sans/PTSans-Regular.ttf);
   font-style: normal;
 }
 

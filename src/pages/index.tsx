@@ -1,4 +1,4 @@
-import { Psychology, Videocam } from "@/assests/icons";
+import { Psychology, Videocam } from "@/assets/icons";
 import { UserContext } from "@/context/UserContext";
 import Image from "next/image";
 import { useContext } from "react";
