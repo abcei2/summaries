@@ -6,7 +6,7 @@ const TEXT_ARRAY = [
 ];
 
 const TopNews = ({
-  backgroundColor = "bg-primary",
+  backgroundColor = "bg-secondary",
 }: {
   backgroundColor?: "bg-primary" | "bg-secondary" | "bg-tertiary";
 }) => {

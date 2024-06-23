@@ -7,9 +7,16 @@
   src: url(./fonts/Rokkitt/Rokkitt-VariableFont_wght.ttf);
 }
 
+@font-face {
+  font-family: "PT Sans";
+  font-weight: 400;
+  src: url(./fonts/PT_Sans/PTSans-Regular.ttf);
+  font-style: normal;
+}
+
 @layer base {
-  html {
-    @apply bg-main-bg font-rokkitt text-custom-black;
+  body {
+    @apply bg-white font-rokkitt text-custom-black;
   }
   /* width */
   ::-webkit-scrollbar {
@@ -51,5 +58,34 @@
 
   .primary-btn {
     @apply bg-primary text-white rounded-md px-4 py-2;
+  }
+
+  .arrow-down-div {
+    width: 0;
+    height: 0;
+    border-left: 20px solid transparent;
+    border-right: 20px solid transparent;
+    border-top: 20px solid green;
+  }
+
+  .pentagon {
+    position: relative;
+    width: 100%;
+  }
+
+  .pentagon::after {
+    content: ".";
+    overflow: hidden;
+    position: absolute;
+    top: 100%;
+    left: -1%;
+    background-color: #f1f1f1;
+    padding-bottom: 24.2%;
+    width: 51%;
+    height: 7%;
+    transform-origin: 0 0;
+    transform: rotate(-13.8deg) skewX(63deg);
+    border-bottom-left-radius: 10%;
+    z-index: 2;
   }
 }

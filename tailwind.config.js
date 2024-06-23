@@ -13,11 +13,12 @@ module.exports = {
         primary: "#8CFFEC",
         secondary:"#520CEB",
         tertiary:"#A6E567",
+        "custom-gray": "#F1F1F1",
         "primary-dark": "#2b6cb0",
         link: "#FFB600",
         bgc: "#FCC906",
         "main-bg":"#F8F8F8",
-        "custom-black":"#030304",
+        "custom-black":"#030304"
       },
       animation: {
         rtlTranslation25: "rtlTranslation 10s linear infinite",
