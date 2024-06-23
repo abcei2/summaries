@@ -5,6 +5,7 @@ import { useContext } from "react";
 import { UserContext } from "@/context/UserContext";
 import TabMenu from "./TabMenu";
 import BottonMenu from "./BottonMenu";
+import TopNews from "./TopNews";
 
 function MainWrapper({ children }: { children: React.ReactNode }) {
   const currentPath = usePathname();
@@ -23,15 +24,22 @@ function MainWrapper({ children }: { children: React.ReactNode }) {
     </div>
   ) : (
     <div>
-      <div className="max-h-screen h-screen xl:overflow-auto overflow-hidden flex flex-col bg-[#F8F8F8]">
-        {!notShowMenu && <TabMenu />}
-        <div
-          className={`h-full overflow-auto ${!notShowMenu && "mb-20"} lg:mb-2`}
-        >
-          {children}
+      <div className="max-h-screen h-screen xl:overflow-auto overflow-hidden flex flex-col bg-[#F8F8F8] flex flex-col gap-5 items-center">
+        <div className="w-full flex flex-col items-center justify-center gap-5">
+          <TopNews />
+          {!notShowMenu && <TabMenu />}
         </div>
-        {!notShowMenu && <BottonMenu />}
-        <ToastContainer autoClose={1000} />
+        <div className="max-w-[1400px] justify-center flex flex-col w-full">
+          <div
+            className={`h-full overflow-auto ${
+              !notShowMenu && "mb-20"
+            } lg:mb-2`}
+          >
+            {children}
+          </div>
+          {!notShowMenu && <BottonMenu />}
+          <ToastContainer autoClose={1000} />
+        </div>
       </div>
     </div>
   );
