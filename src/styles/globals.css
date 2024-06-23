@@ -16,7 +16,7 @@
 
 @layer base {
   body {
-    @apply bg-white font-rokkitt text-custom-black;
+    @apply bg-custom-gray font-rokkitt text-custom-black;
   }
   /* width */
   ::-webkit-scrollbar {

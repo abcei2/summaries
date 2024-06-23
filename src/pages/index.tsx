@@ -87,11 +87,11 @@ const page = () => {
   const videoUrl_2 = `${process.env.NEXT_PUBLIC_DJANGO_MEDIA}/videos/2.mp4`;
 
   return (
-    <div className="h-full w-full bg-primary">
+    <div className="h-full w-full bg-custom-gray">
       {!user || user?.is_superuser || user?.is_subscribed ? (
-        <div className="flex flex-col gap-16 w-ful  items-center ">
-          <div className="overflow-hidden w-full relative valley-div  bg-custom-gray p-2 flex justify-center">
-            <div className="max-w-[1400px] flex flex-col gap-10 w-full">
+        <div className="flex flex-col w-full  items-center  gap-32">
+          <div className="w-full relative p-2 flex justify-center">
+            <div className="flex flex-col gap-10 w-full max-w-[1400px]">
               <div className="relative z-10 w-full flex flex-col items-center font-bold text-3xl md:text-7xl">
                 <span>Struggling with</span>
                 <span> information overload?</span>
@@ -117,16 +117,19 @@ const page = () => {
               </div>
             </div>
             <Image
-              src="/images/landing-bg.svg"
+              src="/images/landing-bg-icon.svg"
               alt="banner"
               width={1154}
               height={1240}
-              className="absolute z-[5] self-center self-justify-center"
+              className="absolute z-[0] max-w-[150%] md:max-w-full md:top-[unset] top-[20%] "
             />
           </div>
 
-          <div className="flex flex-col gap-10 max-w-[1400px]">
-            {/* Video element */}
+          <div
+            className={`before:absolute md:before:top-[-230px] before:left-0 before:w-full 
+              before:h-full md:before:bg-landing-bg before:top-[-260px] before:bg-landing-bg-mobile before:bg-cover md:before:bg-contain lg:before:bg-cover
+            flex flex-col gap-16 md:gap-10  px-8 max-w-[1400px] relative pt-5 bg-primary`}
+          >
             <div className="max-w-[750px] self-center w-full">
               <video width="100%" height="auto" controls>
                 <source src={videoUrl_1} type="video/mp4" />
@@ -134,7 +137,7 @@ const page = () => {
               </video>
             </div>
 
-            <div className="justify-items-center grid grid-cols-4 gap-4 ">
+            <div className="justify-items-center grid grid-cols-1 md:grid-cols-4 md:gap-4 gap-12">
               {HOME_CONTENT.cards.map((card, key) => (
                 <div
                   key={key}

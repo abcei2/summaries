@@ -29,12 +29,8 @@ function MainWrapper({ children }: { children: React.ReactNode }) {
           <TopNews />
           {!notShowMenu && <TabMenu />}
         </div>
-        <div className="justify-center flex flex-col w-full">
-          <div
-            className={`h-full overflow-auto ${
-              !notShowMenu && "mb-20"
-            } lg:mb-2`}
-          >
+        <div className="justify-center flex flex-col w-full  overflow-auto">
+          <div className={`h-full ${!notShowMenu && "mb-20"} lg:mb-2`}>
             {children}
           </div>
           {!notShowMenu && <BottonMenu />}

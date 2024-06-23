@@ -21,6 +21,10 @@ module.exports = {
         "custom-black":"#030304"
       },
       
+      backgroundImage: {
+        "landing-bg": "url('/images/landing-bg.svg')",
+        "landing-bg-mobile": "url('/images/landing-bg-mobile.svg')",
+      },
       animation: {
         rtlTranslation25: "rtlTranslation 25s linear infinite",
         ltrTranslation25: "ltrTranslation 25s linear infinite",
