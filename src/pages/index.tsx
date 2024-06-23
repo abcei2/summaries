@@ -95,10 +95,13 @@ const page = () => {
       {!user || user?.is_superuser || user?.is_subscribed ? (
         <div className="flex flex-col w-full  items-center  gap-32 overflow-auto h-screen">
           <div className="w-full  p-2 flex justify-center relative">
-            <div className="flex flex-col gap-10 w-full max-w-[1400px]">
-              <div className="relative z-10 w-full flex flex-col items-center font-bold text-3xl md:text-7xl">
-                <span>Struggling with</span>
-                <span> information overload?</span>
+            <div className="flex flex-col gap-10 w-full">
+              <LandingPageMenu />
+              <div className="text-3xl md:text-7xl">
+                <div className="relative z-10 w-full flex flex-col items-center font-bold md:leading-[60px] ">
+                  <span>Struggling with</span>
+                  <span> information overload?</span>
+                </div>
               </div>
 
               <div className="relative z-10 flex flex-col gap-4 p-4">
@@ -130,9 +133,9 @@ const page = () => {
           </div>
 
           <div
-            className={`before:absolute md:before:top-[-230px] before:left-0 before:w-full before:z-[0]
-              before:h-full md:before:bg-landing-bg before:top-[-260px] before:bg-landing-bg-mobile before:bg-cover md:before:bg-contain lg:before:bg-cover
-            flex flex-col gap-16 md:gap-10  px-8 max-w-[1400px] relative py-8 bg-primary`}
+            className={`before:absolute md:before:top-[-340px] before:left-0 before:w-full before:z-[0]
+              before:h-full md:before:bg-landing-bg before:top-[-340px] before:bg-landing-bg-mobile before:bg-cover md:before:bg-contain lg:before:bg-cover
+            flex flex-col gap-16 md:gap-10  px-8 relative py-8 bg-primary w-full`}
           >
             <div className="max-w-[750px] self-center w-full">
               <video width="100%" height="auto" controls>
@@ -216,3 +219,33 @@ const page = () => {
 };
 
 export default page;
+
+const LandingPageMenu = () => {
+  return (
+    <div className="flex justify-between items-center w-full relative z-[1] px-3 sm:px-6 py-3">
+      <MegasummaryLogo />
+      <div className="flex items-center gap-4 text-base">
+        <button className="btn hover:border-custom-purple hover:text-custom-purple">
+          Sign up
+        </button>
+        <button className="btn hover:border-custom-purple hover:text-custom-purple">
+          Login
+        </button>
+      </div>
+    </div>
+  );
+};
+
+const MegasummaryLogo = () => {
+  return (
+    <div className="flex items-center justify-center text-xl leading-3">
+      <Image src="/icons/logo.svg" alt="icon" width={66} height={66} />
+      <div className="flex flex-col gap-0.5 sm:block hidden">
+        <span>
+          <b>Mega</b>
+        </span>
+        <span>Summary</span>
+      </div>
+    </div>
+  );
+};

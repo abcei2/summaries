@@ -57,7 +57,11 @@
   }
 
   .primary-btn {
-    @apply bg-primary text-white rounded-md px-4 py-2;
+    @apply bg-primary text-white btn;
+  }
+
+  .btn {
+    @apply rounded-[10px] py-0.5 px-8 border border-custom-black;
   }
 
   .arrow-down-div {
