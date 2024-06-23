@@ -24,12 +24,12 @@ function MainWrapper({ children }: { children: React.ReactNode }) {
     </div>
   ) : (
     <div>
-      <div className="max-h-screen h-screen xl:overflow-auto overflow-hidden flex flex-col flex flex-col items-center">
+      <div className="max-h-screen h-screen overflow-hidden flex flex-col flex flex-col items-center">
         <div className="w-full flex flex-col items-center justify-center gap-5">
           <TopNews />
           {!notShowMenu && <TabMenu />}
         </div>
-        <div className="justify-center flex flex-col w-full  overflow-auto">
+        <div className="justify-center flex flex-col w-full">
           <div className={`h-full ${!notShowMenu && "mb-20"} lg:mb-2`}>
             {children}
           </div>

@@ -77,7 +77,11 @@ const HOME_CONTENT = {
       },
     },
   ],
-  bottom: "Ready to Optimize The Way You Learn? ",
+  bottom: (
+    <span>
+      Ready to <b>Optimize</b> <br /> The Way You <b>Learn</b>?
+    </span>
+  ),
 };
 
 const page = () => {
@@ -89,8 +93,8 @@ const page = () => {
   return (
     <div className="h-full w-full bg-custom-gray">
       {!user || user?.is_superuser || user?.is_subscribed ? (
-        <div className="flex flex-col w-full  items-center  gap-32">
-          <div className="w-full relative p-2 flex justify-center">
+        <div className="flex flex-col w-full  items-center  gap-32 overflow-auto h-screen">
+          <div className="w-full  p-2 flex justify-center relative">
             <div className="flex flex-col gap-10 w-full max-w-[1400px]">
               <div className="relative z-10 w-full flex flex-col items-center font-bold text-3xl md:text-7xl">
                 <span>Struggling with</span>
@@ -126,9 +130,9 @@ const page = () => {
           </div>
 
           <div
-            className={`before:absolute md:before:top-[-230px] before:left-0 before:w-full 
+            className={`before:absolute md:before:top-[-230px] before:left-0 before:w-full before:z-[0]
               before:h-full md:before:bg-landing-bg before:top-[-260px] before:bg-landing-bg-mobile before:bg-cover md:before:bg-contain lg:before:bg-cover
-            flex flex-col gap-16 md:gap-10  px-8 max-w-[1400px] relative pt-5 bg-primary`}
+            flex flex-col gap-16 md:gap-10  px-8 max-w-[1400px] relative py-8 bg-primary`}
           >
             <div className="max-w-[750px] self-center w-full">
               <video width="100%" height="auto" controls>
@@ -170,9 +174,29 @@ const page = () => {
               </video>
             </div>
 
-            <div className="flex flex-col gap-10 p-2 text-2xl w-full font-[000] h-full ">
-              <div className="w-full h-12 flex justify-center font-bold text-3xl md:text-4xl text-center">
-                <span>{HOME_CONTENT.bottom}</span>
+            <div className="flex flex-col p-2 w-full h-full items-center gap-10 relative">
+              <Image
+                src="/icons/landing-asterisk.svg"
+                alt="icon"
+                width={30}
+                height={30}
+              />
+              <div className="w-full flex justify-center items-center text-6xl  md:text-7xl text-center gap-2 text-custom-purple">
+                <Image
+                  src={"/icons/left-doodle.svg"}
+                  alt="icon"
+                  width={32}
+                  height={58}
+                />
+                <div className="text-center">
+                  <span>{HOME_CONTENT.bottom}</span>
+                </div>
+                <Image
+                  src={"/icons/right-doodle.svg"}
+                  alt="icon"
+                  width={32}
+                  height={58}
+                />
               </div>
             </div>
           </div>

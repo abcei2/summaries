@@ -18,7 +18,8 @@ module.exports = {
         link: "#FFB600",
         bgc: "#FCC906",
         "main-bg":"#F8F8F8",
-        "custom-black":"#030304"
+        "custom-black":"#030304",
+        "custom-purple":"#520CEB"
       },
       
       backgroundImage: {
