@@ -21,17 +21,12 @@ module.exports = {
         "custom-black":"#030304"
       },
       animation: {
-        rtlTranslation25: "rtlTranslation 10s linear infinite",
         ltrTranslation25: "ltrTranslation 10s linear infinite",
       },
       keyframes: {
-        rtlTranslation: {
-          "0%": { transform: "translateX(0%)" },
-          "100%": { transform: "translateX(-100%)" },
-        },
         ltrTranslation: {
-          "0%": { transform: "translateX(100%)" },
-          "100%": { transform: "translateX(0%)" },
+          "0%": { transform: "translateX(-50%)" },
+          "100%": { transform: "translateX(120%)" },
         },
       },
     },
