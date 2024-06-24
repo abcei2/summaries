@@ -14,7 +14,7 @@ const page = () => {
   return (
     <div className="h-full w-full bg-custom-gray">
       {!user || user?.is_superuser || user?.is_subscribed ? (
-        <div className="flex flex-col w-full  items-center  gap-32 overflow-auto h-screen">
+        <div className="flex flex-col w-full  items-center  gap-32">
           <LandingTopSection />
 
           <div
