@@ -1,4 +1,5 @@
 import LandingCards from "@/components/landing/LandingCards";
+import LandingPageMenu from "@/components/landing/LandingPageMenu";
 import LandingTopSection from "@/components/landing/LandingTopSection";
 import { HOME_CONTENT } from "@/constants/landing";
 import { UserContext } from "@/context/UserContext";
@@ -15,6 +16,7 @@ const page = () => {
     <div className="h-full w-full bg-custom-gray">
       {!user || user?.is_superuser || user?.is_subscribed ? (
         <div className="flex flex-col w-full  items-center  gap-32">
+          <LandingPageMenu />
           <LandingTopSection />
 
           <div

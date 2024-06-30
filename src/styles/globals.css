@@ -64,32 +64,9 @@
     @apply rounded-[10px] py-0.5 px-8 border border-custom-black;
   }
 
-  .arrow-down-div {
-    width: 0;
-    height: 0;
-    border-left: 20px solid transparent;
-    border-right: 20px solid transparent;
-    border-top: 20px solid green;
+  .input {
+    @apply rounded-[10px] py-0.5 px-2 border border-custom-black;
   }
 
-  .pentagon {
-    position: relative;
-    width: 100%;
-  }
 
-  .pentagon::after {
-    content: ".";
-    overflow: hidden;
-    position: absolute;
-    top: 100%;
-    left: -1%;
-    background-color: #f1f1f1;
-    padding-bottom: 24.2%;
-    width: 51%;
-    height: 7%;
-    transform-origin: 0 0;
-    transform: rotate(-13.8deg) skewX(63deg);
-    border-bottom-left-radius: 10%;
-    z-index: 2;
-  }
 }

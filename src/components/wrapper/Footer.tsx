@@ -2,7 +2,7 @@ import Image from "next/image";
 
 const Footer = () => {
   return (
-    <footer className="bg-custom-purple text-white py-6 px-4 sm:px-16 sm:pt-16 sm:pb-8 flex flex-col gap-10">
+    <footer className="bg-custom-purple text-white py-6 px-6 sm:px-16 sm:pt-16 sm:pb-8 flex flex-col gap-10">
       <div className="flex items-center  gap-5">
         <Image
           src="/icons/sprinkle_group.svg"
@@ -12,7 +12,7 @@ const Footer = () => {
         />
         <span className="text-3xl">Don't Miss out</span>
       </div>
-      <div className="sm:flex sm:gap-16 gap-8 grid grid-cols-2">
+      <div className="flex sm:gap-16 gap-8 grid grid-cols-3">
         <div className="flex flex-col gap-4">
           <span className="uppercase text-tertiary">Company</span>
           <span>About</span>
@@ -21,16 +21,16 @@ const Footer = () => {
         </div>
         <div className="flex flex-col sm:flex-row gap-4 sm:gap-16">
           <div className="flex flex-col gap-4">
-            <span className="uppercase text-tertiary">Get involved</span>
+            <span className="uppercase text-tertiary w-max">Get involved</span>
             <span>Create an account</span>
           </div>
 
-          <div className="flex flex-col gap-4">
-            <span className="uppercase text-tertiary">Get in touch</span>
+          <div className="flex flex-col gap-4 col-span-2 w-full ">
+            <span className="uppercase text-tertiary w-max ">Get in touch</span>
             <span>hello@megasummary.com </span>
           </div>
         </div>
-        <div className="flex flex-col gap-4  col-span-2 sm:col-span-1 text-center items-center sm:items-start">
+        <div className="flex flex-col gap-4  col-span-3 sm:col-span-1 text-center items-center sm:items-start">
           <div className="flex gap-3 items-center">
             <span className="uppercase text-custom-gray"> Subscribe</span>
             <Image

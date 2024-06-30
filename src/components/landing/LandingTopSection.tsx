@@ -1,12 +1,10 @@
 import { HOME_CONTENT } from "@/constants/landing";
-import LandingPageMenu from "./LandingPageMenu";
 import Image from "next/image";
 
 const LandingTopSection = () => {
   return (
     <div className="w-full  p-2 flex justify-center relative">
       <div className="flex flex-col gap-10 w-full">
-        <LandingPageMenu />
         <div className="text-3xl md:text-7xl">
           <div className="relative z-10 w-full flex flex-col items-center font-bold md:leading-[60px] ">
             <span>Struggling with</span>
@@ -38,7 +36,7 @@ const LandingTopSection = () => {
         alt="banner"
         width={1154}
         height={1240}
-        className="absolute z-[0] max-w-[150%] md:max-w-full md:top-[unset] top-[20%] "
+        className="absolute z-[0] sm:max-w-[150%] md:max-w-full md:top-[unset] top-[20%] "
       />
     </div>
   );

@@ -26,8 +26,8 @@ function MainWrapper({ children }: { children: React.ReactNode }) {
   ) : (
     <div>
       <div className="max-h-screen h-screen overflow-hidden flex flex-col flex flex-col items-center">
-        <div className="w-full flex flex-col items-center justify-center gap-5">
-          <TopNews />
+        <div className="w-full flex flex-col-reverse sm:flex-col items-center justify-center gap-5">
+
           {!notShowMenu && <TabMenu />}
         </div>
         <div className="flex flex-col w-full overflow-auto">
