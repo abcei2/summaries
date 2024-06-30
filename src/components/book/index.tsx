@@ -42,7 +42,7 @@ const MainBookComponent = ({ bookId }: { bookId: string }) => {
     );
 
     const handlePromptChange = (prompt: string) => {
-      console.log('--------Prompt changed:', prompt);
+      //console.log('--------Prompt changed:', prompt);
       setSelectedPrompt(prompt);
       
 
@@ -70,10 +70,10 @@ const MainBookComponent = ({ bookId }: { bookId: string }) => {
   };
 
   useEffect(() => {
-    console.log('*********Reloading summaries');
+    //console.log('*********Reloading summaries');
     reloadBook();
     reloadSummaries();
-    console.log('summaryList:', summaryList);
+    //console.log('summaryList:', summaryList);
   }
   , [bookId]);
   /*
@@ -100,9 +100,9 @@ useEffect(() => {
       summary => summary.method !== "dummy" && summary.state !== "error" && summary.prompt1 === selectedPrompt
   );
   
-  console.log('^^^^^New current show summary based on prompt:', newCurrentShowSummary);
+  //console.log('^^^^^New current show summary based on prompt:', newCurrentShowSummary);
   setCurrentShowSummary(newCurrentShowSummary);
-  console.log('^^^^^Current show summary:', currentShowSummary);
+  //console.log('^^^^^Current show summary:', currentShowSummary);
 }, [selectedPrompt, summaryList]); // Dependencies include selectedPrompt and summaryList
 
 
@@ -126,7 +126,7 @@ useEffect(() => {
         ...summaryList[index],
         ...rest,
       };
-      console.log('Summary data:', data.data);
+      //console.log('Summary data:', data.data);
       if (data.data?.text) {
         summaryList[index].text = data.data.text;
       }
@@ -166,8 +166,8 @@ useEffect(() => {
     const newcurrentShowSummary = summaryList?.find(
       (summary) => summary?.method != "dummy" && summary?.state != "error" && summary.prompt1 == selectedPrompt
     );
-    console.log('CurrentShowSummary:', currentShowSummary);
-    console.log('New current show summary:', newcurrentShowSummary);
+    //console.log('CurrentShowSummary:', currentShowSummary);
+    //console.log('New current show summary:', newcurrentShowSummary);
 
     setCurrentShowSummary(newcurrentShowSummary);
 
@@ -177,12 +177,13 @@ useEffect(() => {
     
     if (!book) return;
 
-    console.log('----------------------');
+    //console.log('----------------------');
+    /*
     console.log(
       book.status == BOOK_BACKEND_STATUS.EXTRACTED, 
       book.can_do_summary, !currentShowSummary, 
       !user?.is_superuser, user?.is_subscribed, 
-      currentShowSummary?.prompt1 != selectedPrompt);
+      currentShowSummary?.prompt1 != selectedPrompt);*/
 
 
     if (
@@ -193,12 +194,12 @@ useEffect(() => {
       user?.is_subscribed 
       //currentShowSummary?.prompt1 != selectedPrompt
     ) {
-      console.log('Creating summary');
+      //console.log('Creating summary');
       reloadSummaries();
       
     }
     else{
-      console.log('Not creating summary');
+      //console.log('Not creating summary');
       
       
     }
@@ -223,7 +224,7 @@ useEffect(() => {
     fetch(`/api/books/summaries/${bookId}`)
       .then((res) => res.json())
       .then((data) => {
-        console.log('Summary list:', data.data);
+        //console.log('Summary list:', data.data);
 
 
         setSummaryList(data.data);
@@ -238,11 +239,11 @@ useEffect(() => {
       if (summaryList) {
         summaryList.forEach((summary) => {
           if (summary.state !== SUMMARY_BACKEND_STATUS.DONE && summary.state !== SUMMARY_BACKEND_STATUS.ERROR) {
-            console.log('Fetching summary progress for summary:', summary.id);
+            //console.log('Fetching summary progress for summary:', summary.id);
             fetch(`/api/summaries/${summary.id}`)
               .then((res) => res.json())
               .then((data) => {
-                console.log('Summary progress:', data.data.progress);
+                //console.log('Summary progress:', data.data.progress);
                 // Update the progress of the summary in summaryList
                 const updatedSummaries = summaryList.map((item) => {
                   if (item.id === summary.id) {
@@ -291,19 +292,26 @@ useEffect(() => {
     <div className="w-full flex flex-col justify-center items-center">
       
       <div className="w-[90%] lg:w-[80%] flex flex-col gap-2 ">
-        <BookDetailsCard
-          book={book}
-          lastSummary={lastSummary}
-          loading={loading}
-          reloadSummaries={reloadSummaries}
-          handleUpdateBook={(newBook) => {
-            setBook({
-              ...book,
-              ...newBook,
-            });
-          }}
-          onPromptChange={handlePromptChange}
-        />
+        
+      {summaryList ? (
+          <BookDetailsCard
+            book={book}
+            lastSummary={lastSummary}
+            summaryList={summaryList}
+            loading={loading}
+            reloadSummaries={reloadSummaries}
+            handleUpdateBook={(newBook) => {
+              setBook({
+                ...book,
+                ...newBook,
+              });
+            }}
+            onPromptChange={handlePromptChange}
+          />
+        ) : (
+          <LoadingSpin text="Loading summaries" />
+        )}
+
       </div>
 
       

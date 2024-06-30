@@ -11,12 +11,14 @@ import { BOOK_BACKEND_STATUS, SUMMARY_BACKEND_STATUS } from "@/constants";
 import SubscribedSummaryRequest from "@/components/summary/SubscribedSummaryRequest";
 import { DEFAULT_SUMMARY_PARAMS } from "@/constants/model";
 import useModelObserver from "@/hooks/useModelObserver";
+import { set } from "react-hook-form";
 
 const BookDetailsCard = ({
   book,
   handleUpdateBook,
   reloadSummaries,
   lastSummary,
+  summaryList,
   loading,
   onPromptChange,
 }: {
@@ -24,6 +26,7 @@ const BookDetailsCard = ({
   handleUpdateBook: (book: Book) => void;
   reloadSummaries: () => void;
   lastSummary?: SummaryType;
+  summaryList: SummaryType[];
   loading?: boolean;
   onPromptChange: (prompt: string) => void;
 }) => {
@@ -61,20 +64,52 @@ const BookDetailsCard = ({
     lastSummary.state != SUMMARY_BACKEND_STATUS.ERROR;
 
   const handleSelectPrompt = (prompt: string) => {
-      console.log("prompt", prompt);
+      //console.log("prompt", prompt);
       onPromptChange(prompt);
       setSelectedPrompt(prompt);
       reloadSummaries(); 
+      
+      /*
       if (lastSummary?.prompt1 == prompt) {
         setSummaryAvailable(true);
         console.log("****true");
       } else {
         console.log("****false");
         setSummaryAvailable(false);
-      }
+      }*/
+
+        if (user?.is_superuser) {
+          setSummaryAvailable(false);
+          return;
+        }
+
+     
+      setSummaryAvailable(false);
+      summaryList.forEach((summary) => {
+        if (summary.prompt1 == prompt) {
+          setSummaryAvailable(true);
+          console.log(prompt,"****true");
+        }
+      });
+
 
 
     };
+
+    
+    useEffect(() => {
+      //if user is superuser, always show the button
+      if (user?.is_superuser) {
+        setSummaryAvailable(false);
+        return;
+      }
+      summaryList.forEach((summary) => {
+        if (summary.prompt1 == selectedPrompt) {
+          setSummaryAvailable(true);
+          console.log(selectedPrompt,"****true");
+        }
+      });
+    }, []);
 
 
 
@@ -191,6 +226,7 @@ const BookDetailsCard = ({
           title={bookModalTitle}
           bookCover={bookCover}
           bookId={book.global_id}
+          summaryList={summaryList}
           handleConfirm={(prompt: string) => {
             setSummaryRequestLoading(true);
             //createResume(DEFAULT_SUMMARY_PARAMS)
@@ -319,7 +355,7 @@ const BookDetailsCard = ({
           ) : (
             <CgHeadset className="w-6 h-6" />
           )}
-
+          
           {showAskForSummaryButton && !summaryAvailable && (
             <button
               onClick={() => onAskForSummary()}
