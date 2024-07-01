@@ -7,6 +7,7 @@ import TabMenu from "./TabMenu";
 import BottonMenu from "./BottonMenu";
 import TopNews from "./TopNews";
 import Footer from "./Footer";
+import LandingPageMenu from "../landing/LandingPageMenu";
 
 function MainWrapper({ children }: { children: React.ReactNode }) {
   const currentPath = usePathname();
@@ -18,6 +19,7 @@ function MainWrapper({ children }: { children: React.ReactNode }) {
     currentPath.startsWith("/login") ||
     currentPath.startsWith("/signup") ||
     currentPath.startsWith("/verify-email");
+
   return !dataLoaded ? (
     <div className="h-screen w-screen flex flex-col gap-5 justify-center items-center">
       <div className="text-3xl italic">MegaSummary</div>
@@ -27,10 +29,10 @@ function MainWrapper({ children }: { children: React.ReactNode }) {
     <div>
       <div className="max-h-screen h-screen overflow-hidden flex flex-col flex flex-col items-center">
         <div className="w-full flex flex-col-reverse sm:flex-col items-center justify-center gap-5">
-
           {!notShowMenu && <TabMenu />}
         </div>
         <div className="flex flex-col w-full overflow-auto">
+          <LandingPageMenu hiddeButtons={true} backgroundColor="bg-primary" />
           <div>{children}</div>
           {!notShowMenu && <BottonMenu />}
           <ToastContainer autoClose={1000} />

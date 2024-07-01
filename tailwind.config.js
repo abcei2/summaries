@@ -7,21 +7,23 @@ module.exports = {
   theme: {
     extend: {
       fontFamily: {
-        rokkitt: ['Rokkitt'],
+        rokkitt: ["Rokkitt"],
+        "pt-sans": ["PT Sans"],
       },
       colors: {
         primary: "#8CFFEC",
-        secondary:"#520CEB",
-        tertiary:"#A6E567",
+        secondary: "#520CEB",
+        tertiary: "#A6E567",
         "custom-gray": "#F1F1F1",
         "primary-dark": "#2b6cb0",
         link: "#FFB600",
         bgc: "#FCC906",
-        "main-bg":"#F8F8F8",
-        "custom-black":"#030304",
-        "custom-purple":"#520CEB"
+        "main-bg": "#F8F8F8",
+        "custom-black": "#030304",
+        "custom-purple": "#520CEB",
+        "custom-red": "#F94C4C",
       },
-      
+
       backgroundImage: {
         "landing-bg": "url('/images/landing-bg.svg')",
         "landing-bg-mobile": "url('/images/landing-bg-mobile.svg')",

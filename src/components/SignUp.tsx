@@ -5,7 +5,6 @@ import { SignupFormType } from "../types";
 
 import { toast } from "react-toastify";
 import Image from "next/image";
-import LandingPageMenu from "./landing/LandingPageMenu";
 
 const SignUp = () => {
   const { signUp } = useContext(UserContext);
@@ -85,7 +84,6 @@ const SignUp = () => {
             className="absolute sm:relative sm:-top-[150px] bottom-[100px] right-0"
           />
         </div>
-        <LandingPageMenu hiddeButtons={true} backgroundColor="bg-primary" />
         <div className="rounded-lg overflow-hidden w-full flex flex-col items-center gap-4 z-[1] relative">
           <div className="flex flex-col px-4 gap-2 text-[20px] font-bold pt-20 m-4  items-center">
             <Image src="/images/donut.svg" alt="donut" width={26} height={20} />
