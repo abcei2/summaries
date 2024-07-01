@@ -23,6 +23,7 @@ async function fn(req: NextApiRequest, res: NextApiResponse, userAuth: UserAuthT
 
         if (response.status == 200) {
           const data = await response.json();
+          //console.log(data);
           
           res.status(200).json(data);
         } else {

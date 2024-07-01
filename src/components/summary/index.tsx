@@ -20,6 +20,8 @@ const SummaryComp = ({
 }) => {
   const [summary, setSummary] = useState<SummaryType | undefined>(
     currentShowSummary
+    
+    
   );
  
 
@@ -92,7 +94,7 @@ const SummaryComp = ({
     
     if (selectedText.length <20) alert("Please select more than 20 characters");
     else {
-      console.log(summaryId);
+     //console.log(summaryId);
     const response = await fetch("/api/highlight/", {
       method: "POST",
       headers: {
@@ -109,6 +111,7 @@ const SummaryComp = ({
   };
 
   useEffect(() => {
+    //console.log("************", summaryId);
     if (!summaryId) return console.log("No summaryId", summaryId);
     fetch("/api/summaries/" + summaryId)
       .then((res) => res.json())
@@ -117,13 +120,26 @@ const SummaryComp = ({
       });
   }, [summaryId]);
 
-  useEffect(() => {
-    if (!currentShowSummary) return;
-    setSummary(currentShowSummary);
-  }, [currentShowSummary]);
 
   useEffect(() => {
+    //console.log("Current show summary XXXX:", currentShowSummary);
+    if (!currentShowSummary) return;
+
+    setSummary(currentShowSummary)
+  }, [currentShowSummary]);
+
+
+
+  useEffect(() => {
+    //console.log("000000000", summary);
     if (!summary) return console.log("No summary");
+    if (!currentShowSummary) {//return console.log("No currentShowSummary");
+
+    //setsummary to none
+    setSummary(undefined);
+    return console.log("No currentShowSummary");
+    }
+
     const text = summary.text + "Title:";
 
     const titleRegex = /Title:(.*?)Summary:/gs;
@@ -147,7 +163,7 @@ const SummaryComp = ({
       ?.match(bulletPointsRegex)
       ?.map((match) => match.replace(/Bulletpoints:|Title:/g, "").trim());
 
-    console.log(summaries?.length,titles?.length,Recap?.length,bulletPoints?.length);
+    //console.log(summaries?.length,titles?.length,Recap?.length,bulletPoints?.length);
 
     if (summaries && titles && summaries?.length === titles?.length) {
       
@@ -169,7 +185,8 @@ const SummaryComp = ({
     } else {
       setContent([{ title: "", summary: summary.text?.replace(/§/g, "") ?? "" }]);
     }
-  }, [summary]);
+  }, [summary,currentShowSummary]);
+
 
   // Fetching the highlighted text when summaryId is available.
   const fetchHighlightedText = async () => {

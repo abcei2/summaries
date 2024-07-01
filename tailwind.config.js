@@ -31,6 +31,8 @@ module.exports = {
       animation: {
         rtlTranslation25: "rtlTranslation 25s linear infinite",
         ltrTranslation25: "ltrTranslation 25s linear infinite",
+        rtlTranslation100: "rtlTranslation 100s linear infinite",
+        ltrTranslation100: "ltrTranslation 100s linear infinite",
       },
       keyframes: {
         rtlTranslation: {

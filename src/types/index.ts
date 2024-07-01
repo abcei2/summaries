@@ -84,7 +84,7 @@ export type SummaryType = {
   model2: string | null;
   created_at: string;
   updated_at: string;
-  prompt1: string | null;
+  prompt1: string ;
   prompt2: string | null;
   temperature: number | null;
   length: string | null;

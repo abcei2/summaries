@@ -11,6 +11,7 @@ import SummaryList from "./SummaryList";
 import { BookStatus } from "@/utils/books";
 import { get } from "http";
 import ChatBot from "./ChatBot";
+import { set } from "react-hook-form";
 
 
 const MainBookComponent = ({ bookId }: { bookId: string }) => {
@@ -22,12 +23,13 @@ const MainBookComponent = ({ bookId }: { bookId: string }) => {
   const loading = loadingBook || loadingSummaries;
 
   const [shouldFetchMessages, setShouldFetchMessages] = useState(false);
-
+  const [selectedPrompt, setSelectedPrompt] = useState('prompt1-english-');
+  const [currentShowSummary, setCurrentShowSummary] = useState<SummaryType>();
   
-
+/*
   const currentShowSummary = summaryList?.find(
-    (summary) => summary?.method != "dummy" && summary?.state != "error"
-  );
+    (summary) => summary?.method != "dummy" && summary?.state != "error" && summary.prompt1 == selectedPrompt
+  );*/
 
   const lastSummary = summaryList?.sort(
     (a, b) =>
@@ -38,6 +40,72 @@ const MainBookComponent = ({ bookId }: { bookId: string }) => {
     [SUMMARY_BACKEND_STATUS.QUEUE, SUMMARY_BACKEND_STATUS.RUNNING].includes(
       state
     );
+
+    const handlePromptChange = (prompt: string) => {
+      //console.log('--------Prompt changed:', prompt);
+      setSelectedPrompt(prompt);
+      
+
+      /*
+      console.log('Prompt changed:', prompt);
+      setSelectedPrompt(prompt);
+      reloadSummaries();
+  
+      const newCurrentShowSummary = summaryList?.find(
+        (summary) => summary?.method !== "dummy" && summary?.state !== "error" && summary.prompt1 === prompt
+      );
+  
+      console.log('//////New current show summary:', newCurrentShowSummary);
+      
+      if (newCurrentShowSummary==undefined) {
+        console.log('Creating summary');
+        //reloadSummaries();
+        setCurrentShowSummary(undefined);
+      }
+      else{
+        console.log('Not creating summary');
+        setCurrentShowSummary(newCurrentShowSummary);
+      }
+      setCurrentShowSummary(undefined);*/
+  };
+
+  useEffect(() => {
+    //console.log('*********Reloading summaries');
+    reloadBook();
+    reloadSummaries();
+    //console.log('summaryList:', summaryList);
+  }
+  , [bookId]);
+  /*
+  useEffect(() => {
+      console.log('Selected prompt:', selectedPrompt);
+      console.log('Summary list:', summaryList);
+  
+      const foundSummary = summaryList?.find(
+        (summary) => summary?.method !== "dummy" && summary?.state !== "error" && summary.prompt1 === selectedPrompt
+      );
+  
+      console.log('Found summary for prompt:', foundSummary);
+      setCurrentShowSummary(undefined);
+  
+  }, [summaryList, selectedPrompt, currentShowSummary]);
+  
+*/
+
+
+
+useEffect(() => {
+  // This useEffect now is solely responsible for updating currentShowSummary when selectedPrompt changes
+  const newCurrentShowSummary = summaryList?.find(
+      summary => summary.method !== "dummy" && summary.state !== "error" && summary.prompt1 === selectedPrompt
+  );
+  
+  //console.log('^^^^^New current show summary based on prompt:', newCurrentShowSummary);
+  setCurrentShowSummary(newCurrentShowSummary);
+  //console.log('^^^^^Current show summary:', currentShowSummary);
+}, [selectedPrompt, summaryList]); // Dependencies include selectedPrompt and summaryList
+
+
   // Subscribe to summary each time [TODO change to only subscribe to the summary if is != "done" summary]
   useModelObserver({
     roomName: book?.id ?? "",
@@ -58,7 +126,7 @@ const MainBookComponent = ({ bookId }: { bookId: string }) => {
         ...summaryList[index],
         ...rest,
       };
-      console.log(data)
+      //console.log('Summary data:', data.data);
       if (data.data?.text) {
         summaryList[index].text = data.data.text;
       }
@@ -90,19 +158,53 @@ const MainBookComponent = ({ bookId }: { bookId: string }) => {
     reloadBook();
     reloadSummaries();
   }, [bookId]);
+ 
 
   useEffect(() => {
+    
+    
+    const newcurrentShowSummary = summaryList?.find(
+      (summary) => summary?.method != "dummy" && summary?.state != "error" && summary.prompt1 == selectedPrompt
+    );
+    //console.log('CurrentShowSummary:', currentShowSummary);
+    //console.log('New current show summary:', newcurrentShowSummary);
+
+    setCurrentShowSummary(newcurrentShowSummary);
+
+    
+
+
+    
     if (!book) return;
+
+    //console.log('----------------------');
+    /*
+    console.log(
+      book.status == BOOK_BACKEND_STATUS.EXTRACTED, 
+      book.can_do_summary, !currentShowSummary, 
+      !user?.is_superuser, user?.is_subscribed, 
+      currentShowSummary?.prompt1 != selectedPrompt);*/
+
+
     if (
       book.status == BOOK_BACKEND_STATUS.EXTRACTED &&
       book.can_do_summary &&
       !currentShowSummary &&
       !user?.is_superuser &&
-      user?.is_subscribed
+      user?.is_subscribed 
+      //currentShowSummary?.prompt1 != selectedPrompt
     ) {
+      //console.log('Creating summary');
       reloadSummaries();
+      
     }
-  }, [book]);
+    else{
+      //console.log('Not creating summary');
+      
+      
+    }
+    
+  }, [book,selectedPrompt]);
 
   const reloadBook = () => {
     if (!bookId) return console.log("No bookId");
@@ -119,24 +221,29 @@ const MainBookComponent = ({ bookId }: { bookId: string }) => {
   const reloadSummaries = () => {
     if (!bookId) return console.log("No bookId");
     setLoadingSummaries(true);
-    fetch("/api/books/summaries/" + bookId)
+    fetch(`/api/books/summaries/${bookId}`)
       .then((res) => res.json())
       .then((data) => {
+        //console.log('Summary list:', data.data);
+
+
         setSummaryList(data.data);
       })
       .finally(() => setLoadingSummaries(false));
   };
+
+ 
 
   useEffect(() => {
     const intervalId = setInterval(() => {
       if (summaryList) {
         summaryList.forEach((summary) => {
           if (summary.state !== SUMMARY_BACKEND_STATUS.DONE && summary.state !== SUMMARY_BACKEND_STATUS.ERROR) {
-            console.log('Fetching summary progress for summary:', summary.id);
+            //console.log('Fetching summary progress for summary:', summary.id);
             fetch(`/api/summaries/${summary.id}`)
               .then((res) => res.json())
               .then((data) => {
-                console.log('Summary progress:', data.data.progress);
+                //console.log('Summary progress:', data.data.progress);
                 // Update the progress of the summary in summaryList
                 const updatedSummaries = summaryList.map((item) => {
                   if (item.id === summary.id) {
@@ -185,18 +292,26 @@ const MainBookComponent = ({ bookId }: { bookId: string }) => {
     <div className="w-full flex flex-col justify-center items-center">
       
       <div className="w-[90%] lg:w-[80%] flex flex-col gap-2 ">
-        <BookDetailsCard
-          book={book}
-          lastSummary={lastSummary}
-          loading={loading}
-          reloadSummaries={reloadSummaries}
-          handleUpdateBook={(newBook) => {
-            setBook({
-              ...book,
-              ...newBook,
-            });
-          }}
-        />
+        
+      {summaryList ? (
+          <BookDetailsCard
+            book={book}
+            lastSummary={lastSummary}
+            summaryList={summaryList}
+            loading={loading}
+            reloadSummaries={reloadSummaries}
+            handleUpdateBook={(newBook) => {
+              setBook({
+                ...book,
+                ...newBook,
+              });
+            }}
+            onPromptChange={handlePromptChange}
+          />
+        ) : (
+          <LoadingSpin text="Loading summaries" />
+        )}
+
       </div>
 
       
@@ -227,7 +342,7 @@ const MainBookComponent = ({ bookId }: { bookId: string }) => {
       <div className="w-[90%] lg:w-[80%] flex flex-col gap-2 ">
         {user && (user.is_staff || user.is_superuser) ? (
           <div className="flex flex-col gap-2">
-            
+             
             <SummaryComp currentShowSummary={currentShowSummary} bookId={bookId} onSearchReferencesComplete={() => setShouldFetchMessages(true)} />
             <SummaryList summaryList={summaryList ?? []} />
           </div>
