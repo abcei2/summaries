@@ -65,7 +65,7 @@
   }
 
   .input {
-    @apply rounded-[10px] py-0.5 px-2 border border-custom-black;
+    @apply rounded-[10px] py-0.5 px-2 border border-custom-black min-h-[30px];
   }
 
 

@@ -206,8 +206,8 @@ function BookSearch() {
           </button>
 
           <span>Or</span>
-          <div className="ml-4 flex items-center bg-primary rounded cursor-pointer w-40 justify-center">
-            <span className="ml-2 p-2 text-sm text-white">Upload Document</span>
+          <div className="btn flex items-center gap-2 bg-primary cursor-pointer justify-center w-max">
+            <span className="w-max text-sm text-white">Upload Document</span>
             <input
               type="file"
               className="hidden"

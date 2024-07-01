@@ -25,6 +25,7 @@ module.exports = {
       },
 
       backgroundImage: {
+        "landing-bg-icon": "url('/images/landing-bg-icon.svg')",
         "landing-bg": "url('/images/landing-bg.svg')",
         "landing-bg-mobile": "url('/images/landing-bg-mobile.svg')",
       },

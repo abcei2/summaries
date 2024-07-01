@@ -12,7 +12,7 @@ const PopUpMenu = () => {
     user?.available_tokens ?? 0
   );
   return (
-    <div className="relative z-[1] flex flex-col gap-5 font-pt-sans text-xs">
+    <div className="flex flex-col gap-5 font-pt-sans text-xs">
       <div className="flex items-center gap-12 font-pt-sans text-sm">
         <a
           className={`${
