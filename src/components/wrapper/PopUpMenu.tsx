@@ -8,13 +8,42 @@ const PopUpMenu = () => {
   const { user, signOut } = useContext(UserContext);
   const router = useRouter();
   const [showPopup, setShowPopup] = useState(false);
-  const tokenAmount = new Intl.NumberFormat("en-US").format(1000000);
+  const tokenAmount = new Intl.NumberFormat("en-US").format(
+    user?.available_tokens ?? 0
+  );
   return (
     <div className="relative z-[1] flex flex-col gap-5 font-pt-sans text-xs">
       <div className="flex items-center gap-12 font-pt-sans text-sm">
-        <a href="/search">Search/Upload</a>
-        <a href="/mylibrary">My library</a>
-        <a href="/myhighlights">My highlights</a>
+        <a
+          className={`${
+            router.pathname === "/search"
+              ? "text-custom-purple border-b border-b-custom-purple font-bold"
+              : ""
+          } hover:text-custom-purple px-0.5`}
+          href="/search"
+        >
+          Search/Upload
+        </a>
+        <a
+          className={`${
+            router.pathname === "/mylibrary"
+              ? "text-custom-purple border-b border-b-custom-purple font-bold"
+              : ""
+          } hover:text-custom-purple px-0.5`}
+          href="/mylibrary"
+        >
+          My library
+        </a>
+        <a
+          className={`${
+            router.pathname === "/myhighlights"
+              ? "text-custom-purple border-b border-b-custom-purple font-bold"
+              : ""
+          } hover:text-custom-purple px-0.5`}
+          href="/myhighlights"
+        >
+          My highlights
+        </a>
         <OutsideAlerter
           onClick={() => setShowPopup(false)}
           className="relative"
@@ -35,7 +64,7 @@ const PopUpMenu = () => {
           bg-custom-purple text-white`}
             onClick={() => setShowPopup(false)}
           >
-            <div className="flex flex-col gap-2 items-center justify-center  px-6 py-4 gap-3  items-center">
+            <div className="flex flex-col gap-2 items-center justify-center  px-6 py-4 gap-3  items-center z-10">
               <Image
                 src="/icons/account_box.svg"
                 alt="icon"
@@ -69,9 +98,9 @@ const PopUpMenu = () => {
                   Take our survey
                 </a>
               </div>
-              <a
+              <div
                 onClick={() => signOut && signOut().then(() => router.reload())}
-                className="flex gap-2 items-center justify-end w-full relati"
+                className="flex gap-2 items-center justify-end w-full cursor-pointer"
               >
                 <span className="font-bold"> {"Logout"}</span>
                 <Image
@@ -80,7 +109,7 @@ const PopUpMenu = () => {
                   width={16}
                   height={14}
                 />
-              </a>
+              </div>
             </div>
           </div>
         </OutsideAlerter>

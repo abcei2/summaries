@@ -5,7 +5,7 @@ import { useRouter } from "next/router";
 import PopUpMenu from "./PopUpMenu";
 import MegasummaryLogo from "../MegasummaryLogo";
 
-const TopMenu = ({ hiddeButtons = false }: { hiddeButtons?: boolean }) => {
+const TopMenu = () => {
   const { user } = useContext(UserContext);
   const router = useRouter();
 
@@ -14,6 +14,8 @@ const TopMenu = ({ hiddeButtons = false }: { hiddeButtons?: boolean }) => {
   const [showPopup, setShowPopup] = useState(false);
 
   const showMenu = !!user;
+  const hiddeButtons =
+    router.pathname === "/login" || router.pathname === "/signup";
 
   return (
     <div className="flex flex-col-reverse sm:flex-col items-center gap-2 w-full">
@@ -23,7 +25,7 @@ const TopMenu = ({ hiddeButtons = false }: { hiddeButtons?: boolean }) => {
         sm:justify-between items-center w-full relative z-[1] px-3 sm:px-6 py-3"`}
       >
         <MegasummaryLogo />
-        {!hiddeButtons ? null : showMenu ? (
+        {hiddeButtons ? null : showMenu ? (
           <PopUpMenu />
         ) : (
           <div className="flex items-center gap-4 text-base">
