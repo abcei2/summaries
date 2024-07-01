@@ -4,6 +4,7 @@ import { useContext, useState, useEffect } from "react";
 import { Book } from "../../types";
 import useModelObserver from "@/hooks/useModelObserver";
 import { UserContext } from "@/context/UserContext";
+import CustomImage from "../utils/CustomImage";
 
 function BookSearch() {
   const [isLoading, setIsLoading] = useState(false);
@@ -168,8 +169,17 @@ function BookSearch() {
   };
 
   return (
-    <div className="w-full flex flex-col gap-6 pt-5 h-screen">
-      <div className="flex flex-col gap-4">
+    <div className="w-full h-full flex flex-col gap-10">
+      <div className="flex gap-2 items-center">
+        <CustomImage
+          src="/icons/doodle3.svg"
+          alt="Doodle"
+          width={21}
+          height={41}
+        />
+        <span className="text-2xl font-bold">Search/Upload</span>
+      </div>
+      <div className="flex flex-col gap-4 w-1/2">
         <div className="relative flex font-pt-sans text-xs w-full items-center">
           <input
             list="search-history"
@@ -194,26 +204,32 @@ function BookSearch() {
           <input
             type="text"
             placeholder="Paste a URL (youtube, file, or web page)"
-            className="input"
+            className="input bg-primary w-full"
             value={url}
             onChange={(e) => setUrl(e.target.value)}
           />
           <button
             onClick={handleUrlFetch}
-            className="btn bg-secondary text-white"
+            className="btn bg-secondary text-white min-w-max"
           >
             Get Summary
           </button>
 
           <span>Or</span>
           <div className="btn flex items-center gap-2 bg-primary cursor-pointer justify-center w-max">
-            <span className="w-max text-sm text-white">Upload Document</span>
+            <span className="w-max text-sm">Upload Document</span>
             <input
               type="file"
               className="hidden"
               onChange={handleDocumentUpload}
             />
-            <HiUpload className="hover:scale-125 duration-300 hover:animate-pulse text-white" />
+            <CustomImage
+              src="/icons/upload.svg"
+              className="hover:scale-125 duration-300 hover:animate-pulse text-secondary"
+              width={12}
+              height={13}
+              alt="Upload"
+            />
           </div>
         </div>
       </div>

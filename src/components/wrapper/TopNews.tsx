@@ -39,7 +39,7 @@ const TopNews = ({
   backgroundColor?: "bg-primary" | "bg-secondary" | "bg-tertiary";
 }) => {
   return (
-    <div className={`w-full relative flex overflow-hidden ${backgroundColor}`}>
+    <div className={`w-full relative flex overflow-hidden  ${backgroundColor}   min-h-[30px]`}>
       <div className="animate-rtlTranslation100 whitespace-nowrap flex gap-5">
         {TEXT_ARRAY.map((text, index) => (
           <div

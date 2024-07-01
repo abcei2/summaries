@@ -3,7 +3,7 @@ import CustomImage from "../utils/CustomImage";
 
 const Footer = () => {
   return (
-    <footer className="bg-custom-purple text-white py-6 px-6 sm:px-16 sm:pt-16 sm:pb-8 flex flex-col gap-10">
+    <footer className="w-full bg-custom-purple text-white py-6 px-6 sm:px-16 sm:pt-16 sm:pb-8 flex flex-col gap-10">
       <div className="flex items-center  gap-5">
         <CustomImage
           src="/icons/sprinkle_group.svg"

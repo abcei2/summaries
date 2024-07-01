@@ -6,6 +6,8 @@ import { UserContext } from "@/context/UserContext";
 import BottonMenu from "./BottonMenu";
 import Footer from "./Footer";
 import TopMenu from "./TopMenu";
+import TopNews from "./TopNews";
+import { useRouter } from "next/router";
 
 function MainWrapper({ children }: { children: React.ReactNode }) {
   const currentPath = usePathname();
@@ -17,6 +19,8 @@ function MainWrapper({ children }: { children: React.ReactNode }) {
     currentPath.startsWith("/login") ||
     currentPath.startsWith("/signup") ||
     currentPath.startsWith("/verify-email");
+  const router = useRouter();
+  const backgroundColor = selectBackground(router);
 
   return !dataLoaded ? (
     <div className="h-screen w-screen flex flex-col gap-5 justify-center items-center">
@@ -26,8 +30,9 @@ function MainWrapper({ children }: { children: React.ReactNode }) {
   ) : (
     <div>
       <div className="max-h-screen h-screen overflow-hidden flex flex-col flex flex-col items-center">
-        <TopMenu/>
         <div className="flex flex-col w-full overflow-auto">
+          <TopNews backgroundColor={backgroundColor} />
+          <TopMenu />
           <div>{children}</div>
           {!notShowMenu && <BottonMenu />}
           <ToastContainer autoClose={1000} />
@@ -39,3 +44,18 @@ function MainWrapper({ children }: { children: React.ReactNode }) {
 }
 
 export default MainWrapper;
+
+const selectBackground = (router: any) => {
+  const { pathname } = router;
+  switch (pathname) {
+    case "/":
+      return "bg-primary";
+    case "/login":
+    case "/signup":
+      return "bg-secondary";
+    case "/library":
+      return "bg-tertiary";
+    default:
+      return "bg-primary";
+  }
+};
