@@ -1,60 +1,11 @@
-import { useContext, useState } from "react";
-import TopNews from "../wrapper/TopNews";
-import MegasummaryLogo from "./MegasummaryLogo";
 import { UserContext } from "@/context/UserContext";
 import { useRouter } from "next/router";
-import Image from "next/image";
+import { useContext, useState } from "react";
 import OutsideAlerter from "../utils/OutsideAlerter";
-
-const LandingPageMenu = ({
-  hiddeButtons = false,
-}: {
-  hiddeButtons?: boolean;
-}) => {
-  const { user } = useContext(UserContext);
-  const router = useRouter();
-
-  const backgroundColor = selectBackground(router);
-
-  const [showPopup, setShowPopup] = useState(false);
-
-  const showMenu = user ? false : true;
-
-  return (
-    <div className="flex flex-col-reverse sm:flex-col items-center gap-2 w-full">
-      <TopNews backgroundColor={backgroundColor} />
-      <div
-        className={`flex ${hiddeButtons ? "justify-center" : "justify-between"} 
-        sm:justify-between items-center w-full relative z-[1] px-3 sm:px-6 py-3"`}
-      >
-        <MegasummaryLogo />
-        {!hiddeButtons ? null : showMenu ? (
-          <PopUpMenu />
-        ) : (
-          <div className="flex items-center gap-4 text-base">
-            <a
-              href="/login"
-              className="hover:border-custom-purple hover:text-custom-purple"
-            >
-              Sign up
-            </a>
-            <a
-              href="/login"
-              className="hover:border-custom-purple hover:text-custom-purple"
-            >
-              Login
-            </a>
-          </div>
-        )}
-      </div>
-    </div>
-  );
-};
-
-export default LandingPageMenu;
+import Image from "next/image";
 
 const PopUpMenu = () => {
-  const { user } = useContext(UserContext);
+  const { user, signOut } = useContext(UserContext);
   const router = useRouter();
   const [showPopup, setShowPopup] = useState(false);
   const tokenAmount = new Intl.NumberFormat("en-US").format(1000000);
@@ -62,8 +13,8 @@ const PopUpMenu = () => {
     <div className="relative z-[1] flex flex-col gap-5 font-pt-sans text-xs">
       <div className="flex items-center gap-12 font-pt-sans text-sm">
         <a href="/search">Search/Upload</a>
-        <a href="/library">My library</a>
-        <a href="/library">My highlights</a>
+        <a href="/mylibrary">My library</a>
+        <a href="/myhighlights">My highlights</a>
         <OutsideAlerter
           onClick={() => setShowPopup(false)}
           className="relative"
@@ -80,8 +31,8 @@ const PopUpMenu = () => {
             className={`${
               showPopup ? "max-h-[700px]" : "max-h-0  "
             } absolute right-0 top-[35px] rounded-[10px]
-        transition-all duration-500 ease-in-out overflow-hidden min-w-[179px]
-        bg-custom-purple text-white`}
+          transition-all duration-500 ease-in-out overflow-hidden min-w-[179px]
+          bg-custom-purple text-white`}
             onClick={() => setShowPopup(false)}
           >
             <div className="flex flex-col gap-2 items-center justify-center  px-6 py-4 gap-3  items-center">
@@ -108,18 +59,18 @@ const PopUpMenu = () => {
                 <span> {tokenAmount} Tokens </span>
               </div>
               <div className="flex flex-col divide-y divide-custom-red border-t border-b border-custom-red w-full text-center">
-                <a className="py-2" href="/profile">
+                <a className="py-2" href="/settings">
                   Edit your profile
                 </a>
-                <a className="py-2" href="/buy">
+                <a className="py-2" href="/billing">
                   Buy tokens
                 </a>
-                <a className="py-2" href="/survey">
+                <a className="py-2" href="/surveys">
                   Take our survey
                 </a>
               </div>
               <a
-                href="/logout"
+                onClick={() => signOut && signOut().then(() => router.reload())}
                 className="flex gap-2 items-center justify-end w-full relati"
               >
                 <span className="font-bold"> {"Logout"}</span>
@@ -138,16 +89,4 @@ const PopUpMenu = () => {
   );
 };
 
-const selectBackground = (router: any) => {
-  const { pathname } = router;
-  switch (pathname) {
-    case "/":
-      return "bg-primary";
-    case "/search":
-      return "bg-secondary";
-    case "/library":
-      return "bg-tertiary";
-    default:
-      return "bg-primary";
-  }
-};
+export default PopUpMenu;

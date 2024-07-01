@@ -3,11 +3,9 @@ import { ToastContainer } from "react-toastify";
 import { usePathname } from "next/navigation";
 import { useContext } from "react";
 import { UserContext } from "@/context/UserContext";
-import TabMenu from "./TabMenu";
 import BottonMenu from "./BottonMenu";
-import TopNews from "./TopNews";
 import Footer from "./Footer";
-import LandingPageMenu from "../landing/LandingPageMenu";
+import TopMenu from "./TopMenu";
 
 function MainWrapper({ children }: { children: React.ReactNode }) {
   const currentPath = usePathname();
@@ -28,11 +26,8 @@ function MainWrapper({ children }: { children: React.ReactNode }) {
   ) : (
     <div>
       <div className="max-h-screen h-screen overflow-hidden flex flex-col flex flex-col items-center">
-        <div className="w-full flex flex-col-reverse sm:flex-col items-center justify-center gap-5">
-          {!notShowMenu && <TabMenu />}
-        </div>
+        <TopMenu hiddeButtons={true} />
         <div className="flex flex-col w-full overflow-auto">
-          <LandingPageMenu hiddeButtons={true} backgroundColor="bg-primary" />
           <div>{children}</div>
           {!notShowMenu && <BottonMenu />}
           <ToastContainer autoClose={1000} />
