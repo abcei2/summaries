@@ -26,7 +26,7 @@ function MainWrapper({ children }: { children: React.ReactNode }) {
   ) : (
     <div>
       <div className="max-h-screen h-screen overflow-hidden flex flex-col flex flex-col items-center">
-        <TopMenu hiddeButtons={true} />
+        <TopMenu/>
         <div className="flex flex-col w-full overflow-auto">
           <div>{children}</div>
           {!notShowMenu && <BottonMenu />}

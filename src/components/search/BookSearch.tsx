@@ -1,17 +1,14 @@
 import Card from "@/components/Card";
-import { HiSearch, HiCog, HiUpload } from "react-icons/hi";
+import { HiSearch, HiCog, HiUpload, HiSearchCircle } from "react-icons/hi";
 import { useContext, useState, useEffect } from "react";
 import { Book } from "../../types";
 import useModelObserver from "@/hooks/useModelObserver";
 import { UserContext } from "@/context/UserContext";
 
-
-
 function BookSearch() {
-  const [isLoading, setIsLoading] = useState(false); 
-  const [uploadCompleted, setUploadCompleted] = useState(false); 
+  const [isLoading, setIsLoading] = useState(false);
+  const [uploadCompleted, setUploadCompleted] = useState(false);
 
-  
   const { user } = useContext(UserContext);
   const [books, setBooks] = useState<Book[]>();
   const [searchTerm, setSearchTerm] = useState("");
@@ -19,7 +16,6 @@ function BookSearch() {
   const [search_response, setSearchResponse] = useState("");
   const [searchHistory, setSearchHistory] = useState<string[]>([]);
   const [currentStatus, setCurrentStatus] = useState<{
-    
     status: string;
     seeking_books: boolean;
     current_search_task_id?: string;
@@ -28,13 +24,14 @@ function BookSearch() {
   }>();
   const [url, setUrl] = useState<string>("");
 
-
-  const handleLibraryButtonClick = (event:any) => {
-    const libraryUrl = '/mylibrary'; // Replace with the actual URL to your library
-    if (event.button === 1) { // Middle mouse button
-      window.open(libraryUrl, '_blank'); // Open in new tab without switching
+  const handleLibraryButtonClick = (event: any) => {
+    const libraryUrl = "/mylibrary"; // Replace with the actual URL to your library
+    if (event.button === 1) {
+      // Middle mouse button
+      window.open(libraryUrl, "_blank"); // Open in new tab without switching
       event.preventDefault();
-    } else if (event.button === 0) { // Left mouse button
+    } else if (event.button === 0) {
+      // Left mouse button
       window.location.href = libraryUrl; // Open in the same tab
     }
   };
@@ -54,7 +51,7 @@ function BookSearch() {
   });
 
   useEffect(() => {
-    const history = localStorage.getItem('searchHistory');
+    const history = localStorage.getItem("searchHistory");
     if (history) {
       setSearchHistory(JSON.parse(history));
     }
@@ -92,19 +89,11 @@ function BookSearch() {
     setHasSearched(false);
     setBooks([]);
 
-    
-    
-
     const updatedHistory = Array.from(new Set([searchTerm, ...searchHistory]));
     setSearchHistory(updatedHistory);
-    localStorage.setItem('searchHistory', JSON.stringify(updatedHistory));
-
-    
+    localStorage.setItem("searchHistory", JSON.stringify(updatedHistory));
 
     try {
-
-      
-      
       const res = await fetch(`/api/search?word=${searchTerm}`);
 
       if (!res.ok) {
@@ -121,7 +110,7 @@ function BookSearch() {
     } catch (error: any) {
       setSearchResponse(`${error.message}`);
     } finally {
-      setIsLoading(false); 
+      setIsLoading(false);
       setHasSearched(true);
     }
   };
@@ -139,20 +128,21 @@ function BookSearch() {
         setUploadCompleted(true); // Set upload completed to true
       } else {
         const errorData = await response.json();
-        
+
         window.alert(`Error: ${errorData.message}`);
       }
     } catch (error) {
-      
       window.alert(`Error: ${error}`);
-      
     } finally {
       setIsLoading(false); // Stop loading
     }
   };
 
-  const handleDocumentUpload = async (e: React.ChangeEvent<HTMLInputElement>) => {
+  const handleDocumentUpload = async (
+    e: React.ChangeEvent<HTMLInputElement>
+  ) => {
     const file = e.target.files?.[0];
+    console.log("asdas  ");
     if (!file) return;
     setIsLoading(true); // Start loading
     const formData = new FormData();
@@ -178,70 +168,54 @@ function BookSearch() {
   };
 
   return (
-    <div className="w-full flex flex-col gap-6 items-center pt-5">
-
-      
-      <div className="w-full h-16 flex justify-center items-center ">
-      
-      <input
-          list="search-history"
-          //value={searchTerm}
-          onChange={(e) => setSearchTerm(e.target.value)}
-          onKeyDown={(e) => {
-            if (e.key === "Enter") {
-              onSearch();
-            }
-          }}
-          className="w-3/4 sm:w-1/2 h-10 border-y-2 border-l-2 border-gray-300 rounded-l-md p-2 "
-          placeholder="Search for a book"
-        />
-        <datalist id="search-history">
-          {searchHistory.map((term, index) => (
-            <option key={index} value={term} />
-          ))}
-        </datalist>
-        
-      
-        <button
-          onClick={onSearch}
-          className="w-10 h-10 bg-primary rounded-r-md flex justify-center items-center "
-        >
-          <HiSearch className="hover:scale-125 duration-300 hover:animate-pulse" />
-        </button>
-      </div>
-
-      <div className="w-full flex justify-center items-center">
-        <span> Or</span>
-
-        <input
-          type="text"
-          placeholder="Paste a URL (youtube, file, or web page)"
-          className="ml-4 p-2 rounded border w-1/3 border-2 border-gray-300 h-10"
-          value={url}
-          onChange={(e) => setUrl(e.target.value)}
-        />
-        <button
-          onClick={handleUrlFetch}
-          className="ml-2 bg-primary text-white p-2 rounded h-10"
-        >
-          Get Summary
-        </button>
-      </div>
-      <div className="w-full flex justify-center items-center">
-        <span>Or</span>
-        <label className="ml-4 flex items-center bg-primary rounded cursor-pointer w-40 justify-center">
-          <span
-            className="ml-2 p-2 text-sm text-white"
-          >
-            Upload Document
-          </span>
+    <div className="w-full flex flex-col gap-6 pt-5 h-screen">
+      <div className="flex flex-col gap-4">
+        <div className="relative flex font-pt-sans text-xs w-full items-center">
           <input
-            type="file"
-            className="hidden"
-            onChange={handleDocumentUpload}
+            list="search-history"
+            //value={searchTerm}
+            onChange={(e) => setSearchTerm(e.target.value)}
+            onKeyDown={(e) => {
+              if (e.key === "Enter") {
+                onSearch();
+              }
+            }}
+            className="input bg-primary w-full"
+            placeholder="Search for a book"
           />
-          <HiUpload className="hover:scale-125 duration-300 hover:animate-pulse text-white" />
-        </label>
+
+          <HiSearch
+            onClick={onSearch}
+            className="absolute right-3 hover:scale-125 duration-300 hover:animate-pulse w-[16px] h-[16px]"
+          />
+        </div>
+
+        <div className="w-full flex items-center gap-4">
+          <input
+            type="text"
+            placeholder="Paste a URL (youtube, file, or web page)"
+            className="input"
+            value={url}
+            onChange={(e) => setUrl(e.target.value)}
+          />
+          <button
+            onClick={handleUrlFetch}
+            className="btn bg-secondary text-white"
+          >
+            Get Summary
+          </button>
+
+          <span>Or</span>
+          <div className="ml-4 flex items-center bg-primary rounded cursor-pointer w-40 justify-center">
+            <span className="ml-2 p-2 text-sm text-white">Upload Document</span>
+            <input
+              type="file"
+              className="hidden"
+              onChange={handleDocumentUpload}
+            />
+            <HiUpload className="hover:scale-125 duration-300 hover:animate-pulse text-white" />
+          </div>
+        </div>
       </div>
 
       {isLoading && (
@@ -252,16 +226,16 @@ function BookSearch() {
       )}
 
       {uploadCompleted && !isLoading && (
-            <div className="w-full h-full flex justify-center items-center">
-              Upload Completed!
-              <button
-                className="bg-primary text-white p-2 rounded"
-                onMouseDown={handleLibraryButtonClick} // Use onMouseDown instead of onClick for more consistent behavior across browsers
-              >
-                Go to My Library
-              </button>
-            </div>
-          )}
+        <div className="w-full h-full flex justify-center items-center">
+          Upload Completed!
+          <button
+            className="bg-primary text-white p-2 rounded"
+            onMouseDown={handleLibraryButtonClick} // Use onMouseDown instead of onClick for more consistent behavior across browsers
+          >
+            Go to My Library
+          </button>
+        </div>
+      )}
 
       {books && books.length > 0 ? (
         <div className="w-full xl:w-[90%] grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 overflow-auto">

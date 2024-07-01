@@ -2,7 +2,7 @@ import { UserContext } from "@/context/UserContext";
 import { useRouter } from "next/router";
 import { useContext, useState } from "react";
 import OutsideAlerter from "../utils/OutsideAlerter";
-import Image from "next/image";
+import CustomImage from "../utils/CustomImage";
 
 const PopUpMenu = () => {
   const { user, signOut } = useContext(UserContext);
@@ -48,13 +48,13 @@ const PopUpMenu = () => {
           onClick={() => setShowPopup(false)}
           className="relative"
         >
-          <Image
+          <CustomImage
             src={showPopup ? "/icons/close.svg" : "/icons/popup-menu.svg"}
             alt="icon"
+            className="cursor-pointer"
+            onClick={() => setShowPopup(!showPopup)}
             width={17}
             height={12}
-            className=" cursor-pointer"
-            onClick={() => setShowPopup(!showPopup)}
           />
           <div
             className={`${
@@ -65,7 +65,7 @@ const PopUpMenu = () => {
             onClick={() => setShowPopup(false)}
           >
             <div className="flex flex-col gap-2 items-center justify-center  px-6 py-4 gap-3  items-center z-10">
-              <Image
+              <CustomImage
                 src="/icons/account_box.svg"
                 alt="icon"
                 width={17}
@@ -79,7 +79,7 @@ const PopUpMenu = () => {
                 </span>
               </div>
               <div className="flex gap-2 items-center justify-center">
-                <Image
+                <CustomImage
                   src="/icons/poker_chip.svg"
                   alt="icon"
                   width={19}
@@ -103,7 +103,7 @@ const PopUpMenu = () => {
                 className="flex gap-2 items-center justify-end w-full cursor-pointer"
               >
                 <span className="font-bold"> {"Logout"}</span>
-                <Image
+                <CustomImage
                   src="/icons/move_item.svg"
                   alt="icon"
                   width={16}

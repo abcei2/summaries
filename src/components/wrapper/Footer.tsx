@@ -1,10 +1,11 @@
 import Image from "next/image";
+import CustomImage from "../utils/CustomImage";
 
 const Footer = () => {
   return (
     <footer className="bg-custom-purple text-white py-6 px-6 sm:px-16 sm:pt-16 sm:pb-8 flex flex-col gap-10">
       <div className="flex items-center  gap-5">
-        <Image
+        <CustomImage
           src="/icons/sprinkle_group.svg"
           alt="icon"
           width={75}
@@ -33,7 +34,7 @@ const Footer = () => {
         <div className="flex flex-col gap-4  col-span-3 sm:col-span-1 text-center items-center sm:items-start">
           <div className="flex gap-3 items-center">
             <span className="uppercase text-custom-gray"> Subscribe</span>
-            <Image
+            <CustomImage
               src="/icons/sprinkle-plus-icon.svg"
               alt="icon"
               width={10}
@@ -62,8 +63,14 @@ const Footer = () => {
             "/icons/twitter.svg",
             "/icons/discord.svg",
             "/icons/telegram.svg",
-          ].map((icon) => (
-            <Image src={icon} alt="icon" width={27} height={27} />
+          ].map((icon, index) => (
+            <CustomImage
+              key={index}
+              src={icon}
+              alt="icon"
+              width={27}
+              height={27}
+            />
           ))}
         </div>
       </div>
