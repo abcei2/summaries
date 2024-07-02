@@ -1,10 +1,10 @@
-import Card from "@/components/Card";
 import { HiSearch, HiCog, HiUpload, HiSearchCircle } from "react-icons/hi";
 import { useContext, useState, useEffect } from "react";
 import { Book } from "../../types";
 import useModelObserver from "@/hooks/useModelObserver";
 import { UserContext } from "@/context/UserContext";
 import CustomImage from "../utils/CustomImage";
+import Card from "./Card";
 
 function BookSearch() {
   const [isLoading, setIsLoading] = useState(false);
@@ -169,7 +169,7 @@ function BookSearch() {
   };
 
   return (
-    <div className="w-full h-full flex flex-col gap-10">
+    <div className="w-full h-full flex flex-col gap-10 font-pt-sans text-xs">
       <div className="flex gap-2 items-center">
         <CustomImage
           src="/icons/doodle3.svg"
@@ -177,10 +177,10 @@ function BookSearch() {
           width={21}
           height={41}
         />
-        <span className="text-2xl font-bold">Search/Upload</span>
+        <span className="text-2xl font-bold font-rokkit">Search/Upload</span>
       </div>
       <div className="flex flex-col gap-4 w-1/2">
-        <div className="relative flex font-pt-sans text-xs w-full items-center">
+        <div className="relative flex w-full items-center">
           <input
             list="search-history"
             //value={searchTerm}
@@ -217,7 +217,7 @@ function BookSearch() {
 
           <span>Or</span>
           <div className="btn flex items-center gap-2 bg-primary cursor-pointer justify-center w-max">
-            <span className="w-max text-sm">Upload Document</span>
+            <span className="w-max">Upload Document</span>
             <input
               type="file"
               className="hidden"
@@ -254,7 +254,7 @@ function BookSearch() {
       )}
 
       {books && books.length > 0 ? (
-        <div className="w-full xl:w-[90%] grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 overflow-auto">
+        <div className="w-full grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 overflow-auto gap-4">
           {books.map((book) => (
             <Card
               className="justify-self-center mt-2 "
