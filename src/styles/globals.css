@@ -61,12 +61,18 @@
   }
 
   .btn {
-    @apply rounded-[10px] py-0.5 px-8 border border-custom-black;
+    @apply rounded-[10px] py-0.5 px-2 border border-custom-black min-h-[30px];
   }
 
   .input {
     @apply rounded-[10px] py-0.5 px-2 border border-custom-black min-h-[30px];
   }
 
+  .book-tags {
+    @apply rounded-[10px] border border-custom-black px-1 py-0.5;
+  }
 
+  .book-card-button {
+    @apply rounded-[10px] h-[30px] border-0 flex items-center justify-center w-[117px];
+  }
 }
