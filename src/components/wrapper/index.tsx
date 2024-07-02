@@ -32,7 +32,7 @@ function MainWrapper({ children }: { children: React.ReactNode }) {
           {!notShowMenu && <TabMenu />}
         </div>
         <div className="flex flex-col w-full overflow-auto">
-          <LandingPageMenu hiddeButtons={true} backgroundColor="bg-primary" />
+          <LandingPageMenu hiddeButtons={true}  />
           <div>{children}</div>
           {!notShowMenu && <BottonMenu />}
           <ToastContainer autoClose={1000} />

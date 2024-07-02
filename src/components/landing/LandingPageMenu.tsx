@@ -8,6 +8,7 @@ import OutsideAlerter from "../utils/OutsideAlerter";
 
 const LandingPageMenu = ({
   hiddeButtons = false,
+  
 }: {
   hiddeButtons?: boolean;
 }) => {

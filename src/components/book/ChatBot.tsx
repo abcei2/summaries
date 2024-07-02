@@ -79,8 +79,9 @@ const scrollToBottom = () => {
 
   const sendMessage = () => {
     if (!inputValue) return;
+    const timestamp = new Date().toISOString(); // Default timestamp
     setIsChatbotVisible(true);
-    setMessages([...messages, { type: 'question', text: inputValue },{ type: 'answer', text: "Loading..." }]);
+    setMessages([...messages, { type: 'question', text: inputValue, timestamp }, { type: 'answer', text: "Loading...", timestamp }]);
 
     
     setInputValue('');
@@ -95,10 +96,10 @@ const scrollToBottom = () => {
       .then((data) => {
         console.log(data);
         if (data.status=="success"){
-          setMessages([...messages,  { type: 'question', text: inputValue },{ type: 'answer', text: data.response }]);
+          setMessages([...messages, { type: 'question', text: inputValue, timestamp }, { type: 'answer', text: data.response, timestamp }]);
         }
         else{
-          setMessages([...messages,  { type: 'question', text: inputValue },{ type: 'answer', text: "Error" }]);
+          setMessages([...messages, { type: 'question', text: inputValue, timestamp }, { type: 'answer', text: "Error", timestamp }]);
         }
         
       })
