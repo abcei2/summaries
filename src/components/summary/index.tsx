@@ -16,7 +16,7 @@ const SummaryComp = ({
   currentShowSummary?: SummaryType;
   showDetails?: boolean;
   bookId?: string;
-  onSearchReferencesComplete: () => void;
+  onSearchReferencesComplete?: () => void;
 }) => {
   const [summary, setSummary] = useState<SummaryType | undefined>(
     currentShowSummary
@@ -248,7 +248,9 @@ const SummaryComp = ({
     });
     if (response.ok) { // or check response status as per your logic
       // After the fetch call in handleSearchreferences completes successfully
-      onSearchReferencesComplete();
+      //onSearchReferencesComplete();
+      //execute onSearchReferencesComplete if it is not undefined
+      onSearchReferencesComplete && onSearchReferencesComplete();
     }
     
   }
