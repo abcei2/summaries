@@ -29,12 +29,11 @@ function MainWrapper({ children }: { children: React.ReactNode }) {
     </div>
   ) : (
     <div>
-      <div className="max-h-screen h-screen overflow-hidden flex flex-col flex flex-col items-center">
+      <div className="flex flex-col flex flex-col items-center">
         <div className="flex flex-col w-full overflow-auto">
           <TopNews backgroundColor={backgroundColor} />
           <TopMenu />
-          <div>{children}</div>
-          {!notShowMenu && <BottonMenu />}
+          {children}
           <ToastContainer autoClose={1000} />
           <Footer />
         </div>

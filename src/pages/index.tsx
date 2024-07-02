@@ -14,9 +14,8 @@ const page = () => {
   return (
     <div className="h-full w-full bg-custom-gray">
       {!user || user?.is_superuser || user?.is_subscribed ? (
-        <div className="flex flex-col w-full  items-center  gap-32">
+        <div className="flex flex-col w-full  items-center  gap-32 relative z-[0]"> 
           <LandingTopSection />
-
           <div
             className={`before:absolute md:before:top-[-340px] before:left-0 before:w-full before:z-[0]
               before:h-full md:before:bg-landing-bg before:top-[-340px] before:bg-landing-bg-mobile before:bg-cover md:before:bg-contain lg:before:bg-cover

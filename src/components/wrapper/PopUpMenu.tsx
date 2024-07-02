@@ -19,7 +19,7 @@ const PopUpMenu = () => {
             router.pathname === "/search"
               ? "text-custom-purple border-b border-b-custom-purple font-bold"
               : ""
-          } hover:text-custom-purple px-0.5`}
+          } hover:text-custom-purple px-0.5 hidden sm:block`}
           href="/search"
         >
           Search/Upload
@@ -29,7 +29,7 @@ const PopUpMenu = () => {
             router.pathname === "/mylibrary"
               ? "text-custom-purple border-b border-b-custom-purple font-bold"
               : ""
-          } hover:text-custom-purple px-0.5`}
+          } hover:text-custom-purple px-0.5 hidden sm:block`}
           href="/mylibrary"
         >
           My library
@@ -39,7 +39,7 @@ const PopUpMenu = () => {
             router.pathname === "/myhighlights"
               ? "text-custom-purple border-b border-b-custom-purple font-bold"
               : ""
-          } hover:text-custom-purple px-0.5`}
+          } hover:text-custom-purple px-0.5 hidden sm:block`}
           href="/myhighlights"
         >
           My highlights
@@ -88,6 +88,15 @@ const PopUpMenu = () => {
                 <span> {tokenAmount} Tokens </span>
               </div>
               <div className="flex flex-col divide-y divide-custom-red border-t border-b border-custom-red w-full text-center">
+                <a className="py-2 sm:hidden block" href="/search">
+                  Search/Upload
+                </a>
+                <a className="py-2 sm:hidden block" href="/mylibrary">
+                  My library
+                </a>
+                <a className="py-2 sm:hidden block" href="/My highlights">
+                  My highlights
+                </a>
                 <a className="py-2" href="/settings">
                   Edit your profile
                 </a>

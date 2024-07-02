@@ -6,6 +6,7 @@ import MyBook from "./MyBook";
 import useModelObserver from "@/hooks/useModelObserver";
 import { BOOK_BACKEND_STATUS } from "@/constants";
 import { HiUpload } from "react-icons/hi";
+import CustomImage from "../utils/CustomImage";
 const MyLibrary = () => {
   const [myBooks, setMyBooks] = useState<Book[]>();
   const [loading, setLoading] = useState(false);
@@ -94,11 +95,15 @@ const MyLibrary = () => {
   };
 
   return (
-    <div className="w-full flex flex-col items-center">
-      <div className="w-full bg-[#F8F8F8] h-20 flex items-center justify-center">
-        <span className="text-3xl md:text-4xl font-bold text-gray-600 ">
-          My Library
-        </span>
+    <div className="w-full flex flex-col font-pt-sans">
+      <div className="flex gap-2 items-center">
+        <CustomImage
+          src="/icons/punctuation.svg"
+          alt="punctuation"
+          width={16}
+          height={16}
+        />
+        <span className="text-2xl font-bold font-rokkitt">My library</span>
       </div>
 
       <span className="text-2xl md:text-3xl font-semibold text-gray-600 ">

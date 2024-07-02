@@ -177,9 +177,9 @@ function BookSearch() {
           width={21}
           height={41}
         />
-        <span className="text-2xl font-bold font-rokkit">Search/Upload</span>
+        <span className="text-2xl font-bold font-rokkitt">Search/Upload</span>
       </div>
-      <div className="flex flex-col gap-4 w-1/2">
+      <div className="flex flex-col gap-6 lg:w-1/2 w-full">
         <div className="relative flex w-full items-center">
           <input
             list="search-history"
@@ -200,36 +200,40 @@ function BookSearch() {
           />
         </div>
 
-        <div className="w-full flex items-center gap-4">
-          <input
-            type="text"
-            placeholder="Paste a URL (youtube, file, or web page)"
-            className="input bg-primary w-full"
-            value={url}
-            onChange={(e) => setUrl(e.target.value)}
-          />
-          <button
-            onClick={handleUrlFetch}
-            className="btn bg-secondary text-white min-w-max"
-          >
-            Get Summary
-          </button>
-
-          <span>Or</span>
-          <div className="btn flex items-center gap-2 bg-primary cursor-pointer justify-center w-max">
-            <span className="w-max">Upload Document</span>
+        <div className="w-full flex flex-col sm:flex-row gap-6">
+          <div className="flex  items-center gap-4 w-full">
             <input
-              type="file"
-              className="hidden"
-              onChange={handleDocumentUpload}
+              type="text"
+              placeholder="Paste a URL (youtube, file, or web page)"
+              className="input bg-primary w-full"
+              value={url}
+              onChange={(e) => setUrl(e.target.value)}
             />
-            <CustomImage
-              src="/icons/upload.svg"
-              className="hover:scale-125 duration-300 hover:animate-pulse text-secondary"
-              width={12}
-              height={13}
-              alt="Upload"
-            />
+            <button
+              onClick={handleUrlFetch}
+              className="btn bg-secondary text-white min-w-max"
+            >
+              Get Summary
+            </button>
+          </div>
+
+          <div className="flex items-center gap-4 ">
+            <span>Or</span>
+            <div className="btn flex items-center gap-2 bg-primary cursor-pointer justify-center w-max">
+              <span className="w-max">Upload Document</span>
+              <input
+                type="file"
+                className="hidden"
+                onChange={handleDocumentUpload}
+              />
+              <CustomImage
+                src="/icons/upload.svg"
+                className="hover:scale-125 duration-300 hover:animate-pulse text-secondary"
+                width={12}
+                height={13}
+                alt="Upload"
+              />
+            </div>
           </div>
         </div>
       </div>
@@ -254,10 +258,9 @@ function BookSearch() {
       )}
 
       {books && books.length > 0 ? (
-        <div className="w-full grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 overflow-auto gap-4">
+        <div className="w-full grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3  xl:grid-cols-4 gap-2">
           {books.map((book) => (
             <Card
-              className="justify-self-center mt-2 "
               key={book.global_id}
               book={book}
             />
