@@ -6,8 +6,7 @@ import { CgHeadset, CgSoftwareDownload } from "react-icons/cg";
 import DeleteModal from "./DeleteModal";
 import RetryDownloadModal from "./RetryDownloadModal";
 import { BookStatus } from "@/utils/books";
-
-
+import CustomImage from "../utils/CustomImage";
 
 const MyBook = ({
   updateBook,
@@ -56,18 +55,6 @@ const MyBook = ({
       });
   };
 
-  const handleMouseDown = (event:any) => {
-    const bookDetailsUrl = `/books/details/${book.global_id}`;
-    if (event.button === 0) { // Left click
-      router.push(bookDetailsUrl);
-    } else if (event.button === 1) { // Middle click
-      
-      window.open(bookDetailsUrl, '_blank'); // Open in a new tab without switching to it
-      event.preventDefault(); // Prevent the default behavior
-    }
-  };
-  
-
   return (
     <div>
       {showDeleteModal && (
@@ -89,7 +76,13 @@ const MyBook = ({
           />
         </CustomModal2>
       )}
-      <div className="relative w-fit h-fit flex justify-center">
+
+      <div
+        className={`hover:before:bg-primary hover:before:opacity-40 hover:before:w-full hover:before:h-full 
+      before:absolute before:top-0 before:left-0 before:z-[0] before:content-[''] relative
+     rounded-[10px] h-[220px] w-full shadow-lg border border-custom-black
+      justify-between px-3 py-4 text-xs`}
+      >
         <div
           className="absolute w-fit right-[2px] z-9 cursor-pointer hover:scale-105 top-1 "
           onClick={() => setShowDeleteModal(true)}
@@ -97,51 +90,58 @@ const MyBook = ({
           ❌
         </div>
 
-        {Number(book.pages) > 0 && (
-          <div className="absolute rounded-full w-fit  bg-white p-0.5 m-1 border shadow-md text-sm">
-            <span className="  text-gray-600 "> Pags. {book.pages} </span>
-          </div>
-        )}
-        <div className="absolute w-fit left-[2px] z-10 cursor-pointer hover:scale-105 top-1">
-          {["error", "extract text error"].includes(book?.status??"") ? (
-            <CgSoftwareDownload
-              className="w-6 h-6"
-              onClick={() => setShowRetryDownloadModal(true)}
+        <div className="relative z-[1] flex flex-col gap-4">
+          <div className="flex items-center gap-2">
+            <img
+              className="rounded-[10px] min-w-[100px]  h-[140px]"
+              alt="book cover"
+              src={
+                book?.cover_img_path != "null"
+                  ? `${process.env.NEXT_PUBLIC_DJANGO_MEDIA}/${book?.cover_img_path}`
+                  : "/card-img.jpg"
+              }
             />
-          ) : (
-            <CgHeadset className="w-6 h-6" />
-          )}
-        </div>
-        <div
-          onMouseDown={handleMouseDown}
-          className={`w-[150px] sm:w-[200px] rounded-lg shadow-lg border border-2 flex flex-col 
-          justify-between h-[300px] duration-500  bg-white`}
-        >
-          <div className="flex justify-center mb-2">
-            <img className="ounded-lg mt-8 h-20 sm:h-32" src={bookCover} />
-          </div>
 
-          <div className="flex justify-between px-1 text-sm ">
-            <span>{book?.language}</span>
-            <span>.{book?.extension}</span>
-          </div>
+            <div className="p-1 w-full flex flex-col gap-2">
+              <div className="">
+                <span className="font-bold">
+                  {book?.title_2 ? book?.title_2 : ""}
+                </span>
+              </div>
 
-          <div className="p-1 text-center overflow-auto">
-            <div className="flex flex-col ">
-              <BookStatus book={book} />
+              <span className="italic text-[10px]">By {book.author}</span>
 
-              <span className="font-bold text-gray-600 mb-2">
-                {book?.title_2}
-                
-              </span>
-
-              {book?.year?.toString() != "N/A" && <span>{book?.year}</span>}
+              <div className="flex gap-1 items-center font-bold">
+                {book?.year.toString() != "N/A" && <span>{book?.year}</span>}
+                <div className="w-fit left-[2px] z-10 cursor-pointer hover:scale-105 top-1">
+                  {["error", "extract text error"].includes(
+                    book?.status ?? ""
+                  ) ? (
+                    <CgSoftwareDownload
+                      className="w-6 h-6"
+                      onClick={() => setShowRetryDownloadModal(true)}
+                    />
+                  ) : (
+                    <CgHeadset className="w-6 h-6" />
+                  )}
+                </div>
+              </div>
             </div>
-            <div className="p-1">
-              <span className="text-gray-600 mb-2">
-                By {book?.author ? book?.author?.slice(0, 50) : ""}...
-              </span>
+          </div>
+          <div className="flex gap-1 px-1 justify-between">
+            <div className="flex gap-1 items-center">
+              {Number(book.pages) > 0 && (
+                <span className="book-tags">{book.pages} pgs.</span>
+              )}
+              <span className="book-tags">{book?.language}</span>
+              <span className="book-tags">.{book?.extension}</span>
             </div>
+            <a
+              className={`book-card-button bg-primary`}
+              href={`/books/details/${book.global_id}`}
+            >
+              Details
+            </a>
           </div>
         </div>
       </div>

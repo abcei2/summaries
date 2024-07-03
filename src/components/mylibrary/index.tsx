@@ -95,7 +95,7 @@ const MyLibrary = () => {
   };
 
   return (
-    <div className="w-full flex flex-col font-pt-sans">
+    <div className="w-full flex flex-col font-pt-sans gap-12">
       <div className="flex gap-2 items-center">
         <CustomImage
           src="/icons/punctuation.svg"
@@ -106,14 +106,13 @@ const MyLibrary = () => {
         <span className="text-2xl font-bold font-rokkitt">My library</span>
       </div>
 
-      <span className="text-2xl md:text-3xl font-semibold text-gray-600 ">
-        Reading Now
-      </span>
-      <br></br>
+      <div className="font-pt-mono bg-reading-now w-fit font-bold w-[180px] text-center justify-center items-center flex h-[18px] bg-contain">
+        Reading now
+      </div>
 
       <div className="w-full h-full flex justify-center ">
         {!loading ? (
-          <div className="w-fit grid grid-cols-2 md:grid-cols-4 lg:grid-cols-5 xl:grid-cols-6 gap-4">
+          <div className="w-full grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3  xl:grid-cols-4 gap-2">
             {myBooks?.map((book, key) => (
               <MyBook
                 book={book}

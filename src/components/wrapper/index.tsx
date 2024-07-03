@@ -52,7 +52,7 @@ const selectBackground = (router: any) => {
     case "/login":
     case "/signup":
       return "bg-secondary";
-    case "/library":
+    case "/mylibrary":
       return "bg-tertiary";
     default:
       return "bg-primary";

@@ -9,6 +9,7 @@ module.exports = {
       fontFamily: {
         rokkitt: ["Rokkitt"],
         "pt-sans": ["PT Sans"],
+        "pt-mono": ["PT Mono"],
       },
       colors: {
         primary: "#8CFFEC",
@@ -28,6 +29,7 @@ module.exports = {
         "landing-bg-icon": "url('/images/landing-bg-icon.svg')",
         "landing-bg": "url('/images/landing-bg.svg')",
         "landing-bg-mobile": "url('/images/landing-bg-mobile.svg')",
+        "reading-now": "url('/images/reading-now.svg')",
       },
       animation: {
         rtlTranslation25: "rtlTranslation 25s linear infinite",
