@@ -276,20 +276,22 @@ const MainBookComponent = ({ bookId }: { bookId: string }) => {
   };
 
   return (
-    <div className="relative">
-      <div className="absolute sm:top-0 top-[600px] right-0">
-        <HelpUs />
+    <div className="">
+      <div className="w-full relative z-10">
+        <div className="absolute top-0 right-0">
+          <HelpUs />
+        </div>
       </div>
-      <div className="w-full flex flex-col gap-14 md:w-[70%] lg:w-[50%]">
-        <div className="w-full">
-          <a href={"/search"} className="flex gap-4 items-center w-fit">
+      <div className="w-full flex flex-col gap-14 md:w-[70%] lg:w-[50%] min-h-screen">
+        <div className="w-full relative">
+          <a href={"/mylibrary"} className="flex gap-4 items-center w-fit">
             <CustomImage
               src={"/icons/sprinkle_group_reverse.svg"}
               width={37.64}
               height={13.25}
               alt="return to search"
             />
-            <span className="text-xl font-bold">{"Back to Search/Upload"}</span>
+            <span className="text-xl font-bold">{"Back to My Library"}</span>
           </a>
         </div>
         <div className="flex flex-col gap-2 sm:pl-10">

@@ -65,7 +65,7 @@ const SubscribedSummaryRequest = ({
   );
 
   return (
-    <div className=" bg-secondary rounded-lg flex flex-col items-center px-4 pt-3 pb-6 h-fit gap-2 text-white">
+    <div className="bg-secondary rounded-lg flex flex-col items-center px-4 pt-3 pb-6 h-fit gap-2 text-white">
       <span className="text-xl mb-2 text-center font-bold  text-tertiary">
         Confirm you want to request the summary of the book
       </span>
@@ -108,8 +108,8 @@ const SubscribedSummaryRequest = ({
           <button
             className={`${
               user && user.available_tokens - parseFloat(currentCost) >= 0
-                ? "bg-tertiary text-white"
-                : "bg-gray-500"
+                ? "bg-tertiary"
+                : "bg-tertiary"
             } btn text-white  border-tertiary w-1/2 `}
             onClick={() => {
               const selector = document.getElementById(

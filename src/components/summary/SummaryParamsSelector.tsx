@@ -23,7 +23,7 @@ const SummaryParamsSelector = ({
 
   const [currentCost, setCurrentCost] = useState<string>("");
   const [loadingCost, setLoadingCost] = useState(false);
-  const { user} = useContext(UserContext);
+  const { user } = useContext(UserContext);
 
   const {
     handleSubmit,
@@ -93,12 +93,9 @@ const SummaryParamsSelector = ({
       onSubmit={handleSubmit(onSubmit)}
       className="flex flex-col gap-4 bg-white h-fit rounded-lg p-2 w-full"
     >
-      
       <div className="text-2xl font-bold">Create a new summary</div>
-      <span className="text-gray-500 text-center italic">
-          You will pay:
-        </span>
-        
+      <span className="text-gray-500 text-center italic">You will pay:</span>
+
       <span className="text-gray-500 text-center italic text-red-400">
         {loadingCost ? "Loading cost..." : currentCost}
       </span>
@@ -111,7 +108,7 @@ const SummaryParamsSelector = ({
       <span className="text-gray-500 text-center italic ">
         {user && user.available_tokens.toLocaleString()}
       </span>
-      
+
       {PARAMS &&
         PARAMS.map((param, index) => (
           <CustomInput
@@ -132,8 +129,6 @@ const SummaryParamsSelector = ({
         ))}
 
       <div className="flex gap-2">
-        
-
         <button
           type="submit"
           className={`${
@@ -145,7 +140,6 @@ const SummaryParamsSelector = ({
         >
           Create
         </button>
-
 
         <button
           onClick={() => handleClose()}
