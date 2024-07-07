@@ -250,7 +250,7 @@ const BookDetailsCard = ({
   });
 
   return (
-    <div className="rounded-lg overflow-hidden h-full w-full">
+    <div className="rounded-lg overflow-hidden w-full text-black">
       {showRetryDownloadModal && (
         <CustomModal2 handleClose={() => setShowRetryDownloadModal(false)}>
           <RetryDownloadModal
@@ -269,8 +269,8 @@ const BookDetailsCard = ({
         </CustomModal2>
       )}
 
-      <div className="flex lg:flex-row flex-col h-full items-center">
-        <div className="bg-blue-300 p-2 rounded-lg overflow-hidden w-[200px] lg:w-[400px] h-fit">
+      <div className="flex lg:flex-row flex-col h-full gap-8">
+        <div className="rounded-[10px] overflow-hidden w-[250px]  h-auto">
           <img
             src={
               book?.cover_img_path
@@ -278,36 +278,54 @@ const BookDetailsCard = ({
                 : "/card-img.jpg"
             }
             alt="Book cover"
-            className="w-full h-full rounded-lg"
+            className="w-full h-full rounded-[10px] border-[3px] border-secondary"
           />
         </div>
 
-        <div className="lg:p-4 flex flex-col justify-center gap-2 w-full h-full ">
-          <div>
-            <h2 className="text-2xl md:text-4xl pb-2 font-bold capitalize w-fit flex items-center">
-              {book.title_2}
-            </h2>
-            <p className="text-[#505258] text-base capitalize">
-              <b>By:</b> {book.author}
-            </p>
-            <p className="text-[#505258] text-base capitalize">
-              <b>Year: </b> {book.year}
-            </p>
-            <p className="text-[#505258] text-base capitalize">
-              <b>Language:</b> {book.language}
-            </p>
-            <p className="text-[#505258] text-base">
-              <b>Extension:</b> .{book.extension}
-            </p>
-            {book.status === BOOK_BACKEND_STATUS.EXTRACTED && (
-              <p className="text-[#505258] text-base">
-                <b>Total tokens:</b> {totalTokens}
+        <div className="flex flex-col justify-center gap-2 w-full h-full font-pt-sans">
+          <div className="flex flex-col gap-8">
+            <div>
+              <span className="text-2xl font-bold capitalize w-fit flex items-center font-rokkitt">
+                {book.title_2}
+              </span>
+              <p className="text-sm italic">
+                <b>By:</b> {book.author}
               </p>
-            )}
-            <p className="text-[#505258] text-base">
+            </div>
+
+            <div className="flex flex-col gap-1  text-sm">
+              <p className="text-sm">
+                <b>Year: </b> {book.year}
+              </p>
+
+              <div className="flex gap-1 items-center text-[10px]">
+                {Number(book.pages) > 0 && (
+                  <span className="book-tags">{book.pages} pgs.</span>
+                )}
+                <span className="book-tags">{book?.language}</span>
+                <span className="book-tags">.{book?.extension}</span>
+              </div>
+
+              {book.status === BOOK_BACKEND_STATUS.EXTRACTED && (
+                <p className="">
+                  <b>Total tokens:</b> {totalTokens}
+                </p>
+              )}
+
+              {["error", "extract text error"].includes(book?.status ?? "") ? (
+                <CgSoftwareDownload
+                  className="w-6 h-6"
+                  onClick={() => setShowRetryDownloadModal(true)}
+                />
+              ) : (
+                <CgHeadset className="w-6 h-6" />
+              )}
+            </div>
+
+            <div className="flex gap-2 items-center text-sm">
               <b>Language: </b>
               <select
-                className="w-[20%] p-2 rounded-lg border border-gray-300"
+                className="p-2 sm:w-[20%] rounded-lg border border-gray-300"
                 id="language"
                 name="language"
                 value={selectedPrompt}
@@ -316,39 +334,23 @@ const BookDetailsCard = ({
                 <option value="prompt1-english-">English</option>
                 <option value="prompt1-spanish-">Spanish</option>
               </select>
-            </p>
-
-            {Number(book.pages) > 0 && (
-              <p className="text-[#505258] text-base capitalize">
-                {book.pages} pages
-              </p>
+            </div>
+            {showAskForSummaryButton && !summaryAvailable && (
+              <button
+                onClick={() => onAskForSummary()}
+                className="btn bg-secondary text-[#F1F1F1] w-max text-xs"
+              >
+                {showLoadingAnimation ? (
+                  <div className="flex items-center justify-center">
+                    Loading{" "}
+                    <HiCog className="text-gray-500 animate-spin duration-[1000] h-10 w-10" />
+                  </div>
+                ) : (
+                  <span>Generate summary and start chat</span>
+                )}
+              </button>
             )}
           </div>
-
-          {["error", "extract text error"].includes(book?.status ?? "") ? (
-            <CgSoftwareDownload
-              className="w-6 h-6"
-              onClick={() => setShowRetryDownloadModal(true)}
-            />
-          ) : (
-            <CgHeadset className="w-6 h-6" />
-          )}
-
-          {showAskForSummaryButton && !summaryAvailable && (
-            <button
-              onClick={() => onAskForSummary()}
-              className="flex items-center bg-blue-500 hover:bg-blue-700 text-white font-bold py-1 px-4 rounded w-fit self-center lg:self-start "
-            >
-              {showLoadingAnimation ? (
-                <div className="flex items-center justify-center">
-                  Loading{" "}
-                  <HiCog className="text-gray-500 animate-spin duration-[1000] h-10 w-10" />
-                </div>
-              ) : (
-                <span>Generate summary and start chat</span>
-              )}
-            </button>
-          )}
         </div>
 
         <span className="border opacity-50 lg:block hidden" />

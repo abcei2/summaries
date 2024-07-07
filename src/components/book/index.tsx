@@ -8,10 +8,8 @@ import { BOOK_BACKEND_STATUS, SUMMARY_BACKEND_STATUS } from "@/constants";
 import { useContext } from "react";
 import { UserContext } from "@/context/UserContext";
 import SummaryList from "./SummaryList";
-import { BookStatus } from "@/utils/books";
-import { get } from "http";
 import ChatBot from "./ChatBot";
-import { set } from "react-hook-form";
+import CustomImage from "../utils/CustomImage";
 
 const MainBookComponent = ({ bookId }: { bookId: string }) => {
   const [book, setBook] = useState<Book>();
@@ -277,8 +275,21 @@ const MainBookComponent = ({ bookId }: { bookId: string }) => {
   };
 
   return (
-    <div className="w-full flex flex-col justify-center items-center">
-      <div className="flex flex-col gap-2 ">
+    <div className="w-full flex flex-col gap-14">
+      <div className="w-full">
+        <a 
+        href={"/search"}
+        className="flex gap-4 items-center w-fit">
+          <CustomImage
+            src={"/icons/sprinkle_group_reverse.svg"}
+            width={37.64}
+            height={13.25}
+            alt="return to search"
+          />
+          <span className="text-xl font-bold">{"Back to Search/Upload"}</span>
+        </a>
+      </div>
+      <div className="flex flex-col gap-2 pl-10">
         {summaryList ? (
           <BookDetailsCard
             book={book}
