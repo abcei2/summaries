@@ -36,11 +36,8 @@ const BookDetailsCard = ({
   const [totalTokens, setTotalTokens] = useState(book.total_tokens);
   const [showRetryDownloadModal, setShowRetryDownloadModal] = useState(false);
   const [summaryRequestLoading, setSummaryRequestLoading] = useState(false);
-  const [selectedPrompt, setSelectedPrompt] = useState('prompt1-english-');
+  const [selectedPrompt, setSelectedPrompt] = useState("prompt1-english-");
   const [summaryAvailable, setSummaryAvailable] = useState(false);
- 
-
-
 
   const bookCover = book?.cover_img_path
     ? `${process.env.NEXT_PUBLIC_DJANGO_MEDIA}/${book?.cover_img_path}`
@@ -56,7 +53,9 @@ const BookDetailsCard = ({
     book.status == BOOK_BACKEND_STATUS.EXTRACTED &&
     !loading &&
     (user?.is_superuser ||
-      (!user?.is_superuser && user?.is_subscribed && lastSummary?.prompt1 != selectedPrompt));
+      (!user?.is_superuser &&
+        user?.is_subscribed &&
+        lastSummary?.prompt1 != selectedPrompt));
 
   const showLoadingAnimation =
     lastSummary &&
@@ -64,12 +63,12 @@ const BookDetailsCard = ({
     lastSummary.state != SUMMARY_BACKEND_STATUS.ERROR;
 
   const handleSelectPrompt = (prompt: string) => {
-      //console.log("prompt", prompt);
-      onPromptChange(prompt);
-      setSelectedPrompt(prompt);
-      reloadSummaries(); 
-      
-      /*
+    //console.log("prompt", prompt);
+    onPromptChange(prompt);
+    setSelectedPrompt(prompt);
+    reloadSummaries();
+
+    /*
       if (lastSummary?.prompt1 == prompt) {
         setSummaryAvailable(true);
         console.log("****true");
@@ -78,40 +77,33 @@ const BookDetailsCard = ({
         setSummaryAvailable(false);
       }*/
 
-        if (user?.is_superuser) {
-          setSummaryAvailable(false);
-          return;
-        }
-
-     
+    if (user?.is_superuser) {
       setSummaryAvailable(false);
-      summaryList.forEach((summary) => {
-        if (summary.prompt1 == prompt) {
-          setSummaryAvailable(true);
-          console.log(prompt,"****true");
-        }
-      });
+      return;
+    }
 
-
-
-    };
-
-    
-    useEffect(() => {
-      //if user is superuser, always show the button
-      if (user?.is_superuser) {
-        setSummaryAvailable(false);
-        return;
+    setSummaryAvailable(false);
+    summaryList.forEach((summary) => {
+      if (summary.prompt1 == prompt) {
+        setSummaryAvailable(true);
+        console.log(prompt, "****true");
       }
-      summaryList.forEach((summary) => {
-        if (summary.prompt1 == selectedPrompt) {
-          setSummaryAvailable(true);
-          console.log(selectedPrompt,"****true");
-        }
-      });
-    }, []);
+    });
+  };
 
-
+  useEffect(() => {
+    //if user is superuser, always show the button
+    if (user?.is_superuser) {
+      setSummaryAvailable(false);
+      return;
+    }
+    summaryList.forEach((summary) => {
+      if (summary.prompt1 == selectedPrompt) {
+        setSummaryAvailable(true);
+        console.log(selectedPrompt, "****true");
+      }
+    });
+  }, []);
 
   const onRetryDowload = () => {
     if (!book) return console.log("No book");
@@ -133,8 +125,6 @@ const BookDetailsCard = ({
         setShowRetryDownloadModal(false);
       });
   };
-
- 
 
   const onAskForSummary = () => {
     if (loadingAskForSummary) return console.log("Loading...");
@@ -222,7 +212,6 @@ const BookDetailsCard = ({
       return (
         <SubscribedSummaryRequest
           handleClose={() => setShowSummaryModal(false)}
-          
           title={bookModalTitle}
           bookCover={bookCover}
           bookId={book.global_id}
@@ -234,17 +223,14 @@ const BookDetailsCard = ({
               const newParams = DEFAULT_SUMMARY_PARAMS;
               newParams.prompt = prompt;
               createResume(newParams);
-            }
-            else {
+            } else {
               createResume(DEFAULT_SUMMARY_PARAMS);
             }
-
           }}
         />
       );
     }
   };
-
 
   const subscribeToBook = (status: string) =>
     [
@@ -253,7 +239,6 @@ const BookDetailsCard = ({
       BOOK_BACKEND_STATUS.DOWNLOADED,
     ].includes(status);
 
-
   useModelObserver({
     updateData: (data) => {
       if (data?.total_tokens) {
@@ -261,10 +246,8 @@ const BookDetailsCard = ({
       }
     },
     roomName: "global_library",
-    connectToWS: book && book.status && subscribeToBook(book.status)
+    connectToWS: book && book.status && subscribeToBook(book.status),
   });
-    
-  
 
   return (
     <div className="rounded-lg overflow-hidden h-full w-full">
@@ -300,7 +283,6 @@ const BookDetailsCard = ({
         </div>
 
         <div className="lg:p-4 flex flex-col justify-center gap-2 w-full h-full ">
-          
           <div>
             <h2 className="text-2xl md:text-4xl pb-2 font-bold capitalize w-fit flex items-center">
               {book.title_2}
@@ -318,33 +300,29 @@ const BookDetailsCard = ({
               <b>Extension:</b> .{book.extension}
             </p>
             {book.status === BOOK_BACKEND_STATUS.EXTRACTED && (
+              <p className="text-[#505258] text-base">
+                <b>Total tokens:</b> {totalTokens}
+              </p>
+            )}
             <p className="text-[#505258] text-base">
-              <b>Total tokens:</b> {totalTokens}
+              <b>Language: </b>
+              <select
+                className="w-[20%] p-2 rounded-lg border border-gray-300"
+                id="language"
+                name="language"
+                value={selectedPrompt}
+                onChange={(e) => handleSelectPrompt(e.target.value)}
+              >
+                <option value="prompt1-english-">English</option>
+                <option value="prompt1-spanish-">Spanish</option>
+              </select>
             </p>
-
-
-
-          )}
-          <p className="text-[#505258] text-base">
-            <b>Language: </b> 
-            <select
-              className="w-[20%] p-2 rounded-lg border border-gray-300"
-              id="language"
-              name="language"
-              value={selectedPrompt}
-              onChange={(e) => handleSelectPrompt(e.target.value)}
-            >
-              <option value="prompt1-english-">English</option>
-              <option value="prompt1-spanish-">Spanish</option>
-            </select>
-          </p>
 
             {Number(book.pages) > 0 && (
               <p className="text-[#505258] text-base capitalize">
                 {book.pages} pages
               </p>
             )}
-          
           </div>
 
           {["error", "extract text error"].includes(book?.status ?? "") ? (
@@ -355,7 +333,7 @@ const BookDetailsCard = ({
           ) : (
             <CgHeadset className="w-6 h-6" />
           )}
-          
+
           {showAskForSummaryButton && !summaryAvailable && (
             <button
               onClick={() => onAskForSummary()}
@@ -367,9 +345,7 @@ const BookDetailsCard = ({
                   <HiCog className="text-gray-500 animate-spin duration-[1000] h-10 w-10" />
                 </div>
               ) : (
-
                 <span>Generate summary and start chat</span>
-                
               )}
             </button>
           )}

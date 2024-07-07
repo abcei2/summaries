@@ -1,5 +1,5 @@
 import LoadingSpin from "@/components/utils/LoadingSpin";
-import { HighlightsIcon, SearchReferencesIcon  } from "@/customIcons"
+import { HighlightsIcon, SearchReferencesIcon } from "@/customIcons";
 import { SummaryType } from "@/types";
 import { useRouter } from "next/router";
 import React, { useEffect, useState, useRef } from "react";
@@ -10,7 +10,7 @@ const SummaryComp = ({
   currentShowSummary,
   showDetails,
   bookId,
-  onSearchReferencesComplete
+  onSearchReferencesComplete,
 }: {
   summaryId?: string;
   currentShowSummary?: SummaryType;
@@ -20,12 +20,7 @@ const SummaryComp = ({
 }) => {
   const [summary, setSummary] = useState<SummaryType | undefined>(
     currentShowSummary
-    
-    
   );
- 
-
-
 
   const [content, setContent] = useState<
     {
@@ -65,7 +60,10 @@ const SummaryComp = ({
   const updateFloatingButtonPosOnScroll = () => {
     if (floatingBtnRef.current) {
       const rect = floatingBtnRef.current.getBoundingClientRect();
-      var scrollPos = window.pageYOffset || document.documentElement.scrollTop || document.body.scrollTop;
+      var scrollPos =
+        window.pageYOffset ||
+        document.documentElement.scrollTop ||
+        document.body.scrollTop;
 
       //console.log(window.pageYOffset);
       //console.log(document.documentElement.scrollTop);
@@ -90,24 +88,23 @@ const SummaryComp = ({
   }, []);
 
   const handleHighlightClick = async () => {
-    
-    
-    if (selectedText.length <20) alert("Please select more than 20 characters");
+    if (selectedText.length < 20)
+      alert("Please select more than 20 characters");
     else {
-     //console.log(summaryId);
-    const response = await fetch("/api/highlight/", {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify({
-        highlighted_text: selectedText,
-        summary_id: summaryId || summary?.id,
-      }),
-    });
-    // Handle response
-    fetchHighlightedText();
-  }
+      //console.log(summaryId);
+      const response = await fetch("/api/highlight/", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          highlighted_text: selectedText,
+          summary_id: summaryId || summary?.id,
+        }),
+      });
+      // Handle response
+      fetchHighlightedText();
+    }
   };
 
   useEffect(() => {
@@ -120,24 +117,22 @@ const SummaryComp = ({
       });
   }, [summaryId]);
 
-
   useEffect(() => {
     //console.log("Current show summary XXXX:", currentShowSummary);
     if (!currentShowSummary) return;
 
-    setSummary(currentShowSummary)
+    setSummary(currentShowSummary);
   }, [currentShowSummary]);
-
-
 
   useEffect(() => {
     //console.log("000000000", summary);
     if (!summary) return console.log("No summary");
-    if (!currentShowSummary) {//return console.log("No currentShowSummary");
+    if (!currentShowSummary) {
+      //return console.log("No currentShowSummary");
 
-    //setsummary to none
-    setSummary(undefined);
-    return console.log("No currentShowSummary");
+      //setsummary to none
+      setSummary(undefined);
+      return console.log("No currentShowSummary");
     }
 
     const text = summary.text + "Title:";
@@ -151,9 +146,12 @@ const SummaryComp = ({
     const titles = text
       ?.match(titleRegex)
       ?.map((match) => match.replace(/Title:|Summary:/g, "").trim());
-    const summaries = text
-      ?.match(summaryRegex)
-      ?.map((match) => match.replace(/Summary:|Title:/g, "").trim().replace(/§/g, ""));
+    const summaries = text?.match(summaryRegex)?.map((match) =>
+      match
+        .replace(/Summary:|Title:/g, "")
+        .trim()
+        .replace(/§/g, "")
+    );
 
     const Recap = text
       ?.match(RecapRegex)
@@ -166,16 +164,12 @@ const SummaryComp = ({
     //console.log(summaries?.length,titles?.length,Recap?.length,bulletPoints?.length);
 
     if (summaries && titles && summaries?.length === titles?.length) {
-      
       if (Recap && bulletPoints) {
-        
         summaries.unshift(bulletPoints[0].replace(/§/g, ""));
         summaries.unshift(Recap[0]);
         titles.unshift("Bullet points");
         titles.unshift("Short summary");
-        
-
-            }
+      }
       setContent(
         summaries.map((summary, index) => ({
           title: titles[index] || "No title",
@@ -183,10 +177,11 @@ const SummaryComp = ({
         }))
       );
     } else {
-      setContent([{ title: "", summary: summary.text?.replace(/§/g, "") ?? "" }]);
+      setContent([
+        { title: "", summary: summary.text?.replace(/§/g, "") ?? "" },
+      ]);
     }
-  }, [summary,currentShowSummary]);
-
+  }, [summary, currentShowSummary]);
 
   // Fetching the highlighted text when summaryId is available.
   const fetchHighlightedText = async () => {
@@ -215,7 +210,10 @@ const SummaryComp = ({
   }, [summaryId]);
 
   const highlightText = (text: string) => {
-    let newText = text.replace(/\n\n\n/g, "\n").split("\n").join("<br/>");
+    let newText = text
+      .replace(/\n\n\n/g, "\n")
+      .split("\n")
+      .join("<br/>");
 
     highlightedTexts.forEach((ht) => {
       //console.log(ht);
@@ -227,36 +225,35 @@ const SummaryComp = ({
 
   if (!summary) return null;
 
-
   const handleSearchreferences = async () => {
-    if (selectedText.length <20) alert("Please select more than 20 characters");
-    if (selectedText.length > 300) alert("Please select less than 300 characters");
-    
+    if (selectedText.length < 20)
+      alert("Please select more than 20 characters");
+    if (selectedText.length > 300)
+      alert("Please select less than 300 characters");
     else {
       console.log(bookId);
       console.log(selectedText);
-      
-    const response = await fetch("/api/search-references/", {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify({
-        book_id: bookId,
-        input_text: selectedText,
-      }),
-    });
-    if (response.ok) { // or check response status as per your logic
-      // After the fetch call in handleSearchreferences completes successfully
-      //onSearchReferencesComplete();
-      //execute onSearchReferencesComplete if it is not undefined
-      onSearchReferencesComplete && onSearchReferencesComplete();
+
+      const response = await fetch("/api/search-references/", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          book_id: bookId,
+          input_text: selectedText,
+        }),
+      });
+      if (response.ok) {
+        // or check response status as per your logic
+        // After the fetch call in handleSearchreferences completes successfully
+        //onSearchReferencesComplete();
+        //execute onSearchReferencesComplete if it is not undefined
+        onSearchReferencesComplete && onSearchReferencesComplete();
+      }
     }
-    
-  }
-  }
+  };
   return (
-    
     <div className="w-full flex justify-center items-center">
       <div className="w-[90%] lg:w-[90%] flex flex-col gap-2 mt-10">
         {showDetails && (
@@ -289,16 +286,12 @@ const SummaryComp = ({
               <div className="font-bold text-2xl">Prompt1</div>
               <div>{summary.prompt1}</div>
             </div>
-            
           </div>
         )}
-        
-        <div>
-          Summary Id: {summary.id}
-        </div>
-          
+
+        <div>Summary Id: {summary.id}</div>
+
         <div className="flex flex-col gap-2">
-          
           {content && content.length > 0
             ? content.map((item, index) => (
                 <div key={index} className="flex flex-col gap-2">
@@ -325,16 +318,16 @@ const SummaryComp = ({
             }}
           >
             <button onClick={handleHighlightClick}>{HighlightsIcon}</button>
-            
-            <button onClick={handleSearchreferences}> {SearchReferencesIcon }</button>
-          </div>
 
+            <button onClick={handleSearchreferences}>
+              {" "}
+              {SearchReferencesIcon}
+            </button>
+          </div>
         )}
         <HelpUs />
       </div>
     </div>
-    
-    
   );
 };
 
