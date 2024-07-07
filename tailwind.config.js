@@ -22,7 +22,7 @@ module.exports = {
         "main-bg": "#F8F8F8",
         "custom-black": "#030304",
         "custom-purple": "#520CEB",
-        "custom-red": "#F94C4C",
+        "custom-red": "#F94C4C"
       },
 
       backgroundImage: {

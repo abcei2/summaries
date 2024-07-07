@@ -269,18 +269,18 @@ const BookDetailsCard = ({
         </CustomModal2>
       )}
 
-      <div className="flex lg:flex-row flex-col h-full gap-8">
-        <div className="rounded-[10px] overflow-hidden w-[250px]  h-auto">
-          <img
-            src={
-              book?.cover_img_path
-                ? `${process.env.NEXT_PUBLIC_DJANGO_MEDIA}/${book?.cover_img_path}`
-                : "/card-img.jpg"
-            }
-            alt="Book cover"
-            className="w-full h-full rounded-[10px] border-[3px] border-secondary"
-          />
-        </div>
+      <div className="flex sm:flex-row flex-col h-full gap-8 ">
+        <img
+          src={
+            book?.cover_img_path
+              ? `${process.env.NEXT_PUBLIC_DJANGO_MEDIA}/${book?.cover_img_path}`
+              : "/card-img.jpg"
+          }
+          alt="Book cover"
+          width={250}
+          height={350}
+          className="rounded-[10px] border-[3px] border-secondary self-center"
+        />
 
         <div className="flex flex-col justify-center gap-2 w-full h-full font-pt-sans">
           <div className="flex flex-col gap-8">
@@ -300,10 +300,10 @@ const BookDetailsCard = ({
 
               <div className="flex gap-1 items-center text-[10px]">
                 {Number(book.pages) > 0 && (
-                  <span className="book-tags">{book.pages} pgs.</span>
+                  <span className="py-[0px] book-tags ">{book.pages} pgs.</span>
                 )}
-                <span className="book-tags">{book?.language}</span>
-                <span className="book-tags">.{book?.extension}</span>
+                <span className="py-[0px] book-tags">{book?.language}</span>
+                <span className="py-[0px] book-tags">.{book?.extension}</span>
               </div>
 
               {book.status === BOOK_BACKEND_STATUS.EXTRACTED && (
@@ -325,7 +325,7 @@ const BookDetailsCard = ({
             <div className="flex gap-2 items-center text-sm">
               <b>Language: </b>
               <select
-                className="p-2 sm:w-[20%] rounded-lg border border-gray-300"
+                className="btn"
                 id="language"
                 name="language"
                 value={selectedPrompt}

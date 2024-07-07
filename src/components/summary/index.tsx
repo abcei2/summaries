@@ -3,7 +3,6 @@ import { HighlightsIcon, SearchReferencesIcon } from "@/customIcons";
 import { SummaryType } from "@/types";
 import { useRouter } from "next/router";
 import React, { useEffect, useState, useRef } from "react";
-import HelpUs from "../HelpUs";
 
 const SummaryComp = ({
   summaryId,
@@ -254,8 +253,7 @@ const SummaryComp = ({
     }
   };
   return (
-    <div className="w-full flex justify-center items-center">
-      <div className="w-[90%] lg:w-[90%] flex flex-col gap-2 mt-10">
+      <div className="flex flex-col gap-2 mt-10">
         {showDetails && (
           <div className="grid grid-cols-2 gap-2">
             <div className="flex flex-col gap-2">
@@ -289,17 +287,17 @@ const SummaryComp = ({
           </div>
         )}
 
-        <div>Summary Id: {summary.id}</div>
+        <div className="text-xs self-end">Summary Id: {summary.id}</div>
 
-        <div className="flex flex-col gap-2">
+        <div className="flex flex-col gap-2 font-pt-sans">
           {content && content.length > 0
             ? content.map((item, index) => (
-                <div key={index} className="flex flex-col gap-2">
-                  <div className="font-bold text-2xl text-center">
+                <div key={index} className="flex flex-col gap-2 border border-secondary rounded-[10px] p-2">
+                  <div className="font-bold text-base">
                     {item.title}
                   </div>
                   <div
-                    className="text-justify"
+                    className="text-justify text-xs"
                     dangerouslySetInnerHTML={highlightText(item.summary)}
                   ></div>
                 </div>
@@ -325,9 +323,7 @@ const SummaryComp = ({
             </button>
           </div>
         )}
-        <HelpUs />
       </div>
-    </div>
   );
 };
 

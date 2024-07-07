@@ -30,7 +30,7 @@ function MainWrapper({ children }: { children: React.ReactNode }) {
   ) : (
     <div>
       <div className="flex flex-col flex flex-col items-center">
-        <div className="flex flex-col w-full overflow-auto">
+        <div className="flex flex-col w-full overflow-auto h-screen">
           <TopNews backgroundColor={backgroundColor} />
           <TopMenu />
           {children}

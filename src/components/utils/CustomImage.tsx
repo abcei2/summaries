@@ -19,8 +19,8 @@ const CustomImage = ({
     <div
       className={`relative ${className}`}
       style={{
-        width: `${width}px`,
-        height: `${height}px`,
+        width: width == 0 ? "100%" : `${width}px`,
+        height: height == 0 ? "100%" : `${height}px`,
       }}
     >
       <Image src={src} alt={alt} fill onClick={() => onClick && onClick()} />

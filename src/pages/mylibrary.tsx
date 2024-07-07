@@ -3,7 +3,7 @@ import MainContainer from "@/components/utils/MainContainer";
 
 const page = () => {
   return (
-    <MainContainer>
+    <MainContainer className="sm:min-h-screen min-h-max ">
       <MyLibrary />
     </MainContainer>
   );

@@ -10,6 +10,7 @@ import { UserContext } from "@/context/UserContext";
 import SummaryList from "./SummaryList";
 import ChatBot from "./ChatBot";
 import CustomImage from "../utils/CustomImage";
+import HelpUs from "../HelpUs";
 
 const MainBookComponent = ({ bookId }: { bookId: string }) => {
   const [book, setBook] = useState<Book>();
@@ -275,82 +276,85 @@ const MainBookComponent = ({ bookId }: { bookId: string }) => {
   };
 
   return (
-    <div className="w-full flex flex-col gap-14">
-      <div className="w-full">
-        <a 
-        href={"/search"}
-        className="flex gap-4 items-center w-fit">
-          <CustomImage
-            src={"/icons/sprinkle_group_reverse.svg"}
-            width={37.64}
-            height={13.25}
-            alt="return to search"
-          />
-          <span className="text-xl font-bold">{"Back to Search/Upload"}</span>
-        </a>
+    <div className="relative">
+      <div className="absolute sm:top-0 top-[600px] right-0">
+        <HelpUs />
       </div>
-      <div className="flex flex-col gap-2 pl-10">
-        {summaryList ? (
-          <BookDetailsCard
-            book={book}
-            lastSummary={lastSummary}
-            summaryList={summaryList}
-            loading={loading}
-            reloadSummaries={reloadSummaries}
-            handleUpdateBook={(newBook) => {
-              setBook({
-                ...book,
-                ...newBook,
-              });
-            }}
-            onPromptChange={handlePromptChange}
-          />
-        ) : (
-          <LoadingSpin text="Loading summaries" />
-        )}
-      </div>
-
-      {user &&
-        //check if the book is not extracted or if the summary is running
-        (book.status != BOOK_BACKEND_STATUS.EXTRACTED ||
-          lastSummary?.state == SUMMARY_BACKEND_STATUS.RUNNING ||
-          lastSummary?.state == SUMMARY_BACKEND_STATUS.QUEUE) && (
-          <div className="flex gap-2">
-            {
-              <LoadingSpin
-                text={
-                  lastSummary?.state == SUMMARY_BACKEND_STATUS.RUNNING
-                    ? `Generating summary. ${(
-                        Number(lastSummary?.progress) * 100
-                      ).toFixed(1)} %`
-                    : lastSummary?.state == SUMMARY_BACKEND_STATUS.QUEUE
-                    ? "Waiting in queue"
-                    : getStatusText(book)
-                }
-              />
-            }
-          </div>
-        )}
-
-      <div className="w-[90%] lg:w-[80%] flex flex-col gap-2 ">
-        {user && (user.is_staff || user.is_superuser) ? (
-          <div className="flex flex-col gap-2">
-            <SummaryComp
-              currentShowSummary={currentShowSummary}
-              bookId={bookId}
-              onSearchReferencesComplete={() => setShouldFetchMessages(true)}
+      <div className="w-full flex flex-col gap-14 md:w-[70%] lg:w-[50%]">
+        <div className="w-full">
+          <a href={"/search"} className="flex gap-4 items-center w-fit">
+            <CustomImage
+              src={"/icons/sprinkle_group_reverse.svg"}
+              width={37.64}
+              height={13.25}
+              alt="return to search"
             />
-            <SummaryList summaryList={summaryList ?? []} />
-          </div>
-        ) : (
-          <SummaryComp
-            currentShowSummary={currentShowSummary}
-            bookId={bookId}
-            onSearchReferencesComplete={() => setShouldFetchMessages(true)}
-          />
-        )}
-      </div>
+            <span className="text-xl font-bold">{"Back to Search/Upload"}</span>
+          </a>
+        </div>
+        <div className="flex flex-col gap-2 sm:pl-10">
+          {summaryList ? (
+            <BookDetailsCard
+              book={book}
+              lastSummary={lastSummary}
+              summaryList={summaryList}
+              loading={loading}
+              reloadSummaries={reloadSummaries}
+              handleUpdateBook={(newBook) => {
+                setBook({
+                  ...book,
+                  ...newBook,
+                });
+              }}
+              onPromptChange={handlePromptChange}
+            />
+          ) : (
+            <LoadingSpin text="Loading summaries" />
+          )}
+          {user &&
+            //check if the book is not extracted or if the summary is running
+            (book.status != BOOK_BACKEND_STATUS.EXTRACTED ||
+              lastSummary?.state == SUMMARY_BACKEND_STATUS.RUNNING ||
+              lastSummary?.state == SUMMARY_BACKEND_STATUS.QUEUE) && (
+              <div className="flex gap-2">
+                {
+                  <LoadingSpin
+                    text={
+                      lastSummary?.state == SUMMARY_BACKEND_STATUS.RUNNING
+                        ? `Generating summary. ${(
+                            Number(lastSummary?.progress) * 100
+                          ).toFixed(1)} %`
+                        : lastSummary?.state == SUMMARY_BACKEND_STATUS.QUEUE
+                        ? "Waiting in queue"
+                        : getStatusText(book)
+                    }
+                  />
+                }
+              </div>
+            )}
 
+          <div className="flex flex-col gap-2 ">
+            {user && (user.is_staff || user.is_superuser) ? (
+              <div className="flex flex-col gap-2">
+                <SummaryComp
+                  currentShowSummary={currentShowSummary}
+                  bookId={bookId}
+                  onSearchReferencesComplete={() =>
+                    setShouldFetchMessages(true)
+                  }
+                />
+                <SummaryList summaryList={summaryList ?? []} />
+              </div>
+            ) : (
+              <SummaryComp
+                currentShowSummary={currentShowSummary}
+                bookId={bookId}
+                onSearchReferencesComplete={() => setShouldFetchMessages(true)}
+              />
+            )}
+          </div>
+        </div>
+      </div>
       <ChatBot
         book_id={bookId}
         embeddings_state={book.embeddings_state}

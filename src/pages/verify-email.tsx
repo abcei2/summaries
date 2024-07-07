@@ -35,7 +35,7 @@ const page = () => {
   };
 
   return (
-    <MainContainer>
+    <MainContainer className="sm:min-h-screen min-h-max ">
       <div className="flex flex-col items-center justify-center gap-[60px] font-pt-sans">
         <span className=" text-4xl font-bold text-center">
           Please Verify Your Email
