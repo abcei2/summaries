@@ -94,7 +94,7 @@ const PopUpMenu = () => {
                 <a className="py-2 sm:hidden block" href="/mylibrary">
                   My library
                 </a>
-                <a className="py-2 sm:hidden block" href="/My highlights">
+                <a className="py-2 sm:hidden block" href="/myhighlights">
                   My highlights
                 </a>
                 <a className="py-2" href="/settings">
