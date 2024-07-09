@@ -253,77 +253,86 @@ const SummaryComp = ({
     }
   };
   return (
-      <div className="flex flex-col gap-2 mt-10">
-        {showDetails && (
-          <div className="grid grid-cols-2 gap-2">
-            <div className="flex flex-col gap-2">
-              <div className="font-bold text-2xl">Status</div>
-              <div>{summary.state}</div>
-            </div>
-            <div className="flex flex-col gap-2">
-              <div className="font-bold text-2xl">Date</div>
-              <div>{new Date(summary.created_at).toDateString()}</div>
-            </div>
-
-            <div className="flex flex-col gap-2">
-              <div className="font-bold text-2xl">Model1</div>
-              <div>{summary.model1}</div>
-            </div>
-
-            <div className="flex flex-col gap-2">
-              <div className="font-bold text-2xl">Model2</div>
-              <div>{summary.model2}</div>
-            </div>
-
-            <div className="flex flex-col gap-2">
-              <div className="font-bold text-2xl">Method</div>
-              <div>{summary.method}</div>
-            </div>
-
-            <div className="flex flex-col gap-2">
-              <div className="font-bold text-2xl">Prompt1</div>
-              <div>{summary.prompt1}</div>
-            </div>
+    <div className="flex flex-col gap-2 mt-10">
+      {showDetails && (
+        <div className="grid grid-cols-2 gap-2">
+          <div className="flex flex-col gap-2">
+            <div className="font-bold text-2xl">Status</div>
+            <div>{summary.state}</div>
           </div>
-        )}
+          <div className="flex flex-col gap-2">
+            <div className="font-bold text-2xl">Date</div>
+            <div>{new Date(summary.created_at).toDateString()}</div>
+          </div>
 
-        <div className="text-xs self-end">Summary Id: {summary.id}</div>
+          <div className="flex flex-col gap-2">
+            <div className="font-bold text-2xl">Model1</div>
+            <div>{summary.model1}</div>
+          </div>
 
-        <div className="flex flex-col gap-2 font-pt-sans">
-          {content && content.length > 0
-            ? content.map((item, index) => (
-                <div key={index} className="flex flex-col gap-2 border border-secondary rounded-[10px] p-2">
-                  <div className="font-bold text-base">
-                    {item.title}
-                  </div>
-                  <div
-                    className="text-justify text-xs"
-                    dangerouslySetInnerHTML={highlightText(item.summary)}
-                  ></div>
-                </div>
-              ))
-            : null}
+          <div className="flex flex-col gap-2">
+            <div className="font-bold text-2xl">Model2</div>
+            <div>{summary.model2}</div>
+          </div>
+
+          <div className="flex flex-col gap-2">
+            <div className="font-bold text-2xl">Method</div>
+            <div>{summary.method}</div>
+          </div>
+
+          <div className="flex flex-col gap-2">
+            <div className="font-bold text-2xl">Prompt1</div>
+            <div>{summary.prompt1}</div>
+          </div>
         </div>
+      )}
 
-        {/* Floating button */}
-        {selectedText.length > 0 && (
-          <div
-            ref={floatingBtnRef}
-            style={{
-              position: "absolute",
-              top: `${floatingButtonPos.top}px`,
-              left: `${floatingButtonPos.left}px`,
-            }}
-          >
-            <button onClick={handleHighlightClick}>{HighlightsIcon}</button>
+      <div className="text-xs self-end">Summary Id: {summary.id}</div>
 
-            <button onClick={handleSearchreferences}>
-              {" "}
-              {SearchReferencesIcon}
-            </button>
-          </div>
-        )}
+      <div className="flex flex-col gap-2 font-pt-sans">
+        {content && content.length > 0
+          ? content.map((item, index) => (
+              <div
+                key={index}
+                className="flex flex-col gap-2 border border-secondary rounded-[10px] p-2"
+              >
+                <div className="font-bold text-base">{item.title}</div>
+                <div
+                  className="text-justify text-xs"
+                  dangerouslySetInnerHTML={highlightText(item.summary)}
+                ></div>
+              </div>
+            ))
+          : null}
       </div>
+
+      {/* Floating button */}
+      {selectedText.length > 0 && (
+        <div
+          ref={floatingBtnRef}
+          className="flex  border bg-secondary rounded-[10px]"
+          style={{
+            position: "absolute",
+            top: `${floatingButtonPos.top}px`,
+            left: `${floatingButtonPos.left}px`,
+          }}
+        >
+          <button
+            className="btn rounded-r-[0px] rounded-l-[10px] border-secondary bg-primary hover:bg-secondary"
+            onClick={handleHighlightClick}
+          >
+            {HighlightsIcon}
+          </button>
+
+          <button
+            className="btn rounded-l-[0px] rounded-r-[10px] border-secondary bg-primary hover:bg-secondary"
+            onClick={handleSearchreferences}
+          >
+            {SearchReferencesIcon}
+          </button>
+        </div>
+      )}
+    </div>
   );
 };
 

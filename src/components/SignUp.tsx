@@ -67,7 +67,7 @@ const SignUp = () => {
 
   return (
     <>
-      <div className="w-full sm:h-screen h-[900px] relative">
+      <div className="w-full min-h-screen relative">
         <div className="absolute w-full h-full flex justify-between overflow-hidden">
           <Image
             src="/images/whirl8.svg"
@@ -131,7 +131,7 @@ const SignUp = () => {
               </div>
             </div>
 
-            <p className="text-xs text-center w-full">
+            <p className="text-sm text-center w-full">
               By creating an account, you agree to the
               <a className="text-custom-purple"> Terms of Service </a>
               and
@@ -140,11 +140,11 @@ const SignUp = () => {
           </div>
           <button
             onClick={() => onSubmit()}
-            className="btn bg-custom-black text-white tet-xs"
+            className="btn bg-custom-black text-white text-sm"
           >
-            Log In
+            Sign up
           </button>
-          <p className="text-xs">
+          <p className="text-sm">
             Already have an account?{" "}
             <a href="/login" className="text-custom-purple">
               Log in

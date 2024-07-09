@@ -49,7 +49,7 @@ const Login = () => {
 
   return (
     <>
-      <div className="w-full sm:h-screen h-[900px] relative">
+      <div className="w-full min-h-screen relative">
         <div className="absolute w-full h-full flex justify-between overflow-hidden">
           <Image
             src="/images/whirl8.svg"
@@ -124,11 +124,11 @@ const Login = () => {
           </div>
           <button
             onClick={() => onSignIn()}
-            className="btn bg-custom-black text-white tet-xs"
+            className="btn bg-custom-black text-white text-sm"
           >
             Log In
           </button>
-          <p className="text-x">
+          <p className="text-sm">
             New to MegaSummary?{" "}
             <a href="/signup" className="text-custom-purple font-bolds ">
               Sign up now

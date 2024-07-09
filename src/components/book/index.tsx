@@ -255,8 +255,6 @@ const MainBookComponent = ({ bookId }: { bookId: string }) => {
     return () => clearInterval(intervalId); // Clear the interval on component unmount
   }, [summaryList]);
 
-  if (!book || !bookId) return <LoadingSpin text="Loading book details" />;
-
   const getStatusText = (book: Book) => {
     //console.log(book);
     switch (book.status) {
@@ -274,6 +272,13 @@ const MainBookComponent = ({ bookId }: { bookId: string }) => {
         return book?.status;
     }
   };
+
+  if (!book || !bookId)
+    return (
+      <div className="flex items-center justify-center h-screen">
+        <LoadingSpin text="Loading book details" />;
+      </div>
+    );
 
   return (
     <div className="">
