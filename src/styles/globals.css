@@ -14,6 +14,11 @@
   font-style: normal;
 }
 
+@font-face {
+  font-family: "PT Mono";
+  src: url(../assets/fonts/PT_mono/PTMono-Regular.ttf);
+}
+
 @layer base {
   body {
     @apply bg-custom-gray font-rokkitt text-custom-black;
