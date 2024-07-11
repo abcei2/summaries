@@ -21,7 +21,7 @@ const page = () => {
               before:h-full md:before:bg-landing-bg before:top-[-340px] before:bg-landing-bg-mobile before:bg-cover md:before:bg-contain lg:before:bg-cover
             flex flex-col gap-16 md:gap-10  px-8 relative py-8 bg-primary w-full`}
           >
-            <div className="max-w-[750px] self-center w-full">
+            <div className="max-w-[750px] self-center w-full z-[1]">
               <video width="100%" height="auto" controls>
                 <source src={videoUrl_1} type="video/mp4" />
                 Your browser does not support the video tag.
@@ -30,7 +30,7 @@ const page = () => {
 
             <LandingCards />
 
-            <div className="max-w-[750px] self-center w-full">
+            <div className="max-w-[750px] self-center w-full z-[1]">
               <video width="100%" height="auto" controls>
                 <source src={videoUrl_2} type="video/mp4" />
                 Your browser does not support the video tag.
