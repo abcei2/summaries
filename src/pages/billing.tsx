@@ -1,6 +1,8 @@
 import React, { useState } from "react";
 import { PayPalScriptProvider, PayPalButtons } from "@paypal/react-paypal-js";
 import { Router } from "next/router";
+import MainContainer from "@/components/utils/MainContainer";
+import CustomImage from "@/components/utils/CustomImage";
 
 export default function Billing() {
   const [selectedAmount, setSelectedAmount] = useState<string>("10.00");
@@ -66,59 +68,75 @@ export default function Billing() {
   };
 
   return (
-    <div>
-      <div
-        style={{
-          display: "flex",
-          justifyContent: "center",
-          alignItems: "center",
-        }}
-      >
-        <h3>Buy Tokens. Click on the amount you want to buy</h3>
-      </div>
-
-      <div
-        style={{
-          display: "flex",
-          justifyContent: "space-around",
-          margin: "80px 0",
-        }}
-      >
-        {[
-          { amount: "10.00", tokens: "100,000" },
-          { amount: "40.00", tokens: "500,000" },
-          { amount: "80.00", tokens: "1,000,000" },
-        ].map(({ amount, tokens }) => (
-          <div
-            key={amount}
-            onClick={() => selectAmount(amount, tokens)}
-            style={{
-              padding: "10px",
-              border:
-                selectedAmount === amount ? "2px solid blue" : "1px solid grey",
-              cursor: "pointer",
-            }}
-          >
-            Buy {tokens} Tokens for {amount} USD
-          </div>
-        ))}
-      </div>
-      <div style={{ justifyContent: "center", display: "flex" }}>
-        <PayPalScriptProvider options={initialOptions}>
-          <div style={{ width: "100%", maxWidth: "500px" }}>
-            {" "}
-            {/* Adjust the maxWidth as needed */}
-            <PayPalButtons
-              key={`${selectedAmount}-${selectedTokens}`}
-              //style={{ layout: 'horizontal' }} // This can help in some cases
-              createOrder={(data, actions) =>
-                createOrder(selectedAmount, selectedTokens, data, actions)
-              }
-              onApprove={onApprove}
+    <MainContainer className="relative min-h-[1100px] sm:min-h-screen font-pt-sans text-xs overflow-hidden">
+      <div className="flex flex-col items-center gap-16 relative z-[1]">
+        <div className="flex flex-col items-center gap-2">
+          <div className="flex items-center gap-2">
+            <CustomImage
+              src="/icons/billing-1.svg"
+              alt="Billing top icon"
+              width={23}
+              height={23}
+              className="self-center"
             />
+            <span className="text-2xl font-bold font-rokkitt">Buy Tokens</span>
           </div>
-        </PayPalScriptProvider>
+          <span className="font-bold text-center">
+            Select the amount you want to buy
+          </span>
+        </div>
+
+        <div className="flex flex-col sm:flex-row justify-around gap-6 sm:gap-16">
+          {[
+            { amount: "10.00", tokens: "100,000" },
+            { amount: "40.00", tokens: "500,000" },
+            { amount: "80.00", tokens: "1,000,000" },
+          ].map(({ amount, tokens }, index) => (
+            <div
+              key={index}
+              onClick={() => selectAmount(amount, tokens)}
+              className={`flex w-[176px]
+                flex-col items-center p-2.5 gap-1 cursor-pointer rounded-[10px] leading-3 ${
+                  selectedAmount === amount
+                    ? "border-2 border-secondary"
+                    : "border border-custom-black hover:border-secondary"
+                }`}
+            >
+              <CustomImage
+                src="/icons/currency_exchange.svg"
+                alt="Billing currency exchange icon"
+                width={17.25}
+                height={17.17}
+              />
+              <span className="font-bold mt-1">{tokens} Tokens</span>
+              <span>for {amount} USD</span>
+            </div>
+          ))}
+        </div>
+        <div style={{ justifyContent: "center", display: "flex" }}>
+          <PayPalScriptProvider options={initialOptions}>
+            <div style={{ width: "100%", maxWidth: "500px" }}>
+              {" "}
+              {/* Adjust the maxWidth as needed */}
+              <PayPalButtons
+                key={`${selectedAmount}-${selectedTokens}`}
+                //style={{ layout: 'horizontal' }} // This can help in some cases
+                createOrder={(data, actions) =>
+                  createOrder(selectedAmount, selectedTokens, data, actions)
+                }
+                onApprove={onApprove}
+              />
+            </div>
+          </PayPalScriptProvider>
+        </div>
       </div>
-    </div>
+      <CustomImage
+        src="/images/billing-bg.svg"
+        alt="Billing bg image"
+        width={900}
+        height={768}
+        className="absolute bottom-[220px] -left-[300px] sm:left-[-30px] z-[0]"
+      />
+    </MainContainer>
   );
 }

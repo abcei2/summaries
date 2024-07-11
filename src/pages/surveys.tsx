@@ -15,7 +15,7 @@ const Surveys: React.FC = () => {
             height={29}
             className="self-center"
           />
-          <span className="text-xl font-bold font-rokkitt">Surveys:</span>
+          <span className="text-2xl font-bold font-rokkitt">Surveys:</span>
           <span className="font-bold text-center">
             Request for Your Valuable Feedback to Enhance MegaSummary User
             Experience
