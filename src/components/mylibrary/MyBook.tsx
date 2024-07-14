@@ -112,7 +112,9 @@ const MyBook = ({
               <span className="italic text-[10px]">By {book.author}</span>
 
               <div className="flex gap-1 items-center font-bold">
-                {book?.year.toString() != "N/A" && <span>{book?.year}</span>}
+                
+              {book?.year?.toString() !== "N/A" && <span>{book?.year}</span>}
+
                 <div className="w-fit left-[2px] z-10 cursor-pointer hover:scale-105 top-1">
                   {["error", "extract text error"].includes(
                     book?.status ?? ""
