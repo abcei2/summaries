@@ -95,7 +95,7 @@ export const PARAMS: SumaryCreateParamFormType[] = [
     name: "model",
     type: "select",
     values: MODELS,
-    defaultValue: "gpt-4-1106-preview",
+    defaultValue: "gpt-4o",//"gpt-4-1106-preview",
     costeable: true,
   },
   {
@@ -117,7 +117,7 @@ export const PARAMS: SumaryCreateParamFormType[] = [
 
 export const DEFAULT_SUMMARY_PARAMS:SumaryCreateParams = {
   method: "sections_refine",
-  model: "gpt-4-1106-preview",//"gpt-4",
+  model: "gpt-4o",//"gpt-4-1106-preview",//"gpt-4",
   length: "long",
   prompt: "prompt1-english-",
 };
