@@ -14,7 +14,7 @@ const page = () => {
   return (
     <div className="h-full w-full bg-custom-gray">
       {!user || user?.is_superuser || user?.is_subscribed ? (
-        <div className="flex flex-col w-full  items-center  gap-32 relative z-[0]"> 
+        <div className="flex flex-col w-full  items-center  gap-32 relative z-[0]">
           <LandingTopSection />
           <div
             className={`before:absolute md:before:top-[-340px] before:left-0 before:w-full before:z-[0]
@@ -22,7 +22,7 @@ const page = () => {
             flex flex-col gap-16 md:gap-10  px-8 relative py-8 bg-primary w-full`}
           >
             <div className="max-w-[750px] self-center w-full z-[1]">
-              <video width="100%" height="auto" controls>
+              <video width="100%" height="auto" controls className="rounded-md">
                 <source src={videoUrl_1} type="video/mp4" />
                 Your browser does not support the video tag.
               </video>
@@ -31,7 +31,7 @@ const page = () => {
             <LandingCards />
 
             <div className="max-w-[750px] self-center w-full z-[1]">
-              <video width="100%" height="auto" controls>
+              <video width="100%" height="auto" controls className="rounded-md">
                 <source src={videoUrl_2} type="video/mp4" />
                 Your browser does not support the video tag.
               </video>

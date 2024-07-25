@@ -11,6 +11,7 @@ import SummaryList from "./SummaryList";
 import ChatBot from "./ChatBot";
 import CustomImage from "../utils/CustomImage";
 import HelpUs from "../HelpUs";
+import SummaryProgress from "../utils/SummaryProgress";
 
 const MainBookComponent = ({ bookId }: { bookId: string }) => {
   const [book, setBook] = useState<Book>();
@@ -282,12 +283,7 @@ const MainBookComponent = ({ bookId }: { bookId: string }) => {
 
   return (
     <div className="">
-      <div className="w-full relative z-10">
-        <div className="absolute top-0 right-0">
-          <HelpUs />
-        </div>
-      </div>
-      <div className="w-full flex flex-col gap-14 md:w-[70%] lg:w-[50%] min-h-screen">
+      <div className="w-full flex flex-col gap-14 w-full min-h-screen">
         <div className="w-full relative">
           <a href={"/mylibrary"} className="flex gap-4 items-center w-fit">
             <CustomImage
@@ -325,21 +321,23 @@ const MainBookComponent = ({ bookId }: { bookId: string }) => {
               lastSummary?.state == SUMMARY_BACKEND_STATUS.QUEUE) && (
               <div className="flex gap-2">
                 {
-                  <LoadingSpin
+                  <SummaryProgress
+                    pulseAnimation={
+                      lastSummary?.state == SUMMARY_BACKEND_STATUS.RUNNING ||
+                      lastSummary?.state == SUMMARY_BACKEND_STATUS.QUEUE
+                    }
                     text={
                       lastSummary?.state == SUMMARY_BACKEND_STATUS.RUNNING
-                        ? `Generating summary. ${(
-                            Number(lastSummary?.progress) * 100
-                          ).toFixed(1)} %`
+                        ? `Generating summary.`
                         : lastSummary?.state == SUMMARY_BACKEND_STATUS.QUEUE
-                        ? "Waiting in queue"
+                        ? "Waiting in queue."
                         : getStatusText(book)
                     }
+                    percentage={Number(lastSummary?.progress) * 100}
                   />
                 }
               </div>
             )}
-
           <div className="flex flex-col gap-2 ">
             {user && (user.is_staff || user.is_superuser) ? (
               <div className="flex flex-col gap-2">
@@ -359,6 +357,12 @@ const MainBookComponent = ({ bookId }: { bookId: string }) => {
                 onSearchReferencesComplete={() => setShouldFetchMessages(true)}
               />
             )}
+          </div>
+
+          <div className="w-full relative z-10">
+            <div className="absolute bottom-0 right-0">
+              <HelpUs />
+            </div>
           </div>
         </div>
       </div>

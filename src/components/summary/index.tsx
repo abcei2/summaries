@@ -1,7 +1,5 @@
-import LoadingSpin from "@/components/utils/LoadingSpin";
 import { HighlightsIcon, SearchReferencesIcon } from "@/customIcons";
 import { SummaryType } from "@/types";
-import { useRouter } from "next/router";
 import React, { useEffect, useState, useRef } from "react";
 
 const SummaryComp = ({
@@ -253,7 +251,7 @@ const SummaryComp = ({
     }
   };
   return (
-    <div className="flex flex-col gap-2 mt-10">
+    <div className="flex flex-col gap-2">
       {showDetails && (
         <div className="grid grid-cols-2 gap-2">
           <div className="flex flex-col gap-2">

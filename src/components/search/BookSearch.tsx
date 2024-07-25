@@ -217,24 +217,26 @@ function BookSearch() {
             </button>
           </div>
 
-          <div className="flex items-center gap-4 ">
-            <span>Or</span>
-            <div className="btn flex items-center gap-2 bg-primary cursor-pointer justify-center w-max">
-              <span className="w-max">Upload Document</span>
-              <input
-                type="file"
-                className="hidden"
-                onChange={handleDocumentUpload}
-              />
-              <CustomImage
-                src="/icons/upload.svg"
-                className="hover:scale-125 duration-300 hover:animate-pulse text-secondary"
-                width={12}
-                height={13}
-                alt="Upload"
-              />
-            </div>
-          </div>
+          {
+            // <div className="flex items-center gap-4 ">
+            //   <span>Or</span>
+            //   <div className="btn flex items-center gap-2 bg-primary cursor-pointer justify-center w-max">
+            //     <span className="w-max">Upload Document</span>
+            //     <input
+            //       type="file"
+            //       className="hidden"
+            //       onChange={handleDocumentUpload}
+            //     />
+            //     <CustomImage
+            //       src="/icons/upload.svg"
+            //       className="hover:scale-125 duration-300 hover:animate-pulse text-secondary"
+            //       width={12}
+            //       height={13}
+            //       alt="Upload"
+            //     />
+            //   </div>
+            // </div>
+          }
         </div>
       </div>
 
@@ -260,10 +262,7 @@ function BookSearch() {
       {books && books.length > 0 ? (
         <div className="w-full grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3  xl:grid-cols-4 gap-2">
           {books.map((book) => (
-            <Card
-              key={book.global_id}
-              book={book}
-            />
+            <Card key={book.global_id} book={book} />
           ))}
         </div>
       ) : currentStatus && currentStatus?.seeking_books ? (
