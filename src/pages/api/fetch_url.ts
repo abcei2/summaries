@@ -4,12 +4,12 @@ import { UserAuthType } from "@/types";
 
 async function fetch_url(req: NextApiRequest, res: NextApiResponse, userAuth: UserAuthType) {
 
-  console.log("URL: ", process.env.DJANGO_HOST + `/fetch_url/`);
-console.log("Headers: ", {
+//console.log("URL: ", process.env.DJANGO_HOST + `/fetch_url/`);
+/*console.log("Headers: ", {
   Authorization: `token ${userAuth.token}`,
   "Content-Type": "application/json",
-});
-console.log("Body: ", JSON.stringify(req.body));
+});*/
+//console.log("Body: ", JSON.stringify(req.body));
 
 
   switch (req.method) {
@@ -29,7 +29,7 @@ console.log("Body: ", JSON.stringify(req.body));
             body: JSON.stringify(req.body),
           }
         );
-        console.log("Response: ", response);
+        //console.log("Response: ", response);
 
         if (response.status == 200) {
           const data = await response.json();
