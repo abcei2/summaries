@@ -95,7 +95,7 @@ export default function Billing() {
             <div
               key={index}
               onClick={() => selectAmount(amount, tokens)}
-              className={`flex w-[176px]
+              className={`flex w-[200px]
                 flex-col items-center p-2.5 gap-1 cursor-pointer rounded-[10px] leading-3 ${
                   selectedAmount === amount
                     ? "border-2 border-secondary"
@@ -110,6 +110,9 @@ export default function Billing() {
               />
               <span className="font-bold mt-1">{tokens} Tokens</span>
               <span>for {amount} USD</span>
+        
+              <span className="text-xs text-center">About {parseInt(tokens.replace(/,/g, ""))*3/100000} Book Summaries or {parseInt(tokens.replace(/,/g, ""))*10/100000} Youtube Video Summaries</span>
+
             </div>
           ))}
         </div>
