@@ -1,11 +1,10 @@
 import { useRouter } from "next/router";
 import { Book } from "../../types";
-import { use, useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import { CustomModal2 } from "../utils/custommodals";
 import { CgHeadset, CgSoftwareDownload } from "react-icons/cg";
 import DeleteModal from "./DeleteModal";
 import RetryDownloadModal from "./RetryDownloadModal";
-import { BookStatus } from "@/utils/books";
 import CustomImage from "../utils/CustomImage";
 
 const MyBook = ({
@@ -56,7 +55,7 @@ const MyBook = ({
   };
 
   return (
-    <div>
+    <div className="relative">
       {showDeleteModal && (
         <CustomModal2 handleClose={() => setShowDeleteModal(false)}>
           <DeleteModal
@@ -81,16 +80,16 @@ const MyBook = ({
         className={`hover:before:bg-primary hover:before:opacity-40 hover:before:w-full hover:before:h-full 
       before:absolute before:top-0 before:left-0 before:z-[0] before:content-[''] relative
      rounded-[10px] h-[220px] w-full shadow-lg border border-custom-black
-      justify-between px-3 py-4 text-xs`}
+      justify-between px-3 py-4 text-xs z-1`}
       >
         <div
-          className="absolute w-fit right-[2px] z-9 cursor-pointer hover:scale-105 top-1 "
+          className="absolute w-fit right-[2px] z-1 cursor-pointer hover:scale-105 top-1"
           onClick={() => setShowDeleteModal(true)}
         >
           ❌
         </div>
 
-        <div className="relative z-[1] flex flex-col gap-4">
+        <div className="relative z-1 flex flex-col gap-4">
           <div className="flex items-center gap-2">
             <img
               className="rounded-[10px] min-w-[100px]  h-[140px]"
@@ -115,7 +114,7 @@ const MyBook = ({
                 
               {book?.year?.toString() !== "N/A" && <span>{book?.year}</span>}
 
-                <div className="w-fit left-[2px] z-10 cursor-pointer hover:scale-105 top-1">
+                <div className="w-fit left-[2px] z-1 cursor-pointer hover:scale-105 top-1">
                   {["error", "extract text error"].includes(
                     book?.status ?? ""
                   ) ? (

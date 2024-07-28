@@ -61,7 +61,7 @@ const PopUpMenu = () => {
               showPopup ? "max-h-[700px]" : "max-h-0  "
             } absolute right-0 top-[35px] rounded-[10px]
           transition-all duration-500 ease-in-out overflow-hidden min-w-[179px]
-          bg-custom-purple text-white`}
+          bg-custom-purple text-white z-500`}
             onClick={() => setShowPopup(false)}
           >
             <div className="flex flex-col gap-2 items-center justify-center  px-6 py-4 gap-3  items-center z-10">
@@ -72,7 +72,7 @@ const PopUpMenu = () => {
                 height={17}
               />
               <div className="flex flex-col leading-3 w-full items-center">
-                <span className="font-bold"> {"Usern Name"}</span>
+                <span className="font-bold"> {"User Email"}</span>
                 <span className="text-[10px]">
                   {" "}
                   {user?.email || "megasummary@gmail.com"}
