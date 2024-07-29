@@ -217,26 +217,26 @@ function BookSearch() {
             </button>
           </div>
 
-          {
-            // <div className="flex items-center gap-4 ">
-            //   <span>Or</span>
-            //   <div className="btn flex items-center gap-2 bg-primary cursor-pointer justify-center w-max">
-            //     <span className="w-max">Upload Document</span>
-            //     <input
-            //       type="file"
-            //       className="hidden"
-            //       onChange={handleDocumentUpload}
-            //     />
-            //     <CustomImage
-            //       src="/icons/upload.svg"
-            //       className="hover:scale-125 duration-300 hover:animate-pulse text-secondary"
-            //       width={12}
-            //       height={13}
-            //       alt="Upload"
-            //     />
-            //   </div>
-            // </div>
-          }
+          
+          <div className="flex items-center gap-4">
+            <span>Or</span>
+            <label className="btn flex items-center gap-2 bg-primary cursor-pointer justify-center w-max">
+              <span className="w-max">Upload Document</span>
+              <input
+                type="file"
+                className="hidden"
+                onChange={handleDocumentUpload}
+              />
+              <CustomImage
+                src="/icons/upload.svg"
+                className="hover:scale-125 duration-300 hover:animate-pulse text-secondary"
+                width={12}
+                height={13}
+                alt="Upload"
+              />
+            </label>
+          </div>
+          
         </div>
       </div>
 
