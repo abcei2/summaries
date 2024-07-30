@@ -195,6 +195,11 @@ const scrollToBottom = () => {
     }));
   };
 
+  const convertToSeconds = (timestamp: string) => {
+    const [minutes, seconds] = timestamp.split(':').map(Number);
+    return (minutes * 60) + seconds;
+  };
+
   return (
     
    
@@ -219,39 +224,38 @@ const scrollToBottom = () => {
           
         
         {isChatbotVisible && (
-  <div style={{ flex: 1, overflowY: 'auto', borderRadius: '5px', marginBottom: '10px', marginTop: '20px', display: 'flex', flexDirection: 'column' }}>
-    {messages.map((message, index) => (
-      <div
-        key={index}
-        onClick={() => toggleMessageExpand(index)} // Added onClick event to toggle expand
-        style={{
-          margin: '10px 0',
-          maxWidth: '70%',
-          alignSelf: message.type === 'answer' ? 'flex-start' : 'flex-end',
-          backgroundColor: message.type === 'answer' ? '#007bff' : '#f0f0f0',
-          color: message.type === 'answer' ? 'white' : 'black',
-          padding: '8px 15px',
-          borderRadius: '20px',
-          textAlign: 'left',
-          wordBreak: 'break-word',
-          fontSize: '12px',
-          width: "fit-content",
-          height: message.expanded ? 'auto' : '100px',
-          textOverflow: message.expanded ? 'initial' : 'ellipsis',
-        }}
-      >
-        {message.text === "Loading..." ? <HiCog className="animate-spin h-6 w-6" /> : 
-         message.timestamp ? 
-         <a href={`https://www.youtube.com/watch?v=${book_id.split('-').pop()}&t=${message.timestamp}`} rel="noreferrer noopener" target="_blank" style={{ textDecoration: 'none', color: 'inherit' }}>
-
-           {message.timestamp + " \n" + message.text}
-         </a> : 
-         message.text}
-      </div>
-    ))}
-    <div ref={messagesEndRef} /> 
-  </div>
-)}
+    <div style={{ flex: 1, overflowY: 'auto', borderRadius: '5px', marginBottom: '10px', marginTop: '20px', display: 'flex', flexDirection: 'column' }}>
+      {messages.map((message, index) => (
+        <div
+          key={index}
+          onClick={() => toggleMessageExpand(index)}
+          style={{
+            margin: '10px 0',
+            maxWidth: '70%',
+            alignSelf: message.type === 'answer' ? 'flex-start' : 'flex-end',
+            backgroundColor: message.type === 'answer' ? '#007bff' : '#f0f0f0',
+            color: message.type === 'answer' ? 'white' : 'black',
+            padding: '8px 15px',
+            borderRadius: '20px',
+            textAlign: 'left',
+            wordBreak: 'break-word',
+            fontSize: '12px',
+            width: "fit-content",
+            height: message.expanded ? 'auto' : '100px',
+            textOverflow: message.expanded ? 'initial' : 'ellipsis',
+          }}
+        >
+          {message.text === "Loading..." ? <HiCog className="animate-spin h-6 w-6" /> : 
+           message.timestamp?
+           <a href={`https://www.youtube.com/watch?v=${book_id.split('-').pop()}&t=${convertToSeconds(message.timestamp)}`} rel="noreferrer noopener" target="_blank" style={{ textDecoration: 'none', color: 'inherit' }}>
+             {`${message.timestamp}\n${message.text}`}
+           </a> : 
+           message.text}
+        </div>
+      ))}
+      <div ref={messagesEndRef} /> 
+    </div>
+  )}
 
 
         
