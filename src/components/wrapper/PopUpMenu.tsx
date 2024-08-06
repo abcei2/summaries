@@ -8,42 +8,46 @@ const PopUpMenu = () => {
   const { user, signOut } = useContext(UserContext);
   const router = useRouter();
   const [showPopup, setShowPopup] = useState(false);
+  const [showReportBugModal, setShowReportBugModal] = useState(false);
   const tokenAmount = new Intl.NumberFormat("en-US").format(
     user?.available_tokens ?? 0
   );
+
+  const handleReportBug = () => {
+    setShowReportBugModal(true);
+    setShowPopup(false); // Close the popup menu when opening the modal
+  };
+
   return (
     <div className="flex flex-col gap-5 font-pt-sans text-xs">
       <div className="flex items-center gap-12 font-pt-sans text-sm">
-        <a
-          className={`${
-            router.pathname === "/search"
-              ? "text-custom-purple border-b border-b-custom-purple font-bold"
-              : ""
-          } hover:text-custom-purple px-0.5 hidden sm:block`}
-          href="/search"
+        {/* Report Bug Button */}
+        <button
+          className="text-custom-purple hover:text-custom-blue"
+          onClick={handleReportBug}
         >
-          Search/Upload
-        </a>
-        <a
-          className={`${
-            router.pathname === "/mylibrary"
-              ? "text-custom-purple border-b border-b-custom-purple font-bold"
-              : ""
-          } hover:text-custom-purple px-0.5 hidden sm:block`}
-          href="/mylibrary"
-        >
-          My library
-        </a>
-        <a
-          className={`${
-            router.pathname === "/myhighlights"
-              ? "text-custom-purple border-b border-b-custom-purple font-bold"
-              : ""
-          } hover:text-custom-purple px-0.5 hidden sm:block`}
-          href="/myhighlights"
-        >
-          My highlights
-        </a>
+          Report a Bug
+        </button>
+        {/* Report Bug Modal */}
+        {showReportBugModal && (
+          <div className="fixed inset-0 bg-black bg-opacity-50 flex justify-center items-center">
+            <div className="bg-white p-5 rounded-lg">
+              <h2 className="text-lg font-bold">Report a Bug</h2>
+              <textarea
+                className="border border-gray-300 w-full mt-2 p-2"
+                placeholder="Describe the bug..."
+              />
+              <div className="flex justify-end mt-4">
+                <button
+                  className="bg-custom-purple text-white py-2 px-4 rounded"
+                  onClick={() => setShowReportBugModal(false)}
+                >
+                  Close
+                </button>
+              </div>
+            </div>
+          </div>
+        )}
         <OutsideAlerter
           onClick={() => setShowPopup(false)}
           className="relative"
@@ -65,6 +69,7 @@ const PopUpMenu = () => {
             onClick={() => setShowPopup(false)}
           >
             <div className="flex flex-col gap-2 items-center justify-center  px-6 py-4 gap-3  items-center z-10">
+              {/* User Info and Token Count */}
               <CustomImage
                 src="/icons/account_box.svg"
                 alt="icon"
@@ -72,9 +77,8 @@ const PopUpMenu = () => {
                 height={17}
               />
               <div className="flex flex-col leading-3 w-full items-center">
-                <span className="font-bold"> {"User Email"}</span>
+                <span className="font-bold">{"User Email"}</span>
                 <span className="text-[10px]">
-                  {" "}
                   {user?.email || "megasummary@gmail.com"}
                 </span>
               </div>
@@ -85,7 +89,7 @@ const PopUpMenu = () => {
                   width={19}
                   height={19}
                 />
-                <span> {tokenAmount} Tokens </span>
+                <span>{tokenAmount} Tokens</span>
               </div>
               <div className="flex flex-col divide-y divide-custom-red border-t border-b border-custom-red w-full text-center">
                 <a className="py-2 sm:hidden block" href="/search">
@@ -111,7 +115,7 @@ const PopUpMenu = () => {
                 onClick={() => signOut && signOut().then(() => router.reload())}
                 className="flex gap-2 items-center justify-end w-full cursor-pointer"
               >
-                <span className="font-bold"> {"Logout"}</span>
+                <span className="font-bold">Logout</span>
                 <CustomImage
                   src="/icons/move_item.svg"
                   alt="icon"

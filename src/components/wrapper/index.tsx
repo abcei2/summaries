@@ -29,7 +29,9 @@ function MainWrapper({ children }: { children: React.ReactNode }) {
         ${fullPrimaryBg? "bg-primary" : ""}
        w-full overflow-auto h-screen`}
     >
+      
       {shotTopNews && <TopNews backgroundColor={backgroundColor} />}
+      
       <TopMenu />
       {children}
       <ToastContainer autoClose={1000} />

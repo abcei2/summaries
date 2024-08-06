@@ -6,7 +6,7 @@ import formidable from "formidable";
 import { parseForm } from "@/utils/formidable";
 import fs from "fs";
 
-const MAX_FILE_SIZE = 20 * 1024 * 1024; // 10MB in bytes
+const MAX_FILE_SIZE = 40 * 1024 * 1024; 
 const SUPPORTED_FORMATS = ["epub", "pdf", "mobi", "docx", "djvu"];
 
 export const config = {

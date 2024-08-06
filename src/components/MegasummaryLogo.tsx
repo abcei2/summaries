@@ -14,7 +14,7 @@ const MegasummaryLogo = () => {
         width={66}
         height={66}
       />
-      <div className="flex-col gap-0.5 sm:flex hidden">
+      <div className="flex-col gap-0.5 sm:flex flex">
         <span>
           <b>Mega</b>
         </span>

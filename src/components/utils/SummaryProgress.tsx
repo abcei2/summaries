@@ -14,11 +14,11 @@ const SummaryProgress: FC<SummaryProgressProps> = ({
   const [progress, setProgress] = useState(0);
 
   useEffect(() => {
-    setProgress(percentage);
+    setProgress(parseFloat(percentage.toFixed(0)));
   }, [percentage]);
 
   return (
-    <div className="w-64 h-64  rounded-lg flex flex-col items-center justify-center">
+    <div className="w-64 h-64 rounded-lg flex flex-col items-center justify-center">
       <div className="relative w-24 h-24">
         <svg className="w-full h-full" viewBox="0 0 100 100">
           <circle
@@ -30,7 +30,7 @@ const SummaryProgress: FC<SummaryProgressProps> = ({
             fill="transparent"
           ></circle>
           <circle
-            className={`text-primary stroke-current  ${
+            className={`text-primary stroke-current ${
               pulseAnimation ? "animate-pulse" : ""
             }`}
             strokeWidth="10"
