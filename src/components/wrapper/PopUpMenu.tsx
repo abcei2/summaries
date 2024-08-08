@@ -28,7 +28,7 @@ const PopUpMenu = () => {
   };
 
   return (
-    <div className="flex flex-col gap-5 font-pt-sans text-xs">
+    <div className="flex flex-col gap-5 font-pt-sans text-xs items-end">
 
        
       <div className="flex justify-end gap-2">
