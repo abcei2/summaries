@@ -358,12 +358,13 @@ const MainBookComponent = ({ bookId }: { bookId: string }) => {
               />
             )}
           </div>
-
-          <div className="w-full relative z-10">
-            <div className="absolute bottom-0 right-0">
-              <HelpUs />
+            {/*centered helpus*/}
+            <div className="w-full relative z-10 flex justify-center items-center">
+              <div>
+                <br />
+                <HelpUs />
+              </div>
             </div>
-          </div>
         </div>
       </div>
       <ChatBot

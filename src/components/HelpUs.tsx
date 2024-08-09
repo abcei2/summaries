@@ -5,7 +5,7 @@ const HelpUs = () => {
   const [show, setShow] = useState(true);
   if (!show) return <></>;
   return (
-    <div className="px-5 py-3  text-white font-pt-sans text-sm flex flex-col gap-4 w-full max-w-[400px] rounded-[10px] bg-secondary  sm:px-8 sm:py-4 text-justify ">
+    <div className="px-5 py-3  text-white font-pt-sans text-sm flex flex-col gap-4 w-full max-w-[500px] rounded-[10px] bg-secondary  sm:px-8 sm:py-4 text-justify ">
       <CustomImage
         src="/images/helpus.svg"
         alt="Help Us"
@@ -42,7 +42,7 @@ const HelpUs = () => {
       >
         Take the Surveys Now!
       </a>
-
+      {/*
       <div
         onClick={() => setShow(false)}
         className={`rounded-full absolute -top-[14px] -right-[14px]
@@ -55,6 +55,7 @@ const HelpUs = () => {
           height={10}
         />
       </div>
+      */}
     </div>
   );
 };
