@@ -21,10 +21,27 @@ const PopUpMenu = () => {
   };
 
   const handleSendBugReport = () => {
-    // Logic to send the bug report goes here
+    
     console.log("Bug report sent:", bugDescription);
     setShowReportBugModal(false);
-    setBugDescription("");
+  
+ fetch("/api/post_bug_report/", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({ message: bugDescription }),
+    })
+      /// read status of the response
+      .then((response) => {
+        if (response.status == 200) {
+          alert("Bug report sent successfully!");
+        } else {
+          alert(response.statusText);
+        }
+      })
+
+
   };
 
   return (
