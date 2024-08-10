@@ -27,7 +27,7 @@ function MainWrapper({ children }: { children: React.ReactNode }) {
     <div
       className={`flex flex-col
         ${fullPrimaryBg? "bg-primary" : ""}
-       w-full overflow-auto h-screen`}
+       w-full overflow-auto`}
     >
       
       {shotTopNews && <TopNews backgroundColor={backgroundColor} />}

@@ -55,7 +55,7 @@ const MyBook = ({
   };
 
   return (
-    <div className="relative">
+    <div className="">
       {showDeleteModal && (
         <CustomModal2 handleClose={() => setShowDeleteModal(false)}>
           <DeleteModal
