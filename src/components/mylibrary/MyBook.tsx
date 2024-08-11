@@ -1,6 +1,6 @@
 import { useRouter } from "next/router";
 import { Book } from "../../types";
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import { CustomModal2 } from "../utils/custommodals";
 import { CgHeadset, CgSoftwareDownload } from "react-icons/cg";
 import DeleteModal from "./DeleteModal";
@@ -27,6 +27,8 @@ const MyBook = ({
       : book?.title_2
     : "";
 
+  const isThumbnail = book?.extension === "youtube";
+
   const onDelete = () => {
     fetch(`/api/users/library/${book.global_id}`, {
       method: "DELETE",
@@ -35,7 +37,7 @@ const MyBook = ({
     });
   };
 
-  const onRetryDowload = () => {
+  const onRetryDownload = () => {
     fetch(`/api/books/download/${book.global_id}`, {
       method: "GET",
     })
@@ -70,7 +72,7 @@ const MyBook = ({
           <RetryDownloadModal
             bookCover={bookCover}
             title={bookModalTitle}
-            handleConfirm={onRetryDowload}
+            handleConfirm={onRetryDownload}
             handleClose={() => setShowRetryDownloadModal(false)}
           />
         </CustomModal2>
@@ -89,30 +91,27 @@ const MyBook = ({
           ❌
         </div>
 
-        <div className="relative z-1 flex flex-col gap-4">
+        <div className="relative z-1 flex flex-col gap-4 justify-between h-full">
           <div className="flex items-center gap-2">
             <img
-              className="rounded-[10px] min-w-[100px]  h-[140px]"
+              className={`rounded-[10px] ${
+                isThumbnail
+                  ? "min-h-[100px]  w-auto max-w-[150px]"
+                  : "min-w-[100px]  h-[140px]"
+              }`}
               alt="book cover"
-              src={
-                book?.cover_img_path != "null"
-                  ? `${process.env.NEXT_PUBLIC_DJANGO_MEDIA}/${book?.cover_img_path}`
-                  : "/card-img.jpg"
-              }
+              src={bookCover}
             />
 
             <div className="p-1 w-full flex flex-col gap-2">
               <div className="">
-                <span className="font-bold">
-                  {book?.title_2 ? book?.title_2 : ""}
-                </span>
+                <span className="font-bold">{book?.title_2 || ""}</span>
               </div>
 
               <span className="italic text-[10px]">By {book.author}</span>
 
               <div className="flex gap-1 items-center font-bold">
-                
-              {book?.year?.toString() !== "N/A" && <span>{book?.year}</span>}
+                {book?.year?.toString() !== "N/A" && <span>{book?.year}</span>}
 
                 <div className="w-fit left-[2px] z-1 cursor-pointer hover:scale-105 top-1">
                   {["error", "extract text error"].includes(
@@ -134,7 +133,9 @@ const MyBook = ({
               {Number(book.pages) > 0 && (
                 <span className="book-tags">{book.pages} pgs.</span>
               )}
-              <span className="book-tags">{book?.language}</span>
+              {book?.language && (
+                <span className="book-tags">{book?.language}</span>
+              )}
               <span className="book-tags">.{book?.extension}</span>
             </div>
             <a
