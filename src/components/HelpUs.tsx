@@ -25,10 +25,10 @@ const HelpUs = () => {
         <div className="flex gap-1">
           As a thank you, you’ll get
           <div className="relative">
-            early feature access
+            free tokens
             <CustomImage
               src="/images/fancy-underline.svg"
-              alt="Early Feature Access"
+              alt="Free Tokens"
               width={0}
               height={8}
               className="absolute bottom-0 left-0 w-full"

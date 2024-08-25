@@ -14,18 +14,16 @@ const PopUpMenu = () => {
     user?.available_tokens ?? 0
   );
 
-
   const handleReportBug = () => {
     setShowReportBugModal(true);
     setShowPopup(false); // Close the popup menu when opening the modal
   };
 
   const handleSendBugReport = () => {
-    
     console.log("Bug report sent:", bugDescription);
     setShowReportBugModal(false);
-  
- fetch("/api/post_bug_report/", {
+
+    fetch("/api/post_bug_report/", {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
@@ -39,18 +37,14 @@ const PopUpMenu = () => {
         } else {
           alert(response.statusText);
         }
-      })
-
-
+      });
   };
 
   return (
     <div className="flex flex-col gap-5 font-pt-sans text-xs items-end">
-
-       
       <div className="flex justify-end gap-2">
         {/* Report Bug Button */}
-      <button
+        <button
           className="bg-yellow-500 text-black hover:bg-yellow-600 px-2 py-2 rounded text-[14px]"
           onClick={handleReportBug}
         >
@@ -86,14 +80,7 @@ const PopUpMenu = () => {
         )}
       </div>
 
-       
-      
-
       <div className="flex items-center gap-12 font-pt-sans text-sm">
-
-
-        
-
         <a
           className={`${
             router.pathname === "/search"

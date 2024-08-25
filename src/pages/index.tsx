@@ -22,7 +22,14 @@ const page = () => {
             flex flex-col gap-16 md:gap-10  px-8 relative py-8 bg-primary w-full`}
           >
             <div className="max-w-[750px] self-center w-full z-[1]">
-              <video width="100%" height="auto" controls className="rounded-md">
+              <video
+                width="100%"
+                height="auto"
+                controls
+                muted
+                autoPlay
+                className="rounded-md"
+              >
                 <source src={videoUrl_1} type="video/mp4" />
                 Your browser does not support the video tag.
               </video>
@@ -31,7 +38,14 @@ const page = () => {
             <LandingCards />
 
             <div className="max-w-[750px] self-center w-full z-[1]">
-              <video width="100%" height="auto" controls className="rounded-md">
+              <video
+                width="100%"
+                height="auto"
+                controls
+                muted
+                autoPlay
+                className="rounded-md"
+              >
                 <source src={videoUrl_2} type="video/mp4" />
                 Your browser does not support the video tag.
               </video>
