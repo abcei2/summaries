@@ -5,6 +5,7 @@ import { useContext } from "react";
 import { UserContext } from "@/context/UserContext";
 import { Book } from "@/types";
 import CustomImage from "../utils/CustomImage";
+import { useRouter } from "next/router";
 
 const Card = ({ book, className }: { book: Book; className?: string }) => {
   if (!book) return null;
@@ -21,6 +22,7 @@ const Card = ({ book, className }: { book: Book; className?: string }) => {
   });
   const [loading, setLoading] = useState(false);
   const { user } = useContext(UserContext);
+  const router = useRouter();
 
   useEffect(() => {
     if (!bookStatus) return;

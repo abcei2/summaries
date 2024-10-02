@@ -24,13 +24,13 @@ const TopMenu = () => {
         <div className="flex items-center gap-4 text-base">
           <a
             href="/signup"
-            className="btn py-0.5 px-8 hover:border-custom-purple hover:text-custom-purple"
+            className="btn py-0.5 px-1 sm:px-8 hover:border-custom-purple hover:text-custom-purple"
           >
             Sign up
           </a>
           <a
             href="/login"
-            className="btn py-0.5 px-8 hover:border-custom-purple hover:text-custom-purple"
+            className="btn py-0.5 px-1 sm:px-8 hover:border-custom-purple hover:text-custom-purple"
           >
             Login
           </a>

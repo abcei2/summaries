@@ -1,10 +1,13 @@
 import Image from "next/image";
 import CustomImage from "../utils/CustomImage";
+import { useContext } from "react";
+import { UserContext } from "@/context/UserContext";
 
 const Footer = () => {
+  const { user } = useContext(UserContext);
   return (
     <footer className="w-full bg-custom-purple text-white py-6 px-6 sm:px-16 sm:pt-16 sm:pb-8 flex flex-col gap-10">
-      <div className="flex items-center  gap-5">
+      <div className="flex items-center gap-5">
         <CustomImage
           src="/icons/sprinkle_group.svg"
           alt="icon"
@@ -14,17 +17,25 @@ const Footer = () => {
         <span className="text-3xl">Don't Miss out</span>
       </div>
       <div className="flex sm:gap-16 gap-8 grid grid-cols-3">
-        <div className="flex flex-col gap-4">
-          <span className="uppercase text-tertiary">Company</span>
-          <span>About</span>
-          <span>Support</span>
-          <span>FAQ</span>
-        </div>
-        <div className="flex flex-col sm:flex-row gap-4 sm:gap-16">
+        {user && (
           <div className="flex flex-col gap-4">
-            <span className="uppercase text-tertiary w-max">Get involved</span>
-            <span>Create an account</span>
+            <span className="uppercase text-tertiary"> Site</span>
+            <a href="/mylibrary">My library</a>
+            <a href="/myhighlights">My highlights</a>
+            <a href="/billing">Buy tokens</a>
+            <a href="/surveys">Take our survey</a>
           </div>
+        )}
+        <div className="flex flex-col sm:flex-row gap-4 sm:gap-16">
+          {!user && (
+            <div className="flex flex-col gap-4">
+              <span className="uppercase text-tertiary w-max">
+                Get involved
+              </span>
+              <a href="/signup" className="w-max">Create an account</a>
+              <a href="/login" className="w-max">Login</a>
+            </div>
+          )}
 
           <div className="flex flex-col gap-4 col-span-2 w-full ">
             <span className="uppercase text-tertiary w-max ">Get in touch</span>
@@ -58,7 +69,7 @@ const Footer = () => {
           <span>Privacy Policy</span>
           <span>Terms of Service</span>
         </div>
-        <div className="flex gap-6">
+        <div className="flex gap-6 hidden">
           {[
             "/icons/twitter.svg",
             "/icons/discord.svg",
