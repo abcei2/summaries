@@ -28,6 +28,7 @@ async function uploadDoc(
   switch (req.method) {
     case "POST":
       try {
+        console.log("upload_doc");
         const { files, error } = await parseForm(form, req);
 
         if (error) {
@@ -65,8 +66,8 @@ async function uploadDoc(
         try {
           const headers = {
             Authorization: `token ${userAuth.token}`,
-            "Content-Type": document.mimetype as any,
-            "Content-Disposition": `form-data; name="file"; filename="${safeFileName}"`,
+            //"Content-Type": document.mimetype as any,
+            //"Content-Disposition": `form-data; name="file"; filename="${safeFileName}"`,
           };
 
           const response = await fetch(
